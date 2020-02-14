@@ -130,3 +130,9 @@ STATIC_URL = '/static/'
 # Google OAuth2 credentials
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '246853201635-k0or729pfgm9hfr23urplt72j9gp4m0r.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'S5esFiFbfMI-WC6yKvjaxD5C'
+
+try:
+    import django_heroku
+    django_heroku.settings(locals())
+except ImportError:
+    found = False
