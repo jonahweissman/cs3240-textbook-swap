@@ -1,1 +1,5 @@
+{% if name %}
+<p> Hello, {{ name }}</p>
+{% else %}
 <a href="{% url "social:begin" "google-oauth2" %}">Google</a>
+{% endif %}
