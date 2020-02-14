@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', include('social_django.urls', namespace='social')),
-    path('', views.index, name='index'),
+    path('', views.IndexViews.as_view(), name='index'),
 ]
