@@ -1,0 +1,213 @@
+<!-- 1. create HTML5 doctype -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <!-- 2. include meta tag to ensure proper rendering and touch zooming
+         (bootstrap is designed to be responsive to mobile.
+         Mobile-first styles are part of the core framework.)
+   -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- the width=device-width part sets the width of the page to follow
+          the screen-width of the device (which wil vary depending on the device)
+       the initial-scale=1 part sets the initialize zoom level when the page 
+          is first loaded by the browser. 
+   -->
+
+    <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Textbook Listing</title>
+
+    <!-- 3. link bootstrap pages
+          Two basic bootstrap pages are  
+             https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css
+             https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js
+          To use bootstrap.min.js, need jquery
+             https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js
+          (if only use css bootstrap, only link to the css)
+   -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      
+    />
+
+    <script>
+      function setFocus() {
+        document.getElementById("title").focus();
+      }
+    </script>
+  </head>
+
+  <body onload="setFocus();">
+
+     
+      <!-- use JS to dynamically create rows  -->
+      
+      
+    </table> 
+    <!-- 4. bootstrap requires a containing element to wrap site contents.
+          There are two container classes to choose from (based on the above css bootstrap):
+          (1) .container class provides a responsive fixed width container
+          (2) .container-fluid class provides a full width container, spanning
+              the entire width of the view point
+          
+          Bootstrap typically requires 3 main items: 
+          - container, row, and column to nest the page contents 
+   -->
+    <div class="container">
+      <h1>Listings</h1>
+
+      <!-- 5. use bootstrap form layouts
+          Bootstrap provides three types of form layouts: 
+            - verical form (default)
+            - horizontal form
+            - inline form
+          Standard rules for all three form layouts: 
+            - wrap labels and form controls in <div class="form-group">
+              (needed for optimum spacing) 
+            - add class .form-control to all textual <input>, <textarea>, 
+              and <select> elements
+     -->
+
+      <!-- <label> tag defines a label for an <input> element.
+         It does not render as anything special for the user. 
+         It provides a usability improvement for mouse useres, because 
+         if the user clicks on the text within the <label> element,
+         it toggles the control. 
+         The for attribute of the <label> tag should be equal to the id attribute
+         of the related element to bind them together. 
+     -->
+
+      <!-- 6. Create a form that allows a user to enter zombies -->
+
+      <form name="mainform">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" class="form-control" name="name" placeholder="Fundamentals of Calculus"/>
+          <span class="error" id="title-note"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input
+            type="text"
+            id="author"
+            class="form-control"
+            placeholder="John Smith"
+          />
+          <span class="error" id="author-note"></span>
+        </div>
+
+		<div class="form-group">
+			<label for="course">Course</label>
+			<input
+			  type="text"
+			  id="course"
+			  class="form-control"
+			  placeholder="CS 1110" 
+
+			/>
+			<span class="error" id="author-note"></span>
+		  </div>
+        <div class="form-group">
+          <label for="condition">Condition</label>
+          <select id="condition" class="form-control">
+            <option value="Almost New" selected="selected">Almost New - Without fault or defects</option>
+            <!-- set default selection -->
+			<option value="Very Good">Very Good</option>
+			<option value="Good">Good</option>
+			<option value="Fair">Fair</option>
+			<option value="Poor">Poor</option>
+          </select>
+        </div>
+		<div class="form-group">
+			<label for="additional notes">Additional Notes</label>
+			<textarea class="form-control" id="additional notes" rows="3"></textarea>
+		  </div>
+        <input
+          type="button"
+          class="btn btn-light"
+          id="add"
+          value="Add Post"
+          onclick="addRow()"
+        />
+      </form>
+
+      <br />
+
+      <!-- 7. display the "zombie" list. 
+       One obvious, simple approach is to display the list using a table
+  -->
+
+      <!-- A basic Bootstrap table has a light padding and horizontal dividers.
+       To use the basic style, use .table class.   
+  -->
+      <div id="listing">
+        <table id="listingTable" class="table">
+          <thead>
+            <!-- set table headers -->
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Course</th>
+			  <th>Condition</th>
+			  <th>Notes</th>
+            </tr>
+          </thead>
+
+          <!-- 8. write JS to dynamically create add new row upon form submission -->
+        </table>
+      </div>
+    </div>
+    <script>
+      function addRow(){
+        var title = document.getElementById("title").value;
+        var author = document.getElementById("author").value;
+		var course = document.getElementById("course").value;
+		var condition = document.getElementById("condition").value;
+		var additionalNotes = document.getElementById("additional notes").value;
+
+     var deleteButton = "<input type=button value=' X ' onClick='delRow()'>";
+     
+     // Put all pieces of data in an array for later used to create cell content of a row 
+     var rowdata = [title, author, course, condition, additionalNotes, deleteButton];
+     
+     // Find a <table> element to add row to (in this example, a table with id="mytable")
+     var tableRef = document.getElementById("listingTable");
+     
+     // Use insertRow(index) method to create an empty <tr> element and add it to the table
+     var newRow = tableRef.insertRow(tableRef.rows.length);  // table_object.rows.length returns the number of <tr> elements in the collection
+     
+     // Add event listener, on mouseover, set row index. This will be used when deleting a row
+     newRow.onmouseover = function() {         
+        tableRef.clickedRowIndex = this.rowIndex;   // rowIndex returns the position of a row in the rows collection of a table     
+     };
+     
+     // Alternatively, use data-index to store index of the line 
+     //  (note: data-* attributes can store arbitrary data with elements)
+     // eg: <div id="elem" data-index=3></div>
+     
+     // Prepare content for each cell (or <td>) of the row
+     var newCell = "";       
+     var i = 0;          // In this example, each row has 4 columns. 
+     // Use insertCell(index) method to insert new cells (<td> elements) at the 1st, 2nd, 3rd position of the new <tr> element        	      
+     while (i < 6)
+     {
+        newCell = newRow.insertCell(i);            // specify which column 
+        newCell.innerHTML = rowdata[i];            // assign what content  
+        newCell.onmouseover = this.rowIndex;       // attach row index to the row
+        i++;
+     }
+      }
+
+      function delRow()
+  {
+     // since deletion action is unrecoverable, add hesitation to minimize/avoid user error 
+	 if (confirm("Press OK to delete. This action is unrecoverable.") == true)   
+        document.getElementById("listingTable").deleteRow(document.getElementById("listingTable").clickedRowIndex);
+  }
+    </script>
+  </body>
+</html>
