@@ -1,5 +1,9 @@
-{% if user.first_name %}
-<p> Hello, {{ user.first_name }}</p>
-{% else %}
-<a href="{% url "social:begin" "google-oauth2" %}">Google</a>
-{% endif %}
+{% extends 'marketplace/base.html' %}
+{% block content %}
+    {% if user.first_name %}
+    <p> Hello, {{ user.first_name }}</p>
+    {% else %}
+    
+    <a href="{% url "social:begin" "google-oauth2" %}">Google</a>
+    {% endif %}
+{% endblock content %}
