@@ -1,80 +1,82 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      {% block link %}
-      {% endblock %}
-      <style>
-        .customFooter {
-          position: absolute;
-          width: 100%;
-          height: 55px;
-          background: rgb(32, 39, 51);
-          bottom: 0;
-          left: 0;
-          text-align: center;
-          padding: 0 20px 0 20px;
-          color: aqua;
-        }
-      </style>
-  </head>
-  <body>
-      <header class="site-header">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'marketplace/main.css' %}">
+
+    {% if title %}
+        <title>Polls App - {{ title }}</title>
+    {% else %}
+        <title>Polls App</title>
+    {% endif %}
+</head>
+<body>
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="{% url 'index' %}">Home</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="/"><strong>Market Place</strong></a>
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                  <li class="nav-item active">
-                    <a class="btn btn-success btn-lg active" role="button" aria-pressed="true" href="/">Add Listing</a>
-                  </li>
-                </ul>
-                <span>
-                  <form class="form-inline my-2 my-lg-0">
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{% url 'addListing' %}">Add Listing</a>
+              <a class="nav-item nav-link" href="{% url 'index' %}">My listings</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+              <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search An Item" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                   </form>
-                </span>
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0" style="margin:10px">
-                  <li class="nav-item active">
-                    <a class="btn btn-secondary"
-                      tabindex="0"
-                      role="button" 
-                      data-container="body" data-toggle="popover" data-placement="bottom" title="Messages" data-content="Send/Check Messages" href="/">
-                      <i class="material-icons">
-                        inbox
-                      </i>
-                    </a>
-                  </li>
-                  <li class="nav-item active" style="padding: 0 20px 0 20px">
-                    <div class="dropdown" style="margin:10px">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="material-icons">
-                          account_circle
-                        </i>
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Logged In, {username}</a>
-                        <a class="dropdown-item" href="#">Signout</a>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-            </nav>
-      </header>
-      {% block content %}
-      {% endblock %}
-      <footer class="customFooter">
-          Copyright © 2020 Textbook Swap
-      </footer>
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+              <a class="nav-item nav-link" href="{% url "social:begin" "google-oauth2" %}">Sign in</a>
+              <a class="nav-item nav-link" href="#">Sign out</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </main>
+
+        <!-- Footer -->
+<footer id = "footer" class="page-footer font-small blue">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">
+  TextBookSwapUVA <br>
+  © 2020 Copyright:
+    <a href="http://textbookswapuva.herokuapp.com/"> textbookswapuva.herokuapp.com</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+
 </html>

@@ -10,3 +10,12 @@ class IndexViews(generic.DetailView):
         return render(request, self.template_name, {
             'user': request.user
         })
+
+
+class ListingViews(generic.DetailView):
+    template_name = "marketplace/createNewListing.html"
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'user': request.user
+        })
