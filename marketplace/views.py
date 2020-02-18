@@ -19,3 +19,11 @@ class ListingViews(generic.DetailView):
         return render(request, self.template_name, {
             'user': request.user
         })
+
+class ProfileViews(generic.DetailView):
+    template_name = "marketplace/profilePage.html"
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'user': request.user
+        })
