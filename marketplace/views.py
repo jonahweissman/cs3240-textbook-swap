@@ -32,3 +32,4 @@ class ProfileViews(generic.DetailView):
 def Signout(request):
     logout(request)
     return redirect('/')
+
