@@ -37,9 +37,12 @@
                     <input class="form-control mr-sm-2" type="search" placeholder="Search An Item" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                   </form>
-              <a class="nav-item nav-link" href="{% url "social:begin" "google-oauth2" %}">Sign in</a>
-                <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
-              <a class="nav-item nav-link" href="#">Sign out</a>
+              {% if user.is_authenticated %}
+                <a class="nav-item nav-link"> Hello, {{user.first_name}} </a>
+              {% else %}
+                <a class="nav-item nav-link" href="{% url "social:begin" "google-oauth2" %}">Sign in</a>
+              {% endif %}
+              <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
             </div>
           </div>
         </div>

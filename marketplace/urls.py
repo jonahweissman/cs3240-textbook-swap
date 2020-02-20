@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.IndexViews.as_view(), name='index'),
     path('addListing', views.ListingViews.as_view(), name = 'addListing'),
     path('profile', views.ProfileViews.as_view(), name = 'profile'),
+    path('Signout', views.Signout, name = 'Signout'),
 ]

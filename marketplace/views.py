@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
-
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 # Create your views here.
 class IndexViews(generic.DetailView):
@@ -27,3 +28,7 @@ class ProfileViews(generic.DetailView):
         return render(request, self.template_name, {
             'user': request.user
         })
+    
+def Signout(request):
+    logout(request)
+    return redirect('/')
