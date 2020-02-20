@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'textbookswap.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd90agckd1pe3hh',
+        'USER': 'aksifghquxmdpy',
+        'PASSWORD': '78a2c41608c0ef722e3f2fcb43fd6f36ec492567e3dd50d05d81204ed56ba5da',
+        'HOST': 'ec2-50-17-178-87.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
