@@ -128,8 +128,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Google OAuth2 credentials
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '246853201635-k0or729pfgm9hfr23urplt72j9gp4m0r.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'S5esFiFbfMI-WC6yKvjaxD5C'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '899292966914-776flca5qc1ctenipa1881dn0nfne9hd.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1-SkA8UHchnfoJp-_UAu1lqq'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'index'
 
 try:
