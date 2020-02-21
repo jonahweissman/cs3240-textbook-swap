@@ -13,9 +13,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'marketplace/main.css' %}">
 
     {% if title %}
-        <title>Polls App - {{ title }}</title>
+        <title>Textbook Swap - {{ title }}</title>
     {% else %}
-        <title>Polls App</title>
+        <title> Textbook Swap</title>
     {% endif %}
 </head>
 <body>
@@ -33,10 +33,6 @@
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search An Item" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                  </form>
               <a class="nav-item nav-link" href="{% url "social:begin" "google-oauth2" %}">Sign in</a>
               <a class="nav-item nav-link" href="#">Sign out</a>
             </div>
@@ -44,6 +40,7 @@
         </div>
       </nav>
     </header>
+    
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">

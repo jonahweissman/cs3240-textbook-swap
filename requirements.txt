@@ -3,3 +3,4 @@ gunicorn
 django-heroku
 django-bootstrap4
 social-auth-app-django
+django-auto-one-to-one==3.3.0
