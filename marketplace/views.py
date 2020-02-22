@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from django.utils import timezone
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 from .models import Item, Profile
 
@@ -43,6 +43,8 @@ class SearchViews(generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        vector = SearchVector('item_name', 'item_description')
+        query = SearchQuery(self.request.GET['query'])
         return self.model.objects.annotate(
-            search=SearchVector('item_name', 'item_description'),
-        ).filter(search=self.request.GET['query'])
+            rank=SearchRank(vector, query)
+        ).order_by('-rank')
