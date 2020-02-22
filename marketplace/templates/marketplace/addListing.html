@@ -1,7 +1,10 @@
 {% extends 'marketplace/base.html' %}
 {% load static %}
 {% block content %}
-<div class="add-Form">
+{% if error_message %}
+    <p align='center' style="color:red;margin:10vh"><strong>{{ error_message }}</strong></p>
+{% else %}
+    <div class="add-Form">
     <form action="" method="post">
     {% csrf_token %}
         <p><b>Name</b></p>
@@ -26,4 +29,5 @@
     <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+{% endif %}
 {% endblock content%}
