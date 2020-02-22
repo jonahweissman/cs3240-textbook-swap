@@ -1,0 +1,12 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+<h1>Search results</h1>
+<ul>
+{% for item in search_results %}
+	<li>{{ item.item_name }}</li>
+{% empty %}
+<li>No results found</li>
+{% endfor %}
+</u>
+{% endblock %}

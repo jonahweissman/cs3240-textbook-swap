@@ -7,4 +7,5 @@ urlpatterns = [
     path('', include('social_django.urls', namespace='social')),
     path('', views.IndexViews.as_view(), name='index'),
     path('addListing', views.ListingViews.as_view(), name = 'addListing'),
+    path('search', views.SearchViews.as_view(), name='search-results'),
 ]

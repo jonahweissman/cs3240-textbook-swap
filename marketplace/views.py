@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views import generic
 from django.utils import timezone
+from django.contrib.postgres.search import SearchVector
+
 from .models import Item, Profile
 
 # Create your views here.
@@ -33,3 +35,14 @@ class ListingViews(generic.DetailView):
         item_info.save()
 
         return render(request, self.template_name)
+
+class SearchViews(generic.ListView):
+    model = Item
+    template_name = "marketplace/search_results.html"
+    context_object_name = 'search_results'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return self.model.objects.annotate(
+            search=SearchVector('item_name', 'item_description'),
+        ).filter(search=self.request.GET['query'])
