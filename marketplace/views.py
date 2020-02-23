@@ -47,4 +47,4 @@ class SearchViews(generic.ListView):
         query = SearchQuery(self.request.GET['query'])
         return self.model.objects.annotate(
             rank=SearchRank(vector, query)
-        ).order_by('-rank')
+        ).filter(rank__gt=0).order_by('-rank')
