@@ -140,7 +140,5 @@ try:
 except ImportError:
     found = False
 
-
-# This is new
-if os.path.isfile(dotenv_file):
+if not os.path.isfile(dotenv_file):
     del DATABASES['default']['OPTIONS']['sslmode']
