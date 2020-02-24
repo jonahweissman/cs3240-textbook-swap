@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
+import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 
 # Quick-start development settings - unsuitable for production
@@ -77,16 +83,8 @@ WSGI_APPLICATION = 'textbookswap.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd90agckd1pe3hh',
-        'USER': 'aksifghquxmdpy',
-        'PASSWORD': '78a2c41608c0ef722e3f2fcb43fd6f36ec492567e3dd50d05d81204ed56ba5da',
-        'HOST': 'ec2-50-17-178-87.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
-}
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
@@ -141,3 +139,6 @@ try:
     django_heroku.settings(locals())
 except ImportError:
     found = False
+
+if not os.path.isfile(dotenv_file):
+    del DATABASES['default']['OPTIONS']['sslmode']
