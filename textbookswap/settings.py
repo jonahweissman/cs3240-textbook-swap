@@ -142,5 +142,5 @@ except ImportError:
 
 
 # This is new
-if not os.path.isfile(dotenv_file):
+if os.path.isfile(dotenv_file):
     del DATABASES['default']['OPTIONS']['sslmode']
