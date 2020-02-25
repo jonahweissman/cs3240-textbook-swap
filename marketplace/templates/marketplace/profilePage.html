@@ -66,13 +66,13 @@
                                <img src="{{ user.profile.imagefile.url }}" id="imgProfile" style="width: 150px; height: 150px" class= "img-thubmnail"/> 
                                <!--<img src="{{ user.profile.imagefile.url }}" class="profile-pfp"></img> -->
                                 <div class="middle">
-                                   <!--<button class="btn btn-secondary" id="btnChangePicture" value="Change" href="{% url 'editprofile' %}" /> -->
+                                   <!--<button class="btn btn-secondary" id="btnChangePicture" value="Change" href="{% url 'editprofile' %}" /> 
                                    <form enctype="multipart/form-data" method="POST" action="">
                                         {% csrf_token %}
                                         {{ form.as_p }}
-                                        <input type="submit" value="Upload"/>
+                                        <input type="submit" value="Upload"/> -->
                                     </form>
-                                  <!-- <a href="profile/editprofile" class="btn">Edit</a> -->
+                                   <a href="profile/editprofile" class="btn">Edit</a> 
                                 </div>
                             </div>
                             <div class="userData ml-3">
