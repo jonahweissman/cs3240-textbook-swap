@@ -132,6 +132,20 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '246853201635-k0or729pfgm9hfr23urplt72j9gp4m0r.a
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'S5esFiFbfMI-WC6yKvjaxD5C'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'index'
 
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'
+
+OPTIONS = {
+    'context_processors': [
+    'django.template.context_processors.debug',
+    'django.template.context_processors.request',
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
+	'django.template.context_processors.media',
+    ], 
+}
+
 try:
     import django_heroku
     django_heroku.settings(locals())

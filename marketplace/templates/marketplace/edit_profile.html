@@ -1,5 +1,4 @@
 
-
 {% block head %}
 <title>Profile</title>
 {% endblock %}
@@ -7,12 +6,11 @@
 {% block body %}
 
 <div class="container">
-    <form method="post">
+    <form enctype="multipart/form-data" method="POST" action="">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type = "submit">Submit</button>
+        <input type="submit" value="Upload"/>
     </form>
-
 </div>
 
 {% endblock %}
