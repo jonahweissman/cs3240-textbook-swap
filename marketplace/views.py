@@ -32,14 +32,14 @@ class ProfileViews(generic.DetailView):
         return render(request, self.template_name, {
             'user': request.user
     })
-    def post(self, request):
-        form = ImageForm(request.POST, request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-        else: 
-            form = ImageForm()
-        args = {"form" : form}
-        return render(request, self.template_name, args)
+    # def post(self, request):
+    #     form = ImageForm(request.POST, request.FILES, instance=request.user.profile)
+    #     if form.is_valid():
+    #         form.save()
+    #     else: 
+    #         form = ImageForm()
+    #     args = {"form" : form}
+    #     return render(request, self.template_name, args)
     
 def Signout(request):
     logout(request)

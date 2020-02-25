@@ -7,6 +7,9 @@ from django.dispatch import receiver
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     imagefile= models.ImageField(upload_to='images/')
+    phonenumber = models.CharField(max_length=12, null= True)
+    major = models.CharField(max_length= 50 ,null= True)
+    year = models.CharField(max_length= 4, null= True)
 
     def profile_picture_path(self):
         if not self.imagefile:
