@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import dj_database_url
 import dotenv
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,7 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Google OAuth2 credentials
@@ -138,7 +138,15 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '899292966914-776flca5qc1ctenipa1881dn0nfne9hd.a
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1-SkA8UHchnfoJp-_UAu1lqq'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'index'
 
+
+try:
+    import django_heroku
+    django_heroku.settings(locals())
+except ImportError:
+    found = False
+
 try:
     del DATABASES['default']['OPTIONS']['sslmode']
 except:
     pass
+
