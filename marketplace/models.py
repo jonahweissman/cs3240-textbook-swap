@@ -11,10 +11,6 @@ class Profile(models.Model):
     major = models.CharField(max_length= 50 ,null= True)
     year = models.CharField(max_length= 4, null= True)
 
-    def profile_picture_path(self):
-        if not self.imagefile:
-            return settings.DEFAULT_PROFILE_PICTURE_PATH
-        return self.imagefile.url
 
 @receiver(post_save, sender=User)
 def ensure_profile_exists(sender, **kwargs):
