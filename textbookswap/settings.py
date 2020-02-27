@@ -88,6 +88,19 @@ DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
+"""
+DATABASES = {
+    'default': { #change /.
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd57sm8h9714g4d', #database name on heroku?
+        'USER': 'hvhhtawbuwwqih',
+        'PASSWORD': '1191c4867abec93d93b25cc1c9cfc71553556ac81e16c851e0bd189c7aa30ea7',
+        'HOST': 'ec2-34-192-30-15.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}
+"""
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 

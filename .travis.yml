@@ -1,0 +1,18 @@
+language: python
+python:
+- '3.8'
+install:
+- pip install -r requirements-travis.txt
+script:
+- python manage.py test
+deploy:
+  provider: heroku
+  api_key:
+    secure: WsVudDpYmYOocmJLUHPOvkfaGYFREGEIypmL9ZeyGigvA9o2m/AggPqAi4/sncLIl/62V4+cNKD/cnZtPAfRwfKeH5j24SbY0XCG5kqWdve++39Hql6J78feEAf0sTy8jK3moHbswmTx/SIQUN9cZHuwfnGbhvsEJoHc9zF25rQYravsm0kr0NzLsl0XeA5noivEtikLFiWJyW7KkuDOiNh1OdzbeK+TVere8DH41OIlmDCDE0Y/ip7nKAVG5f9a/1caM15T2MrIZJypEsYu4QeS2zxlt93cIlfUnvhJMfNnunK0WTh3DzW49XTaxeWb433KiJqnvPy0BFslK8ebx/QvjfIJnTgNEI4lAQiwCSopK0Zcn4kw5DRzV+vuN09tWUNnm/vWOV8p2bnf/ReOkpG1ERo0ITDfVGhY/iBg730gRipbxsVh5eN6nKMgNgspQp3GcOPrkRQ+w5KVbLokHEVWlyw+dbXs4JXeIIc0nH9vhP4jPRAJjvfnZ8pnr1vwNPMJHkypkwzoojg4wNklEaqmL/iSd7hAZep6cJrxVNvph6diRE0RT+6XEUaVD8RbqZ1G543jwqBypugs0CEUj4Gam3m1WI7bi5sHLmjKo9IrPKqdeTvAq2uyHOFpSiHMGHeYM02w1aq7OeFNBTNq04OTVT1bVok0aX0LP8+5Hkg=
+  app: project-101-textbook-swap
+  on:
+    repo: uva-cs3240-s20/project-101-textbook-swap
+
+
+
+

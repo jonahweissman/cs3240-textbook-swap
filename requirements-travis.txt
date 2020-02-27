@@ -1,0 +1,6 @@
+Django
+gunicorn
+social-auth-app-django
+psycopg2-binary
+psycopg2
+django-auto-one-to-one==3.3.0
