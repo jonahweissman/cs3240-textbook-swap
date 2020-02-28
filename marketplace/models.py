@@ -6,8 +6,7 @@ from django_auto_one_to_one import AutoOneToOneModel
 
 class Profile(AutoOneToOneModel(User)):
     user_ratings = models.IntegerField(default= 5)
-    # def __str__(self):
-    #     return self.user.id
+
 class Item(models.Model):
     item_condition_choices = (("Like New", "Like New"),("Good", "Good"), ("Fair", "Fair"), ("Poor", "Poor"))
     item_name = models.CharField(max_length=100)
@@ -16,6 +15,7 @@ class Item(models.Model):
     item_posted_date = models.DateField()
     item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE)
     item_description = models.TextField(max_length= 1000)
+
     def __str__(self):
         return self.item_name
 

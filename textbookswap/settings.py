@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
+import dotenv
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Load environment variables from .env file
+dotenv.load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,6 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -77,17 +84,22 @@ WSGI_APPLICATION = 'textbookswap.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
+
+"""
 DATABASES = {
-    'default': {
+    'default': { #change /.
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd90agckd1pe3hh',
-        'USER': 'aksifghquxmdpy',
-        'PASSWORD': '78a2c41608c0ef722e3f2fcb43fd6f36ec492567e3dd50d05d81204ed56ba5da',
-        'HOST': 'ec2-50-17-178-87.compute-1.amazonaws.com',
+        'NAME': 'd57sm8h9714g4d', #database name on heroku?
+        'USER': 'hvhhtawbuwwqih',
+        'PASSWORD': '1191c4867abec93d93b25cc1c9cfc71553556ac81e16c851e0bd189c7aa30ea7',
+        'HOST': 'ec2-34-192-30-15.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -130,14 +142,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# django_heroku.settings(locals())
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Google OAuth2 credentials
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '899292966914-776flca5qc1ctenipa1881dn0nfne9hd.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1-SkA8UHchnfoJp-_UAu1lqq'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'index'
 
+
 try:
     import django_heroku
     django_heroku.settings(locals())
 except ImportError:
     found = False
+
+try:
+    del DATABASES['default']['OPTIONS']['sslmode']
+except:
+    pass
+

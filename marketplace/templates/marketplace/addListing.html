@@ -1,32 +1,33 @@
 {% extends 'marketplace/base.html' %}
 {% load static %}
-
 {% block content %}
-
-<form action="" method="post">
-{% csrf_token %}
-<br>
-<br>
-<br>
-    <p><b>Name</b></p>
-    <input type="text" name="item_name" id="item_name" >
-    <p><b>Price</b></p>
-    <input type="number" name="item_price" id="item_price" >
-    <br>
-    <br>
-    <p><b>Condition</b></p>
-    <select id="item_condition" name="item_condition">
-        <option value="Like New">Like New</option>
-        <option value="Good">Good</option>
-        <option value="Fair">Fair</option>
-        <option value="Poor">Poor</option>
-    </select>
-    <br>
-    <br>
-    <p><b>Description</b></p>
-    <textarea name="item_description" id="item_description" rows="8" cols="60"></textarea>
-     <br>
-     <br>
-<button type="submit" class="btn btn-primary">Submit</button>
-</form>
+{% if error_message %}
+    <p align='center' style="color:red;margin:10vh"><strong>{{ error_message }}</strong></p>
+{% else %}
+    <div class="add-Form">
+    <form action="" method="post">
+    {% csrf_token %}
+        <p><b>Name</b></p>
+        <input type="text" name="item_name" id="item_name" >
+        <p><b>Price</b></p>
+        <input type="number" name="item_price" id="item_price" >
+        <br>
+        <br>
+        <p><b>Condition</b></p>
+        <select id="item_condition" name="item_condition">
+            <option value="Like New">Like New</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+            <option value="Poor">Poor</option>
+        </select>
+        <br>
+        <br>
+        <p><b>Description</b></p>
+        <textarea name="item_description" id="item_description" rows="8" cols="60"></textarea>
+        <br>
+        <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endif %}
 {% endblock content%}
