@@ -142,7 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# django_heroku.settings(locals())
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Google OAuth2 credentials
