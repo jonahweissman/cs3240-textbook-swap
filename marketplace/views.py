@@ -3,7 +3,7 @@ from django.views import generic
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils import timezone
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.db.models import Q
 
 from .models import Item, Profile
 from django.shortcuts import get_object_or_404
@@ -62,12 +62,20 @@ class SearchViews(generic.ListView):
     context_object_name = 'search_results'
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET['query']
+        page = context['page_obj']
+        context['next_page'] = page.next_page_number() if page.has_next() else None
+        context['previous_page'] = page.previous_page_number() if page.has_previous() else None
+        return context
+
     def get_queryset(self):
-        vector = SearchVector('item_name', 'item_description')
-        query = SearchQuery(self.request.GET['query'])
-        return self.model.objects.annotate(
-            rank=SearchRank(vector, query)
-        ).filter(rank__gt=0).order_by('-rank')
+        query = self.request.GET['query']
+        return self.model.objects.all().filter(
+            Q(item_name__icontains=query)
+            | Q(item_description__icontains=query)
+        ).order_by('-item_posted_date')
 
 def Signout(request):
     logout(request)
