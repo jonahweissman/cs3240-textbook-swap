@@ -3,6 +3,8 @@ from django.views import generic
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.db.models import Q
+
 from .models import Item, Profile
 from django.shortcuts import get_object_or_404
 
@@ -41,7 +43,6 @@ class ListingViews(generic.DetailView):
 
 class MyListings(generic.ListView):
     template_name = "marketplace/myListings.html"
-    #context_object_name = 'allItems'
 
     def get(self, request):
         if not request.user.is_authenticated:
@@ -54,6 +55,27 @@ class MyListings(generic.ListView):
             return render(request, self.template_name, {
                 'allItems': allItems,
             })
+
+class SearchViews(generic.ListView):
+    model = Item
+    template_name = "marketplace/search_results.html"
+    context_object_name = 'search_results'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET['query']
+        page = context['page_obj']
+        context['next_page'] = page.next_page_number() if page.has_next() else None
+        context['previous_page'] = page.previous_page_number() if page.has_previous() else None
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET['query']
+        return self.model.objects.all().filter(
+            Q(item_name__icontains=query)
+            | Q(item_description__icontains=query)
+        ).order_by('-item_posted_date')
 
 def Signout(request):
     logout(request)
