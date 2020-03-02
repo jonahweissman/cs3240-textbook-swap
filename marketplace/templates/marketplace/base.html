@@ -38,7 +38,9 @@
           </form>
 	  {% endif %}
           {% if user.is_authenticated %}
-          <a class="nav-item nav-link"> <strong>Hello, {{user.first_name}} </strong></a>
+	  <a class="nav-item nav-link" href="{% url 'marketplace:profile' %}">
+            <strong>Hello, {{user.first_name}} </strong>
+          </a>
           <a class="nav-item nav-link btn btn-danger" href="{% url 'marketplace:Signout' %}">Signout</a>
           {% else %}
           <a class="nav-item nav-link" href="{% url "social:begin" "google-oauth2" %}">

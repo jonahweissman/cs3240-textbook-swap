@@ -3,10 +3,14 @@ from django.views import generic
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.contrib.auth.forms import UserChangeForm
+from django.urls import reverse
+from .forms import ImageForm
+from .forms import EditProfileForm
 from django.db.models import Q
-
 from .models import Item, Profile
 from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 class IndexViews(generic.ListView):
@@ -40,6 +44,34 @@ class ListingViews(generic.DetailView):
 
             return render(request, self.template_name)
 
+class ProfileViews(generic.DetailView):
+    template_name = "marketplace/profilePage.html"
+
+    def get(self, request):
+        Profiles = Profile.objects.all()
+        return render(request, self.template_name, {
+            'user': request.user,
+            'title': 'Profile'
+
+    })
+
+
+class EditProfileViews(generic.DetailView):
+    template_name = "marketplace/edit_profile.html"
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'user': request.user
+    })
+
+    def post(self, request):
+        form = ImageForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+        else:
+            form = ImageForm()
+        args = {"form": form}
+        return render(request, self.template_name, args)
 
 class MyListings(generic.ListView):
     template_name = "marketplace/myListings.html"
