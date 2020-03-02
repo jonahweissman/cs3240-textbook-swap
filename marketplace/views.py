@@ -3,12 +3,14 @@ from django.views import generic
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.utils import timezone
-from .models import Item, Profile
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
 from .forms import ImageForm
 from .forms import EditProfileForm
+from django.db.models import Q
+from .models import Item, Profile
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 class IndexViews(generic.ListView):
@@ -42,32 +44,6 @@ class ListingViews(generic.DetailView):
 
             return render(request, self.template_name)
 
-
-class MyListings(generic.ListView):
-    template_name = "marketplace/myListings.html"
-    #context_object_name = 'allItems'
-
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return render(request, self.template_name, {
-                'error_message': 'Must be Logged In',
-            })
-        else:
-            user = get_object_or_404(Profile, user=request.user)
-            allItems = Item.objects.filter(item_seller_name=user)
-            return render(request, self.template_name, {
-                'allItems': allItems,
-            })
-
-class ProfileViews(generic.DetailView):
-    template_name = "marketplace/profilePage.html"
-
-    def get(self, request):
-        # Profiles = Profile.objects.all()
-        return render(request, self.template_name, {
-            'user': request.user
-        })
-
 class ProfileViews(generic.DetailView):
     template_name = "marketplace/profilePage.html"
 
@@ -78,9 +54,6 @@ class ProfileViews(generic.DetailView):
 
     })
 
-def Signout(request):
-    logout(request)
-    return redirect('/')
 
 class EditProfileViews(generic.DetailView):
     template_name = "marketplace/edit_profile.html"
@@ -98,3 +71,43 @@ class EditProfileViews(generic.DetailView):
             form = ImageForm()
         args = {"form": form}
         return render(request, self.template_name, args)
+
+class MyListings(generic.ListView):
+    template_name = "marketplace/myListings.html"
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return render(request, self.template_name, {
+                'error_message': 'Must be Logged In',
+            })
+        else:
+            user = get_object_or_404(Profile, user=request.user)
+            allItems = Item.objects.filter(item_seller_name=user)
+            return render(request, self.template_name, {
+                'allItems': allItems,
+            })
+
+class SearchViews(generic.ListView):
+    model = Item
+    template_name = "marketplace/search_results.html"
+    context_object_name = 'search_results'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET['query']
+        page = context['page_obj']
+        context['next_page'] = page.next_page_number() if page.has_next() else None
+        context['previous_page'] = page.previous_page_number() if page.has_previous() else None
+        return context
+
+    def get_queryset(self):
+        query = self.request.GET['query']
+        return self.model.objects.all().filter(
+            Q(item_name__icontains=query)
+            | Q(item_description__icontains=query)
+        ).order_by('-item_posted_date')
+
+def Signout(request):
+    logout(request)
+    return redirect('/')
