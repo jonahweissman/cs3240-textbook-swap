@@ -1,7 +1,13 @@
 {% extends 'marketplace/base.html' %}
-
+{% load static %}
 {% block content %}
-    <div class="list-group">
+    <br>
+    <br>
+    <br>
+    {% if error_message %}
+        <p align='center' style="color:red;"><strong>{{ error_message }}</strong></p>
+    {% else %}
+        <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
         {% for items in allItems %}
             {% if forloop.counter0 >= 1 %}
@@ -12,10 +18,9 @@
                 <small>Posted by {{items.item_seller_name.user.username}}</small>
                 <small>{{items.item_posted_date}}</small>
             </div>
-            <small>${{items.item_price}}</small>
-            <small>{{items.item_condition}}</small>
             <p class="mb-1">{{items.item_description}}</p>
             </a>
         {% endfor %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock content %}
