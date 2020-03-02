@@ -9,7 +9,7 @@ import os
 class Profile(AutoOneToOneModel(User)):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    imagefile = models.ImageField(upload_to='images/', default='empty-profile.png')
+    imagefile = models.ImageField(upload_to='images/', null=True)
     phonenumber = models.CharField(max_length=12, null=True)
     major = models.CharField(max_length=50, null=True)
     year = models.CharField(max_length=4, null=True)
@@ -31,7 +31,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
     new_file = instance.imagefile
     if not old_file == new_file:
-        if os.path.isfile(old_file.path):
+        if not old_file.name == '' and os.path.isfile(old_file.path):
             os.remove(old_file.path)
 
 
