@@ -1,17 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django_auto_one_to_one import AutoOneToOneModel
 from django.dispatch import receiver
+from django.db.models.signals import post_save
 import os
-
 # Create your models here.
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    imagefile= models.ImageField(upload_to='images/')
-    phonenumber = models.CharField(max_length=12, null= True)
-    major = models.CharField(max_length= 50 ,null= True)
-    year = models.CharField(max_length= 4, null= True)
 
+class Profile(AutoOneToOneModel(User)):
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    imagefile = models.ImageField(upload_to='images/', default='empty-profile.png')
+    phonenumber = models.CharField(max_length=12, null=True)
+    major = models.CharField(max_length=50, null=True)
+    year = models.CharField(max_length=4, null=True)
 
 @receiver(post_save, sender=User)
 def ensure_profile_exists(sender, **kwargs):
@@ -32,3 +33,20 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
+
+
+class Item(models.Model):
+    item_condition_choices = (("Like New", "Like New"),("Good", "Good"), ("Fair", "Fair"), ("Poor", "Poor"))
+    item_name = models.CharField(max_length=100)
+    item_price = models.IntegerField()
+    item_condition = models.CharField(max_length=20, choices=item_condition_choices, default= "Brand New")
+    item_posted_date = models.DateField()
+    item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    item_description = models.TextField(max_length= 1000)
+
+    def __str__(self):
+        return self.item_name
+
+
+
+
