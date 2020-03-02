@@ -88,19 +88,6 @@ DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
-"""
-DATABASES = {
-    'default': { #change /.
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd57sm8h9714g4d', #database name on heroku?
-        'USER': 'hvhhtawbuwwqih',
-        'PASSWORD': '1191c4867abec93d93b25cc1c9cfc71553556ac81e16c851e0bd189c7aa30ea7',
-        'HOST': 'ec2-34-192-30-15.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
-}
-"""
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -143,15 +130,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# django_heroku.settings(locals())
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Google OAuth2 credentials
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '899292966914-776flca5qc1ctenipa1881dn0nfne9hd.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1-SkA8UHchnfoJp-_UAu1lqq'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'index'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'marketplace:index'
 
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')

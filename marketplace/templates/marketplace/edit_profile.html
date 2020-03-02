@@ -1,74 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-      <!-- Required meta tags -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends 'marketplace/base.html' %}
 
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-      <link rel="stylesheet" type="text/css" href="{% static 'marketplace/main.css' %}">
-
-<body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-steel sticky-top">
-      <div class="container">
-        <a class="navbar-brand mr-4" href="{% url 'index' %}">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggle">
-          <div class="navbar-nav mr-auto">
-        <a class="nav-item nav-link" href="{% url 'addListing' %}">Add Listing</a>
-        <a class="nav-item nav-link" href="{% url 'myListings' %}">My listings</a>
-          </div>
-          <!-- Navbar Right Side -->
-          {% if user.is_authenticated %}
-          <a class="nav-item nav-link" href="{% url 'profile' %}"> <strong>Hello, {{user.first_name}} </strong></a>
-          <a class="nav-item nav-link btn btn-danger" href="{% url 'Signout' %}">Signout</a>
-          {% else %}
-          <a class="nav-item nav-link" href="{% url "social:begin" "google-oauth2" %}">
-          <button class="btn btn-primary" type="submit">Sign In</button>
-          </a>
-          {% endif %}
-        </div>
-	  </div>
-	</nav>
-  <br>
-
-      <main role="main">
-            {% block content %}
-          <div class="container">
-    <form enctype="multipart/form-data" method="POST" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-<button type="submit" class="btn btn-success">Edit Profile</button>
-        <br>
-    </form>
-              <br>
-    <a href="http://127.0.0.1:8000/profile" type="button" class="btn btn-primary">Return to Profile</a>
-</div>{% endblock %}
-      </main>
-
-  <!-- Footer -->
-  <footer id = "footer" class="page-footer font-small blue">
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">
-    TextBookSwapUVA <br>
-    © 2020 Copyright:
-      <a href="http://textbookswapuva.herokuapp.com/"> textbookswapuva.herokuapp.com</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
-  <!-- Footer -->
-
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
-
-
+{% block content %}
+<div class="container">
+  <form enctype="multipart/form-data" method="POST" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Edit Profile</button>
+      <br>
+  </form>
+            <br>
+  <a href="{% url 'marketplace:profile' %}" type="button" class="btn btn-primary">Return to Profile</a>
+</div>
+{% endblock %}
