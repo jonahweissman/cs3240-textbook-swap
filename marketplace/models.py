@@ -7,7 +7,6 @@ import os
 # Create your models here.
 
 class Profile(AutoOneToOneModel(User)):
-    user_ratings = models.IntegerField(default= 5)
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     imagefile = models.ImageField(upload_to='images/', null=True)
