@@ -49,3 +49,18 @@ class SearchTestPagination(TestCase):
         search_results_list = list(response.context['search_results'])
         self.assertTrue(self.extra_item not in search_results_list)
 
+class HTTPResponseTestCase(TestCase):
+    def test_home_status_code(self):
+        c = Client()
+        response = c.get('/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_myLstings_status_code(self):
+        c = Client()
+        response = c.get('/myListings')
+        self.assertEquals(response.status_code, 200)
+
+    def test_addListing_status_code(self):
+        c = Client()
+        response = c.get('/addListing')
+        self.assertEquals(response.status_code, 200)
