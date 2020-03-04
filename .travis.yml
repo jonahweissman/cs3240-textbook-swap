@@ -1,11 +1,15 @@
 language: python
 python:
 - '3.8'
+services:
+- postgresql
 install:
 - pip install -r requirements-travis.txt
 - python manage.py collectstatic
+before_script:
+- psql -c 'create database travis_ci_test;' -U postgres
 env:
-- DATABASE_URL=sqlite:///db.sqlite3
+- DATABASE_URL=postgres://postgres:@localhost:5432/travis_ci_test
 script:
 - python manage.py test
 deploy:
