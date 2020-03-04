@@ -1,16 +1,17 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib.auth import logout
-from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
+from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramDistance
+from django.db.models import Q
+
 from .forms import ImageForm
 from .forms import EditProfileForm
-from django.db.models import Q
 from .models import Item, Profile
-from django.shortcuts import get_object_or_404
-
 
 # Create your views here.
 class IndexViews(generic.ListView):
@@ -91,11 +92,10 @@ class MyListings(generic.ListView):
 class SearchViews(generic.ListView):
     model = Item
     template_name = "marketplace/search_results.html"
-    context_object_name = 'search_results'
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(SearchViews, self).get_context_data(**kwargs)
         context['query'] = self.request.GET['query']
         page = context['page_obj']
         context['next_page'] = page.next_page_number() if page.has_next() else None
@@ -104,10 +104,17 @@ class SearchViews(generic.ListView):
 
     def get_queryset(self):
         query = self.request.GET['query']
-        return self.model.objects.all().filter(
-            Q(item_name__icontains=query)
-            | Q(item_description__icontains=query)
-        ).order_by('-item_posted_date')
+        field_precedence = [
+            'name_distance',
+            'description_distance',
+            '-item_posted_date',
+        ]
+        hit_filter = Q(name_distance__lte=0.8) \
+            | Q(description_distance__lte=0.7)
+        return self.model.objects.annotate(
+            name_distance=TrigramDistance('item_name', query),
+            description_distance=TrigramDistance('item_description', query)
+        ).filter(hit_filter).order_by(*field_precedence)
 
 def Signout(request):
     logout(request)
