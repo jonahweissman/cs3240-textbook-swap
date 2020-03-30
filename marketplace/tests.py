@@ -24,6 +24,9 @@ class SearchTestPagination(TestCase):
         for i in range(5)[::-1]:
             self.item_list.append(Item.objects.create(
                 item_name=f'item {i}',
+                item_author=f'author {i}',
+                item_edition=i,
+                item_course=f'CS {i}{i}{i}{i}',
                 item_price=i,
                 item_posted_date=datetime.datetime.now() + i * datetime.timedelta(i),
                 item_condition="Like New",
@@ -31,6 +34,9 @@ class SearchTestPagination(TestCase):
             ))
         self.extra_item = Item.objects.create(
             item_name='something else',
+            item_author="John",
+            item_edition=5,
+            item_course="APMA 3080",
             item_price=1,
             item_posted_date=datetime.datetime.now(),
             item_condition="Like New",
