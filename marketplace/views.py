@@ -32,14 +32,14 @@ class ListingViews(generic.DetailView):
             return render(request, self.template_name)
 
     def post(self,request):
-            item_name= request.POST["item_name"]
-            item_author= request.POST["item_edition"]
-            item_author= request.POST["item_author"]
-            item_author= request.POST["item_course"]
-            item_price= request.POST["item_price"]
-            item_description= request.POST["item_description"]
+            item_name= request.POST.get("item_name", "defaultName")
+            item_edition= request.POST.get("item_edition", -1)
+            item_author= request.POST.get("item_author", "defaultAuthor")
+            item_course= request.POST.get("item_course", "defaultCourse")
+            item_price= request.POST.get("item_price", -1 )
+            item_description= request.POST.get("item_description", "defaultDescription")
             item_posted_date = timezone.now()
-            item_condition = request.POST["item_condition"]
+            item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
 
             item_info = Item(
