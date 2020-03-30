@@ -1,21 +1,45 @@
 {% extends 'marketplace/base.html' %}
 
 {% block content %}
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <h1 class="display-4">All Listings</h1>
         {% for items in allItems %}
-            {% if forloop.counter0 >= 1 %}
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-            {% endif %}
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{items.item_name}}</h5>
-                <small>Posted by {{items.item_seller_name.user.username}}</small>
-                <small>{{items.item_posted_date}}</small>
-            </div>
-            <small>${{items.item_price}}</small>
-            <small>{{items.item_condition}}</small>
-            <p class="mb-1">{{items.item_description}}</p>
-            </a>
+                    <div class="card border-success mb-3" style="max-width: 18rem;">
+                    <div class="card-header">{{items.item_name}}</div>
+                    <div class="card-body text-success">
+                    <h5 class="card-title">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> {{items.item_description}}</p>
+                    </div>
+                    </div>
         {% endfor %}
     </div>
+
+    <div class="col-sm">
+      <h1 class="display-4">My Reviews</h1>
+                    <div class="card border-info mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Reviewer Name</div>
+                    <div class="card-body text-success">
+                    <h5 class="card-title">Rating (Out of 5)</h5>
+                    <p class="card-text">Review Description</p>
+                    </div>
+                    </div>
+    </div>
+    <div class="col-sm">
+      <h1 class="display-4">My Listings</h1>
+        {% for items in allItems %}
+            {% if items.item_seller_name.user.username == user.username %}
+                    <div class="card border-warning mb-3" style="max-width: 18rem;">
+                    <div class="card-header">{{items.item_name}}</div>
+                    <div class="card-body text-success">
+                    <h5 class="card-title">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> {{items.item_description}}</p>
+                    </div>
+                    </div>
+            {%endif%}
+        {% endfor %}
+    </div>
+  </div>
+</div>
 {% endblock content %}
