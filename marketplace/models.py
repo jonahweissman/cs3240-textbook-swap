@@ -38,6 +38,9 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 class Item(models.Model):
     item_condition_choices = (("Like New", "Like New"),("Good", "Good"), ("Fair", "Fair"), ("Poor", "Poor"))
     item_name = models.CharField(max_length=100)
+    item_edition = models.IntegerField()
+    item_author = models.CharField(max_length=100)
+    item_course = models.CharField(max_length=100)
     item_price = models.IntegerField()
     item_condition = models.CharField(max_length=20, choices=item_condition_choices, default= "Brand New")
     item_posted_date = models.DateField()

@@ -15,9 +15,12 @@
             {% endif %}
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{items.item_name}}</h5>
+                <small>{{items.item_author}}</small>
                 <small>Posted by {{items.item_seller_name.user.username}}</small>
                 <small>{{items.item_posted_date}}</small>
             </div>
+            Edition: {{items.item_edition}} <br/>
+            Course: {{items.item_course}}
             <p class="mb-1">{{items.item_description}}</p>
             </a>
         {% endfor %}
