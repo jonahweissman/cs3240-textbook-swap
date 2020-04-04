@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
-from .forms import ImageForm
+from .forms import ImageForm, ItemForm
 from .forms import EditProfileForm
 from django.db.models import Q
 from .models import Item, Profile
@@ -29,7 +29,9 @@ class ListingViews(generic.DetailView):
                 'error_message': 'Must be Logged In',
             })
         else:
-            return render(request, self.template_name)
+            form1 = ItemForm()
+            args = {'form1': form1}
+            return render(request, self.template_name, args)
 
     def post(self,request):
             item_name= request.POST.get("item_name", "defaultName")
@@ -41,6 +43,7 @@ class ListingViews(generic.DetailView):
             item_posted_date = timezone.now()
             item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
+            form1 = ItemForm(request.POST, request.FILES)
 
             item_info = Item(
                 item_name= item_name, 
@@ -55,7 +58,14 @@ class ListingViews(generic.DetailView):
 
             item_info.save()
 
-            return render(request, self.template_name)
+            form1 = ItemForm(request.POST, request.FILES)
+            if form1.is_valid():
+                form1.save()
+            else:
+                form1 = ItemForm()
+            args = {"form1": form1}
+
+            return render(request, self.template_name, args)
 
 class ProfileViews(generic.DetailView):
     template_name = "marketplace/profilePage.html"
@@ -73,8 +83,9 @@ class EditProfileViews(generic.DetailView):
     template_name = "marketplace/edit_profile.html"
 
     def get(self, request):
+        form = ImageForm()
         return render(request, self.template_name, {
-            'user': request.user
+            'user': request.user, "form": form
     })
 
     def post(self, request):

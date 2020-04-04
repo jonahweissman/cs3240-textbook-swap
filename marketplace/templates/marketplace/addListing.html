@@ -79,9 +79,8 @@
       </div>
       <div class="col" >
         <div class="add-Form">
-            <form action="" method="post">
+            <form enctype="multipart/form-data" action="" method="post">
             {% csrf_token %}
-        
                 <p><b>Title*</b></p>
                 <div class="form-group">
                     <input 
@@ -127,7 +126,7 @@
                     />
         
                   </div>
-            
+
                 <p><b>Price*</b></p>
                 <div class="input-group mb-3">
                   
@@ -148,6 +147,8 @@
                     <span class="input-group-text">.00</span>
                   </div>
                 </div>
+                <p><b>Image</b></p>
+                  {{ form1.as_p }}
                 <p><b>Condition</b></p>
                 <select id="item_condition" name="item_condition">
                     <option value="Like New">Like New</option>
@@ -161,10 +162,9 @@
                 <div class="form-group">
                     <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
                 </div>
-            
-
             <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+          </form>
+
         </div>
       </div>
     </div>
