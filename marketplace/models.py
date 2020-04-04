@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django_auto_one_to_one import AutoOneToOneModel
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+import uuid
 import os
 # Create your models here.
 
@@ -48,5 +49,16 @@ class Item(models.Model):
         return self.item_name
 
 
+class Conversation(models.Model):
+    buyer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    root_message = models.OneToOneField('Message',
+                                     unique=True,
+                                     on_delete=models.CASCADE)
 
-
+class Message(models.Model):
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    in_response_to = models.OneToOneField('self', on_delete=models.CASCADE)
