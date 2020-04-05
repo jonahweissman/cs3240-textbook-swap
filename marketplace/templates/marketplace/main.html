@@ -5,36 +5,42 @@
   <div class="row">
     <div class="col-sm">
         <h1 class="display-4">All Listings</h1>
+
         {% for items in allItems %}
-                    <div class="card border-success mb-3" style="max-width: 18rem;">
-                    <div class="card-header">{{items.item_name}}</div>
-                    <div class="card-body text-success">
-                    <h5 class="card-title">Posted by {{items.item_seller_name.user.username}}</h5>
-                    <p class="card-text">Price: ${{items.item_price}} <br> {{items.item_description}}</p>
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-secondary"><strong>{{items.item_name}}</strong></div>
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
                     </div>
                     </div>
         {% endfor %}
+
     </div>
 
+
     <div class="col-sm">
+
+
       <h1 class="display-4">My Reviews</h1>
-                    <div class="card border-info mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Reviewer Name</div>
-                    <div class="card-body text-success">
-                    <h5 class="card-title">Rating (Out of 5)</h5>
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-info"><strong>Reviewer Name</strong></div>
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Rating (Out of 5)</h5>
                     <p class="card-text">Review Description</p>
                     </div>
                     </div>
+
     </div>
     <div class="col-sm">
       <h1 class="display-4">My Listings</h1>
         {% for items in allItems %}
             {% if items.item_seller_name.user.username == user.username %}
-                    <div class="card border-warning mb-3" style="max-width: 18rem;">
-                    <div class="card-header">{{items.item_name}}</div>
-                    <div class="card-body text-success">
-                    <h5 class="card-title">Posted by {{items.item_seller_name.user.username}}</h5>
-                    <p class="card-text">Price: ${{items.item_price}} <br> {{items.item_description}}</p>
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-white bg-secondary"><strong>{{items.item_name}}</strong></div>
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
                     </div>
                     </div>
             {%endif%}
