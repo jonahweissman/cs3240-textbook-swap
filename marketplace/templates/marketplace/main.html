@@ -7,7 +7,9 @@
         <h1 class="display-4">All Listings</h1>
         {% for items in allItems %}
                     <div class="card border-success mb-3" style="max-width: 18rem;">
-                    <div class="card-header">{{items.item_name}}</div>
+		    <a href="{% url 'marketplace:item_detail' items.pk %}">
+			    <div class="card-header">{{items.item_name}}</div>
+		    </a>
                     <div class="card-body text-success">
                     <h5 class="card-title">Posted by {{items.item_seller_name.user.username}}</h5>
                     <p class="card-text">Price: ${{items.item_price}} <br> {{items.item_description}}</p>

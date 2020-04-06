@@ -1,0 +1,109 @@
+------cloudmailinboundry
+Content-Disposition: form-data; name="plain"
+
+I miss you too!
+
+On Sat, Apr 4, 2020, 12:12 AM <textbookswapuva@gmail.com> wrote:
+
+> We're just saying hi!
+>
+
+------cloudmailinboundry
+Content-Disposition: form-data; name="html"
+
+<div dir="auto">I miss you too! </div><br><div class="gmail_quote"><div dir="ltr" class="gmail_attr">On Sat, Apr 4, 2020, 12:12 AM  &lt;<a href="mailto:textbookswapuva@gmail.com">textbookswapuva@gmail.com</a>&gt; wrote:<br></div><blockquote class="gmail_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">We&#39;re just saying hi!<br>
+</blockquote></div>
+
+------cloudmailinboundry
+Content-Disposition: form-data; name="reply_plain"
+
+I miss you too!
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Received]"
+
+by mail-io1-f53.google.com with SMTP id c16so9913679iod.6        for <8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net>; Fri, 03 Apr 2020 21:12:40 -0700
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Date]"
+
+Sat, 04 Apr 2020 00:12:28 -0400
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[From]"
+
+Jonah Weissman <jw5av@virginia.edu>
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[To]"
+
+8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Message-ID]"
+
+<CANp5K1Ky0TdK6a=k5SvGYoZqKbk-vP7mwnLw1cyoFH5X1BPc2Q@mail.gmail.com>
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[In-Reply-To]"
+
+<158597353884.120224.3164752858948887450@portal02.cs.Virginia.EDU>
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[References]"
+
+<158597353884.120224.3164752858948887450@portal02.cs.Virginia.EDU>
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Subject]"
+
+Re: A message from Textbook Swap
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[Mime-Version]"
+
+1.0
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[DKIM-Signature]"
+
+v=1; a=rsa-sha256; c=relaxed/relaxed;        d=virginia-edu.20150623.gappssmtp.com; s=20150623;        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;        bh=6EN6BkeF8SvMpOvZm9YlwQdBUDoYHkmv6iKqSnh2GtI=;        b=1FOIR/TmZWyA8QueTZjt1VRqOel6bEAGu5+ZvBE92ml0XdPDZNZVJuaDU3GTrXFgyD         bYm+HZt8bbI6/nisb5Ue7w09sFrqbJYlZ8eGaA91sjxOc+bpePT5JqtOAaTD8VAfjGgP         drGAUjiuz3gpT+YJw4S5Gs9EZA2qGHsdQvprwTAFPmI7XOfIDDQyO17GJ9oqq/u9mJaO         Nde6xigwUm55KmKwchC5lOQaWKsgCpKeLd6MI4rRX5/UrN3A2AleLWBJQqtZwnixPEpG         Y+yDc9OsNFLgkNfzax+wueurwEAHT0kF+tVg8udOEfmyRokSDctoinKbUh4rZOs5Bndv         a/aA==
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Google-DKIM-Signature]"
+
+v=1; a=rsa-sha256; c=relaxed/relaxed;        d=1e100.net; s=20161025;        h=x-gm-message-state:mime-version:references:in-reply-to:from:date         :message-id:subject:to;        bh=6EN6BkeF8SvMpOvZm9YlwQdBUDoYHkmv6iKqSnh2GtI=;        b=B0w8Tli9zqQU6EYjJfi/WoGyeQBsHR2gaDJ+wbzrn4TPJqwggkGZC+nLGuxc/cZq0p         bxHzfZiOvv5cJ6MYBucRdxIO2nmVmC+0w+EpVw6ubdoWcBnpPcBOF83z4i0n35StQDwp         S+//RJOyuwUCh/Kj9sBA0lA89sMsYPIeGjY4z/I9yuQqkhMSI4KYE5AIv3+5MheQrVqt         UOCdZpBjDNQfJ4OkIsgXMtweMphOtsTOCj+aX28oUgGo1c/HPc900SOflz4co5Wbtuqq         Tyh51YxP/ajpsgX5TRdAe8DR/8MkIJmdFvDfDOwsuFrTmDTIb6P1wc9f1ED2Tfq2iXMk         UVxw==
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Gm-Message-State]"
+
+AGi0PuaY/bg2l1dn6CZaHnTN/6g5EOLkGEYTSz81AQkpYJBinA5DNx9T	OYBarfqWFJTAVv4sLY0pX70O5O875ZrvOVVCuZTqtZ6W
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Google-Smtp-Source]"
+
+APiQypLINodwqdO7+4wKilrdkhtCsnFFiR6Tc3jwP0O4l4U1EAnCzqkmFg8JgN1wzoR2NFTDztwjhMJ9Xr8n8VF/QhY=
+------cloudmailinboundry
+Content-Disposition: form-data; name="headers[X-Received]"
+
+by 2002:a5d:944c:: with SMTP id x12mr10678318ior.100.1585973559938; Fri, 03 Apr 2020 21:12:39 -0700 (PDT)
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[to]"
+
+8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[recipients][0]"
+
+8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[from]"
+
+jw5av@virginia.edu
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[helo_domain]"
+
+mail-io1-f53.google.com
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[remote_ip]"
+
+209.85.166.53
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[tls]"
+
+true
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[spf][result]"
+
+none
+------cloudmailinboundry
+Content-Disposition: form-data; name="envelope[spf][domain]"
+
+virginia.edu
+------cloudmailinboundry--

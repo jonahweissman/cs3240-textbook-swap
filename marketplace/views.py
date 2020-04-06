@@ -117,6 +117,9 @@ class SearchViews(generic.ListView):
             | Q(item_description__icontains=query)
         ).order_by(order_by)
 
+class ItemDetail(generic.DetailView):
+    model=Item
+
 def Signout(request):
     logout(request)
     return redirect('/')

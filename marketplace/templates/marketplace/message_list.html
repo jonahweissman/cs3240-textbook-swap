@@ -1,0 +1,9 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+{% for message in object_list %}
+<p>
+<b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
+</p>
+{% endfor %}
+{% endblock %}
