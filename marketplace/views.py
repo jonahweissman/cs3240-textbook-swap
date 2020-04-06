@@ -51,8 +51,6 @@ class ProfileViews(generic.DetailView):
         Profiles = Profile.objects.all()
         return render(request, self.template_name, {
             'user': request.user,
-            'title': 'Profile'
-
     })
 
 

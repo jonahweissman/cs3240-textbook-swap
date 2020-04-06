@@ -11,11 +11,7 @@
 
       <link rel="stylesheet" type="text/css" href="{% static 'marketplace/main.css' %}">
 
-      {% if title %}
-          <title>Textbook Swap - {{ title }}</title>
-      {% else %}
-          <title> Textbook Swap</title>
-      {% endif %}
+      <title>{% block title %}Textbook Swap{% endblock %}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-steel sticky-top">
