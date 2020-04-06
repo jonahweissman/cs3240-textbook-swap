@@ -91,21 +91,29 @@ class SearchViews(generic.ListView):
     template_name = "marketplace/search_results.html"
     context_object_name = 'search_results'
     paginate_by = 10
+    sort_mapping = {
+        'date': '-item_posted_date',
+        'price': 'item_price',
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET['query']
+        context['sort'] = self.request.GET.get('sort', 'date')
         page = context['page_obj']
         context['next_page'] = page.next_page_number() if page.has_next() else None
         context['previous_page'] = page.previous_page_number() if page.has_previous() else None
+        context['sort_options'] = self.sort_mapping.keys()
         return context
 
     def get_queryset(self):
         query = self.request.GET['query']
+        sort_by = self.request.GET.get('sort', 'date')
+        order_by = self.sort_mapping[sort_by]
         return self.model.objects.all().filter(
             Q(item_name__icontains=query)
             | Q(item_description__icontains=query)
-        ).order_by('-item_posted_date')
+        ).order_by(order_by)
 
 def Signout(request):
     logout(request)

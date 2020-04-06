@@ -21,11 +21,11 @@ class SearchTestPagination(TestCase):
         client = Client()
         self.item_list = []
         bob = User.objects.create().profile
-        for i in range(5):
+        for i in range(5)[::-1]:
             self.item_list.append(Item.objects.create(
                 item_name=f'item {i}',
                 item_price=i,
-                item_posted_date=datetime.datetime.now() - i * datetime.timedelta(i),
+                item_posted_date=datetime.datetime.now() + i * datetime.timedelta(i),
                 item_condition="Like New",
                 item_seller_name=bob,
             ))
@@ -48,6 +48,13 @@ class SearchTestPagination(TestCase):
         response = self.client.get('/search?query=item')
         search_results_list = list(response.context['search_results'])
         self.assertTrue(self.extra_item not in search_results_list)
+
+    def test_sort_by_price(self):
+        response = self.client.get('/search?query=item&sort=price')
+        search_results_list = list(response.context['search_results'])
+        self.assertListEqual(
+            self.item_list,
+            search_results_list[::-1])
 
 class HTTPResponseTestCase(TestCase):
     def test_home_status_code(self):
