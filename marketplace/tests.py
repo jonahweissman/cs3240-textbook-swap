@@ -1,6 +1,6 @@
 import datetime
 import requests
-from django.test import TestCase, LiveServerTestCase
+from django.test import TestCase
 from django.test import Client
 from django.db import models
 from django.utils import timezone
@@ -74,10 +74,10 @@ class HTTPResponseTestCase(TestCase):
         response = c.get('/addListing')
         self.assertEquals(response.status_code, 200)
 
-class BuyerSellerCommunicationTests(LiveServerTestCase):
+class BuyerSellerCommunicationTests(TestCase):
     def setUp(self):
-        client = Client()
-        bob = User.objects.create(email='jw5av@virginia.edu').profile
+        self.client = Client()
+        bob = User.objects.create(email='bob@virginia.edu').profile
         self.uuid = 'd3c3cf74-d3c1-4420-8f9a-86d8670bb51d'
         item = Item.objects.create(
             item_name='something else',
@@ -97,24 +97,30 @@ class BuyerSellerCommunicationTests(LiveServerTestCase):
 
     def test_receive_email(self):
         headers = {
-            'host': '91ccc0b3.proxy.webhookapp.com',
-            'connection': 'close',
-            'user-agent': 'CloudMailin Server',
-            'content-type': 'multipart/form-data; boundary=----cloudmailinboundry',
-            'authorization': 'Basic Y2xvdWRtYWlsaW46UWd2OWh5RFRCdllkUVdZMlluUm5lOXQ1WTg1ZTV5dHFKcFN5amc=',
-            'accept-encoding': 'gzip, compressed',
-            'x-request-id': 'c60c1c78-2cbd-40e9-88a7-04114d6b9aa4',
-            'x-forwarded-for': '3.93.0.165',
-            'x-forwarded-proto': 'https',
-            'x-forwarded-port': '443',
-            'via': '1.1 vegur',
-            'connect-time': '8',
-            'x-request-start': '1585952006574',
-            'total-route-time': '0',
-            'content-length': '4080',
+            'HTTP_HOST': '91ccc0b3.proxy.webhookapp.com',
+            'HTTP_CONNECTION': 'close',
+            'HTTP_USER_AGENT': 'CloudMailin Server',
+            'HTTP_CONTENT_TYPE': 'multipart/form_data; boundary=____cloudmailinboundry',
+            'HTTP_AUTHORIZATION': 'Basic Y2xvdWRtYWlsaW46UWd2OWh5RFRCdllkUVdZMlluUm5lOXQ1WTg1ZTV5dHFKcFN5amc=',
+            'HTTP_ACCEPT_ENCODING': 'gzip, compressed',
+            'HTTP_X_REQUEST_ID': 'c60c1c78_2cbd_40e9_88a7_04114d6b9aa4',
+            'HTTP_X_FORWARDED_FOR': '3.93.0.165',
+            'HTTP_X_FORWARDED_PROTO': 'https',
+            'HTTP_X_FORWARDED_PORT': '443',
+            'HTTP_VIA': '1.1 vegur',
+            'HTTP_CONNECT_TIME': '8',
+            'HTTP_X_REQUEST_START': '1585952006574',
+            'HTTP_TOTAL_ROUTE_TIME': '0',
+            'HTTP_CONTENT_LENGTH': '4080',
         }
-        data = open('marketplace/fixtures/email.raw', 'rb').read()
-        response = requests.post(f'{self.live_server_url}/email/receive', headers=headers, data=data)
+        multipart_formdata = {
+            'headers[To]': '8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net',
+            'headers[From]': 'bob bobson <bob@virginia.edu>',
+            'reply_plain': 'hi this is my reply',
+        }
+        response = self.client.post('/email/receive',
+                                    multipart_formdata,
+                                    **headers)
 
         self.assertEquals(response.status_code, 200)
         self.assertIsNotNone(models.Message.objects.get(pk=self.uuid))
