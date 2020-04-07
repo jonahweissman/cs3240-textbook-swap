@@ -47,7 +47,6 @@ class ListingViews(generic.DetailView):
             item_posted_date = timezone.now()
             item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
-            form1 = ItemForm(request.POST, request.FILES)
 
              #check if author and title has been set, if not fill using information returned by API
             info_from_api = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn).json()
@@ -58,27 +57,24 @@ class ListingViews(generic.DetailView):
 
             if item_description == "" and item_isbn != "defaultName":
                 item_description= info_from_api['items'][0]['volumeInfo']['description']
-                print(info_from_api['items'][0]['volumeInfo']['description'])
-
-            item_info = Item(
-                item_name= item_name, 
-                item_isbn = item_isbn,
-                item_edition = item_edition, 
-                item_author = item_author, 
-                item_course = item_course,
-                item_description= item_description, 
-                item_condition = item_condition, 
-                item_posted_date = item_posted_date, 
-                item_seller_name = item_seller_name, 
-                item_price= item_price)
-
-            item_info.save()
 
             form1 = ItemForm(request.POST, request.FILES)
-            #if form1.is_valid():
-            #    form1.save()
-            #else:
-            form1 = ItemForm()
+            if form1.is_valid():
+                item = form1.save(commit = "false")
+                item.item_isbn = item_isbn
+                item.item_name = item_name
+                item.item_edition = item_edition
+                item.item_author = item_author
+                item.item_course= item_course
+                item.item_price= item_price
+                item.item_description = item_description
+                item.item_posted_date = item_posted_date
+                item.item_condition = item_condition, 
+                item.item_seller_name = item_seller_name
+                item.save()
+                form1.save()
+            else:
+                form1 = ItemForm()
             args = {"form1": form1}
 
             return render(request, self.template_name, args)

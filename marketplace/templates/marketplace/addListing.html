@@ -127,7 +127,7 @@
       </div>
       <div class="modal-body">
         <div class="add-Form">
-          <form action="" method="post">
+          <form enctype="multipart/form-data" form action="" method="post">
           {% csrf_token %}
       
           <label for="item_isbn"><b>ISBN*</b></label>
@@ -136,12 +136,23 @@
                       type="text"
                       name="item_isbn" 
                       id="item_isbn" 
-                      placeholder="978-3-16-148410-0"
+                      placeholder="978-1337627900"
                       class="form-control"
                       required
                   />
               </div>
       
+              <label for="item_edition"><b>Edition*</b></label>
+              <div class="form-group">
+                  <input 
+                      type="number"
+                      name="item_edition" 
+                      id="item_edition" 
+                      placeholder="5"
+                      class="form-control"
+                  />
+              </div>
+
               <label for="item_course"><b>Course</b></label>
               <div class="form-group">
                   <input
@@ -221,7 +232,7 @@ margin-bottom: 10px;">
         <br/>
            <h5>----OR----</h5>
 
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Title/Author/Edition</button>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Title/Author</button>
       </div>
   </div>
 </div>
