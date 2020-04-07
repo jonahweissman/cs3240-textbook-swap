@@ -97,21 +97,7 @@ class BuyerSellerCommunicationTests(TestCase):
 
     def test_receive_email(self):
         headers = {
-            'HTTP_HOST': '91ccc0b3.proxy.webhookapp.com',
-            'HTTP_CONNECTION': 'close',
-            'HTTP_USER_AGENT': 'CloudMailin Server',
-            'HTTP_CONTENT_TYPE': 'multipart/form_data; boundary=____cloudmailinboundry',
             'HTTP_AUTHORIZATION': 'Basic Y2xvdWRtYWlsaW46UWd2OWh5RFRCdllkUVdZMlluUm5lOXQ1WTg1ZTV5dHFKcFN5amc=',
-            'HTTP_ACCEPT_ENCODING': 'gzip, compressed',
-            'HTTP_X_REQUEST_ID': 'c60c1c78_2cbd_40e9_88a7_04114d6b9aa4',
-            'HTTP_X_FORWARDED_FOR': '3.93.0.165',
-            'HTTP_X_FORWARDED_PROTO': 'https',
-            'HTTP_X_FORWARDED_PORT': '443',
-            'HTTP_VIA': '1.1 vegur',
-            'HTTP_CONNECT_TIME': '8',
-            'HTTP_X_REQUEST_START': '1585952006574',
-            'HTTP_TOTAL_ROUTE_TIME': '0',
-            'HTTP_CONTENT_LENGTH': '4080',
         }
         multipart_formdata = {
             'headers[To]': '8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net',
