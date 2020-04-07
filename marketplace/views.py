@@ -10,6 +10,7 @@ from .forms import EditProfileForm
 from django.db.models import Q
 from .models import Item, Profile
 from django.shortcuts import get_object_or_404
+import requests
 
 
 # Create your views here.
@@ -36,6 +37,8 @@ class ListingViews(generic.DetailView):
     def post(self,request):
             item_name= request.POST.get("item_name", "defaultName")
             item_isbn= request.POST.get("item_isbn", "defaultName")
+            #remove '-' if it contains
+            item_isbn = item_isbn.replace('-', '')
             item_edition= request.POST.get("item_edition", -1)
             item_author= request.POST.get("item_author", "defaultAuthor")
             item_course= request.POST.get("item_course", "defaultCourse")
@@ -45,6 +48,17 @@ class ListingViews(generic.DetailView):
             item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
             form1 = ItemForm(request.POST, request.FILES)
+
+             #check if author and title has been set, if not fill using information returned by API
+            info_from_api = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn).json()
+            if item_name == "defaultName":
+                item_name= info_from_api['items'][0]['volumeInfo']['title']
+            if item_author == "defaultAuthor":
+                item_author_name = info_from_api['items'][0]['volumeInfo']['authors'][0]
+
+            if item_description == "":
+                item_description= info_from_api['items'][0]['volumeInfo']['description']
+                print(info_from_api['items'][0]['volumeInfo']['description'])
 
             item_info = Item(
                 item_name= item_name, 
