@@ -77,3 +77,25 @@ class HTTPResponseTestCase(TestCase):
         c = Client()
         response = c.get('/addListing')
         self.assertEquals(response.status_code, 200)
+
+
+class AddListingTests(TestCase):
+    def setUp(self):
+        some_guy = User.objects.create()
+        self.client = Client()
+        self.client.force_login(some_guy)
+
+
+    def testAddNoISBN(self):
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_name': 'A textbook',
+                'item_author': 'some guy',
+                'item_edition': '1',
+                'item_course': 'ABC 1010',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+                'item_description': 'just a book'
+            })
+        self.assertEquals(len(Item.objects.all()), 1)
