@@ -35,6 +35,7 @@ class ListingViews(generic.DetailView):
 
     def post(self,request):
             item_name= request.POST.get("item_name", "defaultName")
+            item_isbn= request.POST.get("item_isbn", "defaultName")
             item_edition= request.POST.get("item_edition", -1)
             item_author= request.POST.get("item_author", "defaultAuthor")
             item_course= request.POST.get("item_course", "defaultCourse")
@@ -47,6 +48,7 @@ class ListingViews(generic.DetailView):
 
             item_info = Item(
                 item_name= item_name, 
+                item_isbn = item_isbn,
                 item_edition = item_edition, 
                 item_author = item_author, 
                 item_course = item_course,

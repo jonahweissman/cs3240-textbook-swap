@@ -5,6 +5,8 @@
     <p align='center' style="color:red;margin:10vh"><strong>{{ error_message }}</strong></p>
 {% else %}
 
+
+
 <div class="container">
     <div class="row">
       <div class="col" style="border-right: 1px solid #333;">
@@ -12,12 +14,12 @@
             <form action="" method="post">
             {% csrf_token %}
         
-                <p><b>ISBN*</b></p>
+            <label for="item_isbn">Author</label>
                 <div class="form-group">
                     <input 
                         type="text"
-                        name="item_name" 
-                        id="item_name" 
+                        name="item_isbn" 
+                        id="item_isbn" 
                         placeholder="978-3-16-148410-0"
                         class="form-control"
                         required
