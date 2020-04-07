@@ -99,3 +99,6 @@ class AddListingTests(TestCase):
                 'item_description': 'just a book'
             })
         self.assertEquals(len(Item.objects.all()), 1)
+
+    def testEmptyDatabase(self):
+        self.assertEquals(len(Item.objects.all()), 0)

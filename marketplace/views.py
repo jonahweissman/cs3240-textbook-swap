@@ -75,10 +75,10 @@ class ListingViews(generic.DetailView):
             item_info.save()
 
             form1 = ItemForm(request.POST, request.FILES)
-            if form1.is_valid():
-                form1.save()
-            else:
-                form1 = ItemForm()
+            #if form1.is_valid():
+            #    form1.save()
+            #else:
+            form1 = ItemForm()
             args = {"form1": form1}
 
             return render(request, self.template_name, args)
