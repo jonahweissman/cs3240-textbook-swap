@@ -5,176 +5,225 @@
     <p align='center' style="color:red;margin:10vh"><strong>{{ error_message }}</strong></p>
 {% else %}
 
+<!-- Modal for TITLE/AUTHOR/EDITION-->
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
-
-<div class="container">
-    <div class="row">
-      <div class="col" style="border-right: 1px solid #333;">
-        <div class="add-Form">
-            <form action="" method="post">
-            {% csrf_token %}
-        
-            <label for="item_isbn">Author</label>
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="item_isbn" 
-                        id="item_isbn" 
-                        placeholder="978-3-16-148410-0"
-                        class="form-control"
-                        required
-                    />
-                </div>
-        
-                <p><b>Course</b></p>
-                <div class="form-group">
-                    <input
-                      type="text"
-                      id="item_course"
-                      class="form-control"
-                      placeholder="CS 1110"
-                      pattern="[A-Z]{2,4} \d{4}"
-                      title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
-                      
-                    />
-        
-                  </div>
-
-                <p><b>Price*</b></p>
-                <div class="input-group mb-3">
-                  
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                  </div>
-                  <input 
-                    type="number" 
-                    class="form-control"
-                    name ="item_price" 
-                    id = "item_price" 
-                    aria-label="Amount (to the nearest dollar)" 
-                    placeholder="35"
-                    min="0"
-                    required
-                    >
-                  <div class="input-group-append">
-                    <span class="input-group-text">.00</span>
-                  </div>
-                </div>
-
-                <p><b>Condition</b></p>
-                <select id="item_condition" name="item_condition">
-                    <option value="Like New">Like New</option>
-                    <option value="Good">Good</option>
-                    <option value="Fair">Fair</option>
-                    <option value="Poor">Poor</option>
-                </select>
-                <br>
-                <br>
-                <p><b>Description</b></p>
-                <div class="form-group">
-                    <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
-                </div>
-                
-            <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-      <div class="col" >
+      <div class="modal-body">
         <div class="add-Form">
-            <form enctype="multipart/form-data" action="" method="post">
-            {% csrf_token %}
-                <p><b>Title*</b></p>
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="item_name" 
-                        id="item_name" 
-                        placeholder="Theory of Calculus"
-                        class="form-control"
-                    />
-                </div>
-        
-                <p><b>Edition*</b></p>
-                <div class="form-group">
-                    <input 
-                        type="number"
-                        name="item_edition" 
-                        id="item_edition" 
-                        placeholder="5"
-                        class="form-control"
-                    />
-                </div>
-        
-                <p><b>Author</b></p>
-                <div class="form-group">
-                    <input 
-                        type="text"
-                        name="item_author" 
-                        id="item_author" 
-                        placeholder="John Stewart"
-                        class="form-control"
-                    />
-                </div>
-        
-                <p><b>Course</b></p>
-                <div class="form-group">
-                    <input
-                      type="text"
-                      id="item_course"
-                      class="form-control"
-                      placeholder="CS 1110"
-                      pattern="[A-Z]{2,4} \d{4}"
-                      title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
-                    />
-        
-                  </div>
-
-                <p><b>Price*</b></p>
-                <div class="input-group mb-3">
-                  
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                  </div>
+          <form enctype="multipart/form-data" action="" method="post">
+          {% csrf_token %}
+          <label for="item_name"><b>Title*</b></label>
+              <div class="form-group">
                   <input 
-                    type="number" 
-                    class="form-control"
-                    name ="item_price" 
-                    id = "item_price" 
-                    aria-label="Amount (to the nearest dollar)" 
-                    placeholder="35"
-                    min="0"
-                    required
-                    >
-                  <div class="input-group-append">
-                    <span class="input-group-text">.00</span>
-                  </div>
-                </div>
-                <p><b>Image</b></p>
-                  {{ form1.as_p }}
-                <p><b>Condition</b></p>
-                <select id="item_condition" name="item_condition">
-                    <option value="Like New">Like New</option>
-                    <option value="Good">Good</option>
-                    <option value="Fair">Fair</option>
-                    <option value="Poor">Poor</option>
-                </select>
-                <br>
-                <br>
-                <p><b>Description</b></p>
-                <div class="form-group">
-                    <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
-                </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+                      type="text"
+                      name="item_name" 
+                      id="item_name" 
+                      placeholder="Theory of Calculus"
+                      class="form-control"
+                  />
+              </div>
 
-        </div>
+              <label for="item_author"><b>Author</b></label>
+              <div class="form-group">
+                  <input 
+                      type="text"
+                      name="item_author" 
+                      id="item_author" 
+                      placeholder="John Stewart"
+                      class="form-control"
+                  />
+              </div>
+      
+              <label for="item_edition"><b>Edition*</b></label>
+              <div class="form-group">
+                  <input 
+                      type="number"
+                      name="item_edition" 
+                      id="item_edition" 
+                      placeholder="5"
+                      class="form-control"
+                  />
+              </div>
+    
+      
+              <label for="item_course"><b>Course</b></label>
+              <div class="form-group">
+                  <input
+                    type="text"
+                    id="item_course"
+                    class="form-control"
+                    placeholder="CS 1110"
+                    pattern="[A-Z]{2,4} \d{4}"
+                    title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
+                  />
+      
+                </div>
+
+                <label for="item_price"><b>Price*</b></label>
+              <div class="input-group mb-3">
+                
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
+                </div>
+                <input 
+                  type="number" 
+                  class="form-control"
+                  name ="item_price" 
+                  id = "item_price" 
+                  aria-label="Amount (to the nearest dollar)" 
+                  placeholder="35"
+                  min="0"
+                  required
+                  >
+                <div class="input-group-append">
+                  <span class="input-group-text">.00</span>
+                </div>
+              </div>
+
+              <p><b>Image</b></p>
+                {{ form1.as_p }}
+                <label for="item_condition"><b>Condition</b></label>
+              <select id="item_condition" name="item_condition">
+                  <option value="Like New">Like New</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+                  <option value="Poor">Poor</option>
+              </select>
+              <br>
+              <br>
+              <label for="item_description"><b>Description</b></label>
+              <div class="form-group">
+                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
+              </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
+
+  </div>
 </div>
 
 
 
+<!-- Modal for ISBN-->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="add-Form">
+          <form action="" method="post">
+          {% csrf_token %}
+      
+          <label for="item_isbn"><b>ISBN*</b></label>
+              <div class="form-group">
+                  <input 
+                      type="text"
+                      name="item_isbn" 
+                      id="item_isbn" 
+                      placeholder="978-3-16-148410-0"
+                      class="form-control"
+                      required
+                  />
+              </div>
+      
+              <label for="item_course"><b>Course</b></label>
+              <div class="form-group">
+                  <input
+                    type="text"
+                    id="item_course"
+                    class="form-control"
+                    placeholder="CS 1110"
+                    pattern="[A-Z]{2,4} \d{4}"
+                    title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
+                    
+                  />
+      
+                </div>
+
+              <label for="item_price"><b>Price*</b></label>
+              <div class="input-group mb-3">
+                
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
+                </div>
+                <input 
+                  type="number" 
+                  class="form-control"
+                  name ="item_price" 
+                  id = "item_price" 
+                  aria-label="Amount (to the nearest dollar)" 
+                  placeholder="35"
+                  min="0"
+                  required
+                  >
+                <div class="input-group-append">
+                  <span class="input-group-text">.00</span>
+                </div>
+              </div>
+
+              <p><b>Image</b></p>
+              {{ form1.as_p }}
+              <label for="item_condition"><b>Condition</b></label>
+              <select id="item_condition" name="item_condition">
+                  <option value="Like New">Like New</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+                  <option value="Poor">Poor</option>
+              </select>
+              <br>
+              <br>
+              <label for="item_description"><b>Description</b></label>
+              <div class="form-group">
+                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
+              </div>
+              
+          <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<br/>
+<br/>
+<div class="card" style="        
+margin: 0 auto;
+float: none;
+margin-bottom: 10px;">
+  <div class="card-body"style="        
+  margin: 0 auto;
+  float: none;
+  margin-bottom: 10px;">
+    <h5 class="card-title">How would you to enter your textbook information?</h5>
+      <div class="container" >
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" >ISBN</button>
+        <br/>
+           <h5>----OR----</h5>
+
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">Title/Author/Edition</button>
+      </div>
+  </div>
+</div>
 
 
     
