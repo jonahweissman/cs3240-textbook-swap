@@ -7,9 +7,9 @@
 	{% else %}
 	<h3> {{ conversation.item.item_seller_name.user.first_name}}</h3>
 	{% endif %}
-	{% for message in conversation.message_set.values %}
+	{% for message in conversation.message_set.all %}
 	<p>
-	<b>{{ message.author.user.email }}</b>: {{ message.text|escape }}
+	<b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
 	</p>
 	{% endfor %}
 {% endfor %}

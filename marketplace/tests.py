@@ -177,4 +177,7 @@ class FullConversation(TestCase):
                                     HTTP_AUTHORIZATION='Basic Y2xvdWRtYWlsaW46UWd2OWh5RFRCdllkUVdZMlluUm5lOXQ1WTg1ZTV5dHFKcFN5amc=')
         # this will always be true because we notify on every message
         self.assertEquals(len(models.Message.objects.all()), len(mail.outbox))
+        self.assertEquals(len(models.Message.objects.all()), 2)
         self.assertEquals(mail.outbox[1].to[0], self.joe.user.email)
+        response_message = models.Message.objects.all()[1]
+        self.assertEquals(response_message.in_response_to.id, intro_message.id)
