@@ -15,6 +15,9 @@ class Profile(AutoOneToOneModel(User)):
     major = models.CharField(max_length=50, null=True)
     year = models.CharField(max_length=4, null=True)
 
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
+
 @receiver(post_save, sender=User)
 def ensure_profile_exists(sender, **kwargs):
     if kwargs.get('created', False):
@@ -52,6 +55,9 @@ class Item(models.Model):
 class Conversation(models.Model):
     buyer = models.ForeignKey(Profile, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.buyer} interested in {self.item}'
 
 class Message(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)

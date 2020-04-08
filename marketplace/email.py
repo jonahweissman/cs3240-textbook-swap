@@ -101,10 +101,8 @@ class ConversationView(generic.ListView):
     model=models.Conversation
 
     def get_queryset(self):
-        return map(lambda c: models.Message.objects.filter(Q(conversation=c)),
-                   self.model.objects.filter(
-                        Q(item__pk=self.kwargs['pk'])
-                        & (Q(buyer=self.request.user.profile) 
-                          | Q(item__item_seller_name=self.request.user.profile))
-                   )
-                  )
+        return self.model.objects.filter(
+            Q(item__pk=self.kwargs['pk'])
+            & (Q(buyer=self.request.user.profile) 
+              | Q(item__item_seller_name=self.request.user.profile))
+           )
