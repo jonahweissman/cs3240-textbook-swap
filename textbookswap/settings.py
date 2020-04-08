@@ -29,6 +29,7 @@ EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
 CLOUDMAILIN_CREDENTIALS='cloudmailin:Qgv9hyDTBvYdQWY2YnRne9t5Y85e5ytqJpSyjg'
+CLOUDMAILIN_ID='8becc54808c611029b55'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
