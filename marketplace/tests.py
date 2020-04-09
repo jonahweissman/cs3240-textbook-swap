@@ -121,5 +121,5 @@ class AddListingTests(TestCase):
         self.assertEquals(len(Item.objects.all()), 1)
         self.assertEquals(Item.objects.get().getISBN(),'9780672327988' )
         self.assertEquals(Item.objects.get().getTitle(),'Software Testing' )
-        self.assertEquals(Item.objects.get().getAuthor(), "Patton, Ron")
+        self.assertEquals(Item.objects.get().getAuthor(), 'Ron Patton')
 
