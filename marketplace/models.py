@@ -52,6 +52,15 @@ class Item(models.Model):
     def __str__(self):
         return self.item_name
 
+    def getTitle(self):
+        return self.item_name
+
+    def getAuthor(self):
+        return self.item_author
+
+    def getISBN(self):
+        return self.item_isbn
+
 
 
 

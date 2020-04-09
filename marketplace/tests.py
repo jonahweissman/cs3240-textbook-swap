@@ -102,3 +102,24 @@ class AddListingTests(TestCase):
 
     def testEmptyDatabase(self):
         self.assertEquals(len(Item.objects.all()), 0)
+
+    def testAddWithISBN(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0672327988',
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+                'item_description': 'Great for learning how to test'
+            })
+        
+        #https://isbnsearch.org/isbn/9780672327988
+
+        #print("\n item_author: " + Item.objects.get().getAuthor())
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(Item.objects.get().getISBN(),'9780672327988' )
+        self.assertEquals(Item.objects.get().getTitle(),'Software Testing' )
+        self.assertEquals(Item.objects.get().getAuthor(), "Patton, Ron")
+
