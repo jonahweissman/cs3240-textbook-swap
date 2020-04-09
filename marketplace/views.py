@@ -43,7 +43,7 @@ class ListingViews(generic.DetailView):
             item_author= request.POST.get("item_author", "defaultAuthor")
             item_course= request.POST.get("item_course", "defaultCourse")
             item_price= request.POST.get("item_price", -1 )
-            item_description= request.POST.get("item_description", "defaultDescription")
+            item_description= request.POST.get("item_description", "No description entered")
             item_posted_date = timezone.now()
             item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
@@ -55,7 +55,7 @@ class ListingViews(generic.DetailView):
             if item_author == "defaultAuthor":
                 item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
 
-            if item_description == "" and item_isbn != "defaultName":
+            if item_description == "No description entered" and item_isbn != "defaultName":
                 item_description= info_from_api['items'][0]['volumeInfo']['description']
 
             form1 = ItemForm(request.POST, request.FILES)
