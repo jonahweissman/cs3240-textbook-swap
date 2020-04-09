@@ -121,7 +121,7 @@ class ItemDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['user_has_buyer_convsersation'] = context['object'].conversation_set.all().filter(buyer=self.request.user.profile).exists()
+            context['user_has_buyer_conversation'] = context['object'].conversation_set.all().filter(buyer=self.request.user.profile).exists()
         return context
 
 
