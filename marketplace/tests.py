@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 
 from marketplace.models import Item, User
+import requests
 
 
 # Create your tests here.
@@ -77,6 +78,22 @@ class HTTPResponseTestCase(TestCase):
         c = Client()
         response = c.get('/addListing')
         self.assertEquals(response.status_code, 200)
+
+
+
+class TestApi(TestCase):
+    def test_API_status_code(self):
+        item_isbn = "9781985086593"
+        apiResponse = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn)
+        self.assertEquals(apiResponse.status_code, 200)
+    
+    def testResults(self):
+        item_isbn = "9781985086593"
+        info_from_api = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn).json()
+        item_name= info_from_api['items'][0]['volumeInfo']['title']
+        item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
+        self.assertEquals(item_name, "Operating Systems")
+        self.assertEquals(item_author, "Remzi H. Arpaci-Dusseau")
 
 
 class AddListingTests(TestCase):
