@@ -53,7 +53,7 @@ class ListingViews(generic.DetailView):
             if item_name == "defaultName":
                 item_name= info_from_api['items'][0]['volumeInfo']['title']
             if item_author == "defaultAuthor":
-                item_author_name = info_from_api['items'][0]['volumeInfo']['authors'][0]
+                item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
 
             if item_description == "" and item_isbn != "defaultName":
                 item_description= info_from_api['items'][0]['volumeInfo']['description']
