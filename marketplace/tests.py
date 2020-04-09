@@ -108,6 +108,7 @@ class AddListingTests(TestCase):
         with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
             response = self.client.post('/addListing', {
                 'item_isbn': '978-0672327988',
+                'item_edition': 2,
                 'item_course': 'CS 9999',
                 'item_image': f,
                 'item_price': 10,
@@ -118,8 +119,83 @@ class AddListingTests(TestCase):
         #https://isbnsearch.org/isbn/9780672327988
 
         #print("\n item_author: " + Item.objects.get().getAuthor())
+        #print("\n condition: " + Item.objects.get().getCondition()[2:6] +"\n")
+        
         self.assertEquals(len(Item.objects.all()), 1)
         self.assertEquals(Item.objects.get().getISBN(),'9780672327988' )
+        self.assertEquals(Item.objects.get().getEdition(), 2 )
+        self.assertEquals(Item.objects.get().getCourse(),'CS 9999' )
+        self.assertEquals(Item.objects.get().getPrice(), 10 )
+        self.assertEquals(Item.objects.get().getCondition()[2:6], "Good" )
         self.assertEquals(Item.objects.get().getTitle(),'Software Testing' )
         self.assertEquals(Item.objects.get().getAuthor(), 'Ron Patton')
+        self.assertEquals(Item.objects.get().getDescription(), 'Great for learning how to test')
 
+    def testAddWithTitleAuthorEdition(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_name': 'Software Testing',
+                'item_author': 'Ron Patton',
+                'item_edition': 2,
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+                'item_description': 'Great for learning how to test'
+            })
+        
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(Item.objects.get().getISBN(),'defaultName' )
+        self.assertEquals(Item.objects.get().getEdition(), 2 )
+        self.assertEquals(Item.objects.get().getCourse(),'CS 9999' )
+        self.assertEquals(Item.objects.get().getPrice(), 10 )
+        self.assertEquals(Item.objects.get().getCondition()[2:6], "Good" )
+        self.assertEquals(Item.objects.get().getTitle(),'Software Testing' )
+        self.assertEquals(Item.objects.get().getAuthor(), 'Ron Patton')
+        self.assertEquals(Item.objects.get().getDescription(), 'Great for learning how to test')
+
+    def testAddWithISBN_NoDesc(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0672327988',
+                'item_edition': 2,
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good'
+            })
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(Item.objects.get().getISBN(),'9780672327988' )
+        self.assertEquals(Item.objects.get().getEdition(), 2 )
+        self.assertEquals(Item.objects.get().getCourse(),'CS 9999' )
+        self.assertEquals(Item.objects.get().getPrice(), 10 )
+        self.assertEquals(Item.objects.get().getCondition()[2:6], "Good" )
+        self.assertEquals(Item.objects.get().getTitle(),'Software Testing' )
+        self.assertEquals(Item.objects.get().getAuthor(), 'Ron Patton')
+        description = Item.objects.get().getDescription()
+        self.assertTrue("Software Testing, Second Edition provides practical insight" in description)
+
+    def testAddWithTitleAuthorEdition(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_name': 'Software Testing',
+                'item_author': 'Ron Patton',
+                'item_edition': 2,
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+            })
+                
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(Item.objects.get().getISBN(),'defaultName' )
+        self.assertEquals(Item.objects.get().getEdition(), 2 )
+        self.assertEquals(Item.objects.get().getCourse(),'CS 9999' )
+        self.assertEquals(Item.objects.get().getPrice(), 10 )
+        self.assertEquals(Item.objects.get().getCondition()[2:6], "Good" )
+        self.assertEquals(Item.objects.get().getTitle(),'Software Testing' )
+        self.assertEquals(Item.objects.get().getAuthor(), 'Ron Patton')
+        self.assertEquals(Item.objects.get().getDescription(), 'No description entered')
