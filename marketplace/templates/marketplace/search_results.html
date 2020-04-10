@@ -3,11 +3,6 @@
 {% block content %}
 <h1>Search results for "{{ query }}"</h1>
 <div class="list-group">
-	<style>
-    body{
-    background-image:url('https://www.designbolts.com/wp-content/uploads/2012/11/Black-wood-photoshop-pattern-for-website-background.jpg')
-    }
-    </style>
 	{% for item in page_obj.object_list %}
 	<div class="card text-center">
 		<a href="{% url 'marketplace:item_detail' item.pk %}">
