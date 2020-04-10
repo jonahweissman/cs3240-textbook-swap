@@ -51,31 +51,3 @@ class Item(models.Model):
 
     def __str__(self):
         return self.item_name
-
-    def getTitle(self):
-        return self.item_name
-
-    def getISBN(self):
-        return self.item_isbn
-
-    def getEdition(self):
-        return self.item_edition
-
-    def getAuthor(self):
-        return self.item_author
-
-    def getCourse(self):
-        return self.item_course
-
-    def getPrice(self):
-            return self.item_price
-
-    def getCondition(self):
-        return self.item_condition
-
-    def getDescription(self):
-        return self.item_description
-
-
-
-
