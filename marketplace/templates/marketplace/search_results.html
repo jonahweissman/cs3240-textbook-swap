@@ -3,16 +3,22 @@
 {% block content %}
 <h1>Search results for "{{ query }}"</h1>
 <div class="list-group">
+	<style>
+    body{
+    background-image:url('https://www.designbolts.com/wp-content/uploads/2012/11/Black-wood-photoshop-pattern-for-website-background.jpg')
+    }
+    </style>
 	{% for item in page_obj.object_list %}
 	<div class="card text-center">
-  <div class="card-header bg-secondary text-white"> <strong> Title: {{item.item_name}} </strong> </div>
-  <div class="card-body bg-secondary text-white">
+		<a href="{% url 'marketplace:item_detail' item.pk %}">
+  <div class="card-header bg-success text-white"> <strong> Title: {{item.item_name}} </strong> </div>
+  <div class="card-body bg-dark text-white">
     <h5 class="card-title text-white">Price: ${{item.item_price}}</h5>
-    <p class="card-text">Info: {{item.item_description}}</p>
-    <a href="#" class="btn btn-info">Go to Listing</a>
-  </div>
-  <div class="card-footer text-white bg-secondary">
+    <p class="card-text text-white">Info: {{item.item_description}}</p>
     Posted by {{item.item_seller_name.user.username}}
+  </div>
+  <div class="card-footer text-white bg-dark">
+	  <a href="{% url 'marketplace:item_detail' item.pk %}" class="btn btn-outline-success">Go to Listing</a>
   </div>
 </div>
 	<br>

@@ -37,7 +37,7 @@
 	  <a class="nav-item nav-link" href="{% url 'marketplace:profile' %}" style="color:white;">
             Hello, {{user.first_name}}
           </a>
-          <a class="nav-item nav-link btn btn-info" href="{% url 'marketplace:Signout' %}">Signout</a>
+          <a class="nav-item nav-link btn btn-outline-light" href="{% url 'marketplace:Signout' %}">Signout</a>
           {% else %}
           <a class="nav-item nav-link" href="{% url "social:begin" "google-oauth2" %}">
           <button class="btn btn-primary" type="submit">Sign In</button>

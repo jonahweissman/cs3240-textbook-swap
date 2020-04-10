@@ -8,11 +8,16 @@
         <p align='center' style="color:red;"><strong>{{ error_message }}</strong></p>
     {% else %}
 <div class="card-columns">
+    <style>
+    body{
+    background-image:url('https://www.designbolts.com/wp-content/uploads/2012/11/Black-wood-photoshop-pattern-for-website-background.jpg')
+    }
+    </style>
 
         {% for items in allItems %}
             {% if items.item_seller_name.user.username == user.username %}
-                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-secondary"><strong>{{items.item_name}}</strong></div>
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-white bg-success"><strong>{{items.item_name}}</strong></div>
                     <div class="card-body text-white">
                     <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
                     <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>

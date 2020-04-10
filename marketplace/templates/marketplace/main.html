@@ -1,15 +1,39 @@
 {% extends 'marketplace/base.html' %}
 
 {% block content %}
+
 <div class="container">
+    <style>
+    body{
+    background-image:url('https://www.designbolts.com/wp-content/uploads/2012/11/Black-wood-photoshop-pattern-for-website-background.jpg')
+    }
+    </style>
+    <br>
+    <br>
+    <div class="card bg-dark text-white">
+  <img class="card-img" src="https://s26162.pcdn.co/wp-content/uploads/2017/12/covercover.jpg" alt="Card image">
+  <div class="card-img-overlay">
+      <br>
+      <br>
+      <br>
+    <h1 class="display-3 text-center font-weight-bold bg-dark text-white">Welcome to Textbook Swap</h1>
+      <br>
+      <br>
+      <br>
+      <br>
+    <h2 class="card-text bg-dark text-white text-center"><i>The marketplace to buy/sell textbooks with fellow Wahoos!</i></h2>
+
+
+  </div>
+</div>
   <div class="row">
     <div class="col-sm">
-        <h1 class="display-4">All Listings</h1>
+        <h1 class="display-4 text-white">All Listings</h1>
 
         {% for items in allItems %}
 		    <a href="{% url 'marketplace:item_detail' items.pk %}">
-                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                        <div class="card-header bg-secondary"><strong>{{items.item_name}}</strong></div>
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-success"><strong>{{items.item_name}}</strong></div>
                     <div class="card-body text-white">
                     <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
                     <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
@@ -22,11 +46,9 @@
 
 
     <div class="col-sm">
-
-
-      <h1 class="display-4">My Reviews</h1>
-                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                        <div class="card-header bg-info"><strong>Reviewer Name</strong></div>
+      <h1 class="display-4 text-white">My Reviews</h1>
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-success"><strong>Reviewer Name</strong></div>
                     <div class="card-body text-white">
                     <h5 class="card-title text-white">Rating (Out of 5)</h5>
                     <p class="card-text">Review Description</p>
@@ -35,11 +57,11 @@
 
     </div>
     <div class="col-sm">
-      <h1 class="display-4">My Listings</h1>
+      <h1 class="display-4 text-white">My Listings</h1>
         {% for items in allItems %}
             {% if items.item_seller_name.user.username == user.username %}
-                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-secondary"><strong>{{items.item_name}}</strong></div>
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-white bg-success"><strong>{{items.item_name}}</strong></div>
                     <div class="card-body text-white">
                     <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
                     <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
