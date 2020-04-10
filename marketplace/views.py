@@ -79,7 +79,7 @@ class ListingViews(generic.DetailView):
                 item.item_price= item_price
                 item.item_description = item_description
                 item.item_posted_date = item_posted_date
-                item.item_condition = item_condition, 
+                item.item_condition = item_condition 
                 item.item_seller_name = item_seller_name
                 item.save()
                 messages.success(request, 'Your form was submitted successfully!')
