@@ -1,26 +1,80 @@
 {% extends 'marketplace/base.html' %}
 
 {% block content %}
-    <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+
+<div class="container">
+    <br>
+    <br>
+    <div class="card bg-dark text-white">
+  <img class="card-img" src="https://s26162.pcdn.co/wp-content/uploads/2017/12/covercover.jpg" alt="Card image">
+  <div class="card-img-overlay">
+      <br>
+      <br>
+      <br>
+    <h1 class="display-3 text-center font-weight-bold bg-dark text-white">Welcome to Textbook Swap</h1>
+      <br>
+      <br>
+      <br>
+      <br>
+    <h2 class="card-text bg-dark text-white text-center"><i>The marketplace to buy/sell textbooks with fellow Wahoos!</i></h2>
+
+
+  </div>
+</div>
+  <div class="row">
+    <div class="col-sm">
+        <h1 class="display-4 text-white">All Listings</h1>
+
         {% for items in allItems %}
-            {% if forloop.counter0 >= 1 %}
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-            {% endif %}
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{items.item_name}}</h5>
-                {% if items.item_image  %}
-				    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
-			    {% else %}
-				    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
-			    {% endif %}
-                <small>Posted by {{items.item_seller_name.user.username}}</small>
-                <small>{{items.item_posted_date}}</small>
-            </div>
-            <small>${{items.item_price}}</small>
-            <small>{{items.item_condition}}</small>
-            <p class="mb-1">{{items.item_description}}</p>
-            </a>
+		    <a href="{% url 'marketplace:item_detail' items.pk %}">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-success"><strong>{{items.item_name}}</strong></div>
+                    {% if items.item_image  %}
+			    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% else %}
+			    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% endif %}
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
+                    </div>
+                    </div>
+		    </a>
+        {% endfor %}
+
+    </div>
+
+
+    <div class="col-sm">
+      <h1 class="display-4 text-white">My Reviews</h1>
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-success"><strong>Reviewer Name</strong></div>
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Rating (Out of 5)</h5>
+                    <p class="card-text">Review Description</p>
+                    </div>
+                    </div>
+
+    </div>
+    <div class="col-sm">
+      <h1 class="display-4 text-white">My Listings</h1>
+        {% for items in allItems %}
+            {% if items.item_seller_name.user.username == user.username %}
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-white bg-success"><strong>{{items.item_name}}</strong></div>
+                    {% if items.item_image  %}
+			    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% else %}
+			    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% endif %}
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
+                    </div>
+                    </div>
+            {%endif%}
         {% endfor %}
     </div>
+  </div>
+</div>
 {% endblock content %}

@@ -2,39 +2,33 @@
 
 {% block content %}
 <h1>Search results for "{{ query }}"</h1>
-<div>
-	sort by:
-	<form action="{% url 'marketplace:search' %}" class="btn-group btn-group-toggle" data-toggle="buttons">
-		<input type="hidden" name="query" value="{{ query }}">
-		{% for option in sort_options %}
-			<label class="btn btn-secondary {% if sort == option %}active{% endif %}">
-				<input type="radio" name="sort" value="{{ option }}" onchange='this.form.submit();' {% if sort == option %}checked{% endif %}>
-					{{ option }}
-			</label>
-		{% endfor %}
-	</div>
-</div>
 <div class="list-group">
 	{% for item in page_obj.object_list %}
-	<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-		<div class="d-flex w-100 justify-content-between">
-			<h5 class="mb-1">{{ item.item_name }}</h5>
-			<small>${{ item.item_price|floatformat:2 }}</small>
-			{% if item.item_image  %}
-				<img src="{{ item.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
-			{% else %}
-				<img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
-			{% endif %}
-		</div>
-		<p class="mb-1">{{ item.item_description }}</p>
-		<small>{{ item.item_condition }}</small>
-	</a>
+	<div class="card text-center">
+		<a href="{% url 'marketplace:item_detail' item.pk %}">
+  <div class="card-header bg-success text-white"> <strong> Title: {{item.item_name}} </strong> </div>
+  <div class="card-body bg-dark text-white">
+    {% if item.item_image  %}
+    	<img src="{{ item.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+    {% else %}
+    	<img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+    {% endif %}
+    <h5 class="card-title text-white">Price: ${{item.item_price}}</h5>
+    <p class="card-text text-white">Info: {{item.item_description}}</p>
+    Posted by {{item.item_seller_name.user.username}}
+  </div>
+  <div class="card-footer text-white bg-dark">
+	  <a href="{% url 'marketplace:item_detail' item.pk %}" class="btn btn-outline-success">Go to Listing</a>
+  </div>
+</div>
+	<br>
 	{% empty %}
 	<div class="jumbotron">
 		<div class="display-4">No results found</div>
 	</div>
 	{% endfor %}
 </div>
+
 <div class="row justify-content-around">
 {% if page_obj.has_previous %}
 <div class="col-4">
