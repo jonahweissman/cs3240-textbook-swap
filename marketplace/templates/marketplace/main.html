@@ -9,6 +9,11 @@
             {% endif %}
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{items.item_name}}</h5>
+                {% if items.item_image  %}
+				    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+			    {% else %}
+				    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+			    {% endif %}
                 <small>Posted by {{items.item_seller_name.user.username}}</small>
                 <small>{{items.item_posted_date}}</small>
             </div>
