@@ -10,6 +10,7 @@ from .forms import EditProfileForm
 from django.db.models import Q
 from .models import Item, Profile
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 import requests
 
 
@@ -48,17 +49,26 @@ class ListingViews(generic.DetailView):
             item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
 
+            form1 = ItemForm(request.POST, request.FILES)
+            args = {"form1": form1}
+
              #check if author and title has been set, if not fill using information returned by API
             info_from_api = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn).json()
+            
             if item_name == "defaultName":
-                item_name= info_from_api['items'][0]['volumeInfo']['title']
+                try:
+                    item_name= info_from_api['items'][0]['volumeInfo']['title']
+                except:
+                    messages.error(request, 'ISBN not found! Please submit using Title/Author')
+                    return render(request, self.template_name,args)
+
             if item_author == "defaultAuthor":
                 item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
 
             if item_description == "No description entered" and item_isbn != "defaultName":
                 item_description= info_from_api['items'][0]['volumeInfo']['description']
 
-            form1 = ItemForm(request.POST, request.FILES)
+            
             if form1.is_valid():
                 item = form1.save(commit = "false")
                 item.item_isbn = item_isbn
@@ -72,10 +82,9 @@ class ListingViews(generic.DetailView):
                 item.item_condition = item_condition, 
                 item.item_seller_name = item_seller_name
                 item.save()
-                form1.save()
+                messages.success(request, 'Your form was submitted successfully!')
             else:
-                form1 = ItemForm()
-            args = {"form1": form1}
+                messages.success(request, 'ERROR! Your form could not be submitted.')
 
             return render(request, self.template_name, args)
 
