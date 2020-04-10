@@ -7,6 +7,7 @@
         <h1 class="display-4">All Listings</h1>
 
         {% for items in allItems %}
+		    <a href="{% url 'marketplace:item_detail' items.pk %}">
                     <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
                         <div class="card-header bg-secondary"><strong>{{items.item_name}}</strong></div>
                     <div class="card-body text-white">
@@ -14,6 +15,7 @@
                     <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
                     </div>
                     </div>
+		    </a>
         {% endfor %}
 
     </div>

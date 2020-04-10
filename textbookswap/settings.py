@@ -21,6 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Load environment variables from .env file
 dotenv.load_dotenv()
 
+EMAIL_HOST_USER='textbookswapuva@gmail.com'
+EMAIL_HOST_PASSWORD='5v%tUjbn3YU8DMKx2tA$92gUF&USK5YWU$AAdH'
+DEFAULT_FROM_EMAIL=EMAIL_HOST_USER
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+CLOUDMAILIN_CREDENTIALS='cloudmailin:Qgv9hyDTBvYdQWY2YnRne9t5Y85e5ytqJpSyjg'
+CLOUDMAILIN_ID='8becc54808c611029b55'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/

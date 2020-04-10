@@ -115,6 +115,22 @@ class SearchViews(generic.ListView):
             | Q(item_description__icontains=query)
         ).order_by(order_by)
 
+class ItemDetail(generic.DetailView):
+    model=Item
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['user_has_buyer_conversation'] = context['object'].conversation_set.all().filter(buyer=self.request.user.profile).exists()
+        return context
+
+
 def Signout(request):
     logout(request)
     return redirect('/')
+
+def login(request):
+    login_page = reverse('social:begin', args=['google-oauth2'])
+    if 'next' in request.GET:
+        login_page += '?next=' + request.GET['next']
+    return redirect(login_page)

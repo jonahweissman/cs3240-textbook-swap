@@ -1,0 +1,16 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+{% for conversation in object_list %}
+	{% if request.user == conversation.item.item_seller_name.user %}
+	<h3> {{ conversation.buyer.user.first_name}}</h3>
+	{% else %}
+	<h3> {{ conversation.item.item_seller_name.user.first_name}}</h3>
+	{% endif %}
+	{% for message in conversation.message_set.all %}
+	<p>
+	<b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
+	</p>
+	{% endfor %}
+{% endfor %}
+{% endblock %}
