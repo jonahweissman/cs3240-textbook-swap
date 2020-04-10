@@ -139,12 +139,13 @@ class SearchViews(generic.ListView):
     template_name = "marketplace/search_results.html"
     paginate_by = 10
     sort_mapping = {
+        'relevance': 'name_distance',
         'date': '-item_posted_date',
         'price': 'item_price',
     }
 
     def get_context_data(self, **kwargs):
-        context = super(SearchViews, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET['query']
         context['sort'] = self.request.GET.get('sort', 'date')
         page = context['page_obj']

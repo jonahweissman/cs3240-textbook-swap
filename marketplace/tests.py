@@ -25,7 +25,7 @@ class BasicSearchTest(TestCase):
         client = Client()
         self.item_list = []
         bob = User.objects.create().profile
-        for i in range(5)[::-1]:
+        for i in range(5):
             self.item_list.insert(0, Item.objects.create(
                 item_name=f'item {i}',
                 item_author=f'author {i}',
