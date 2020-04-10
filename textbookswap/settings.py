@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import dj_database_url
 import dotenv
-
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Load environment variables from .env file
 dotenv.load_dotenv()
 
+EMAIL_HOST_USER='textbookswapuva@gmail.com'
+EMAIL_HOST_PASSWORD='5v%tUjbn3YU8DMKx2tA$92gUF&USK5YWU$AAdH'
+DEFAULT_FROM_EMAIL=EMAIL_HOST_USER
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+CLOUDMAILIN_CREDENTIALS='cloudmailin:Qgv9hyDTBvYdQWY2YnRne9t5Y85e5ytqJpSyjg'
+CLOUDMAILIN_ID='8becc54808c611029b55'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -150,6 +159,11 @@ OPTIONS = {
     'django.contrib.messages.context_processors.messages',
 	'django.template.context_processors.media',
     ],
+}
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
 }
 
 try:

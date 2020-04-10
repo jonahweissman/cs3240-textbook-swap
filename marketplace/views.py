@@ -8,10 +8,14 @@ from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
 from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramDistance
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+import requests
 
-from .forms import ImageForm
+from .forms import ImageForm, ItemForm
 from .forms import EditProfileForm
 from .models import Item, Profile
+
 
 # Create your views here.
 class IndexViews(generic.ListView):
@@ -30,20 +34,62 @@ class ListingViews(generic.DetailView):
                 'error_message': 'Must be Logged In',
             })
         else:
-            return render(request, self.template_name)
+            form1 = ItemForm()
+            args = {'form1': form1}
+            return render(request, self.template_name, args)
 
     def post(self,request):
-            item_name= request.POST["item_name"]
-            item_price= request.POST["item_price"]
-            item_description= request.POST["item_description"]
+            item_name= request.POST.get("item_name", "defaultName")
+            item_isbn= request.POST.get("item_isbn", "defaultName")
+            #remove '-' if it contains
+            item_isbn = item_isbn.replace('-', '')
+            item_edition= request.POST.get("item_edition", -1)
+            item_author= request.POST.get("item_author", "defaultAuthor")
+            item_course= request.POST.get("item_course", "defaultCourse")
+            item_price= request.POST.get("item_price", -1 )
+            item_description= request.POST.get("item_description", "No description entered")
             item_posted_date = timezone.now()
-            item_condition = request.POST["item_condition"]
+            item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
 
-            item_info = Item(item_name= item_name, item_description= item_description, item_condition = item_condition, item_posted_date = item_posted_date, item_seller_name = item_seller_name, item_price= item_price)
-            item_info.save()
+            form1 = ItemForm(request.POST, request.FILES)
+            args = {"form1": form1}
 
-            return render(request, self.template_name)
+             #check if author and title has been set, if not fill using information returned by API
+            info_from_api = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn).json()
+            
+            if item_name == "defaultName":
+                try:
+                    item_name= info_from_api['items'][0]['volumeInfo']['title']
+                except:
+                    messages.error(request, 'ISBN not found! Please submit using Title/Author')
+                    return render(request, self.template_name,args)
+
+            if item_author == "defaultAuthor":
+                item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
+
+            if item_description == "No description entered" and item_isbn != "defaultName":
+                item_description= info_from_api['items'][0]['volumeInfo']['description']
+
+            
+            if form1.is_valid():
+                item = form1.save(commit = "false")
+                item.item_isbn = item_isbn
+                item.item_name = item_name
+                item.item_edition = item_edition
+                item.item_author = item_author
+                item.item_course= item_course
+                item.item_price= item_price
+                item.item_description = item_description
+                item.item_posted_date = item_posted_date
+                item.item_condition = item_condition 
+                item.item_seller_name = item_seller_name
+                item.save()
+                messages.success(request, 'Your form was submitted successfully!')
+            else:
+                messages.success(request, 'ERROR! Your form could not be submitted.')
+
+            return render(request, self.template_name, args)
 
 class ProfileViews(generic.DetailView):
     template_name = "marketplace/profilePage.html"
@@ -52,8 +98,6 @@ class ProfileViews(generic.DetailView):
         Profiles = Profile.objects.all()
         return render(request, self.template_name, {
             'user': request.user,
-            'title': 'Profile'
-
     })
 
 
@@ -61,8 +105,9 @@ class EditProfileViews(generic.DetailView):
     template_name = "marketplace/edit_profile.html"
 
     def get(self, request):
+        form = ImageForm()
         return render(request, self.template_name, {
-            'user': request.user
+            'user': request.user, "form": form
     })
 
     def post(self, request):
@@ -93,29 +138,49 @@ class SearchViews(generic.ListView):
     model = Item
     template_name = "marketplace/search_results.html"
     paginate_by = 10
+    sort_mapping = {
+        'date': '-item_posted_date',
+        'price': 'item_price',
+    }
 
     def get_context_data(self, **kwargs):
         context = super(SearchViews, self).get_context_data(**kwargs)
         context['query'] = self.request.GET['query']
+        context['sort'] = self.request.GET.get('sort', 'date')
         page = context['page_obj']
         context['next_page'] = page.next_page_number() if page.has_next() else None
         context['previous_page'] = page.previous_page_number() if page.has_previous() else None
+        context['sort_options'] = self.sort_mapping.keys()
         return context
 
     def get_queryset(self):
         query = self.request.GET['query']
-        field_precedence = [
-            'name_distance',
-            'description_distance',
-            '-item_posted_date',
-        ]
+        sort_by = self.request.GET.get('sort', 'date')
+        order_by = self.sort_mapping[sort_by]
         hit_filter = Q(name_distance__lte=0.8) \
             | Q(description_distance__lte=0.7)
         return self.model.objects.annotate(
             name_distance=TrigramDistance('item_name', query),
             description_distance=TrigramDistance('item_description', query)
-        ).filter(hit_filter).order_by(*field_precedence)
+        ).filter(hit_filter).order_by(order_by)
+
+
+class ItemDetail(generic.DetailView):
+    model=Item
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['user_has_buyer_conversation'] = context['object'].conversation_set.all().filter(buyer=self.request.user.profile).exists()
+        return context
+
 
 def Signout(request):
     logout(request)
     return redirect('/')
+
+def login(request):
+    login_page = reverse('social:begin', args=['google-oauth2'])
+    if 'next' in request.GET:
+        login_page += '?next=' + request.GET['next']
+    return redirect(login_page)
