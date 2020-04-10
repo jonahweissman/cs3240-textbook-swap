@@ -13,8 +13,16 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                         <div class="card-header text-white bg-success"><strong>{{items.item_name}}</strong></div>
                     <div class="card-body text-white">
+                    {% if items.item_image  %}
+                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+                    {% else %}
+                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+                    {% endif %}
+                    <small>{{items.item_author}}</small>
                     <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
                     <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
+                    Edition: {{items.item_edition}} <br/>
+                    Course: {{items.item_course}}
                     </div>
                     </div>
             {%endif%}

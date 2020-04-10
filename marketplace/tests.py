@@ -5,6 +5,7 @@ from django.test import Client
 from django.db import models
 from django.utils import timezone
 from django.core import mail
+import requests
 
 from marketplace.models import Item, User
 from marketplace import models
@@ -27,6 +28,9 @@ class SearchTestPagination(TestCase):
         for i in range(5)[::-1]:
             self.item_list.append(Item.objects.create(
                 item_name=f'item {i}',
+                item_author=f'author {i}',
+                item_edition=i,
+                item_course=f'CS {i}{i}{i}{i}',
                 item_price=i,
                 item_posted_date=datetime.datetime.now() + i * datetime.timedelta(i),
                 item_condition="Like New",
@@ -34,6 +38,9 @@ class SearchTestPagination(TestCase):
             ))
         self.extra_item = Item.objects.create(
             item_name='something else',
+            item_author="John",
+            item_edition=5,
+            item_course="APMA 3080",
             item_price=1,
             item_posted_date=datetime.datetime.now(),
             item_condition="Like New",
@@ -74,6 +81,142 @@ class HTTPResponseTestCase(TestCase):
         c = Client()
         response = c.get('/addListing')
         self.assertEquals(response.status_code, 200)
+
+
+class TestApi(TestCase):
+    def test_API_status_code(self):
+        item_isbn = "9781985086593"
+        apiResponse = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn)
+        self.assertEquals(apiResponse.status_code, 200)
+    
+    def testResults(self):
+        item_isbn = "9781985086593"
+        info_from_api = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn).json()
+        item_name= info_from_api['items'][0]['volumeInfo']['title']
+        item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
+        self.assertEquals(item_name, "Operating Systems")
+        self.assertEquals(item_author, "Remzi H. Arpaci-Dusseau")
+
+
+class AddListingTests(TestCase):
+    def setUp(self):
+        some_guy = User.objects.create()
+        self.client = Client()
+        self.client.force_login(some_guy)
+
+
+    def testAddNoISBN(self):
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_name': 'A textbook',
+                'item_author': 'some guy',
+                'item_edition': '1',
+                'item_course': 'ABC 1010',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+                'item_description': 'just a book'
+            })
+        self.assertEquals(len(Item.objects.all()), 1)
+
+    def testEmptyDatabase(self):
+        self.assertEquals(len(Item.objects.all()), 0)
+
+    def testAddWithISBN(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0672327988',
+                'item_edition': 2,
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+                'item_description': 'Great for learning how to test'
+            })
+        
+        self.assertEquals(len(Item.objects.all()), 1)
+        item = Item.objects.all()[0]
+        self.assertEquals(item.item_isbn,'9780672327988' )
+        self.assertEquals(item.item_edition, 2 )
+        self.assertEquals(item.item_course,'CS 9999' )
+        self.assertEquals(item.item_price, 10 )
+        self.assertEquals(item.item_condition, "Good" )
+        self.assertEquals(item.item_name,'Software Testing' )
+        self.assertEquals(item.item_author, 'Ron Patton')
+        self.assertEquals(item.item_description, 'Great for learning how to test')
+
+    def testAddWithTitleAuthorEdition(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_name': 'Software Testing',
+                'item_author': 'Ron Patton',
+                'item_edition': 2,
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+                'item_description': 'Great for learning how to test'
+            })
+        
+        self.assertEquals(len(Item.objects.all()), 1)
+        item = Item.objects.all()[0]
+        self.assertEquals(item.item_isbn,'defaultName' )
+        self.assertEquals(item.item_edition, 2 )
+        self.assertEquals(item.item_course,'CS 9999' )
+        self.assertEquals(item.item_price, 10 )
+        self.assertEquals(item.item_condition, "Good" )
+        self.assertEquals(item.item_name,'Software Testing' )
+        self.assertEquals(item.item_author, 'Ron Patton')
+        self.assertEquals(item.item_description, 'Great for learning how to test')
+
+    def testAddWithISBN_NoDesc(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0672327988',
+                'item_edition': 2,
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good'
+            })
+        self.assertEquals(len(Item.objects.all()), 1)
+        item = Item.objects.all()[0]
+        self.assertEquals(item.item_isbn,'9780672327988' )
+        self.assertEquals(item.item_edition, 2 )
+        self.assertEquals(item.item_course,'CS 9999' )
+        self.assertEquals(item.item_price, 10 )
+        self.assertEquals(item.item_condition, "Good" )
+        self.assertEquals(item.item_name,'Software Testing' )
+        self.assertEquals(item.item_author, 'Ron Patton')
+        description = item.item_description
+        self.assertTrue("Software Testing, Second Edition provides practical insight" in description)
+
+    def testAddWithTitleAuthorEdition(self):
+
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_name': 'Software Testing',
+                'item_author': 'Ron Patton',
+                'item_edition': 2,
+                'item_course': 'CS 9999',
+                'item_image': f,
+                'item_price': 10,
+                'item_condition': 'Good',
+            })
+                
+        self.assertEquals(len(Item.objects.all()), 1)
+        item = Item.objects.all()[0]
+        self.assertEquals(item.item_isbn,'defaultName' )
+        self.assertEquals(item.item_edition, 2 )
+        self.assertEquals(item.item_course,'CS 9999' )
+        self.assertEquals(item.item_price, 10 )
+        self.assertEquals(item.item_condition, "Good" )
+        self.assertEquals(item.item_name,'Software Testing' )
+        self.assertEquals(item.item_author, 'Ron Patton')
+        self.assertEquals(item.item_description, 'No description entered')
 
 class BuyerSellerCommunicationTests(TestCase):
     def setUp(self):

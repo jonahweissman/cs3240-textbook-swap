@@ -5,11 +5,13 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
-from .forms import ImageForm
+from .forms import ImageForm, ItemForm
 from .forms import EditProfileForm
 from django.db.models import Q
 from .models import Item, Profile
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+import requests
 
 
 # Create your views here.
@@ -29,20 +31,62 @@ class ListingViews(generic.DetailView):
                 'error_message': 'Must be Logged In',
             })
         else:
-            return render(request, self.template_name)
+            form1 = ItemForm()
+            args = {'form1': form1}
+            return render(request, self.template_name, args)
 
     def post(self,request):
-            item_name= request.POST["item_name"]
-            item_price= request.POST["item_price"]
-            item_description= request.POST["item_description"]
+            item_name= request.POST.get("item_name", "defaultName")
+            item_isbn= request.POST.get("item_isbn", "defaultName")
+            #remove '-' if it contains
+            item_isbn = item_isbn.replace('-', '')
+            item_edition= request.POST.get("item_edition", -1)
+            item_author= request.POST.get("item_author", "defaultAuthor")
+            item_course= request.POST.get("item_course", "defaultCourse")
+            item_price= request.POST.get("item_price", -1 )
+            item_description= request.POST.get("item_description", "No description entered")
             item_posted_date = timezone.now()
-            item_condition = request.POST["item_condition"]
+            item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
 
-            item_info = Item(item_name= item_name, item_description= item_description, item_condition = item_condition, item_posted_date = item_posted_date, item_seller_name = item_seller_name, item_price= item_price)
-            item_info.save()
+            form1 = ItemForm(request.POST, request.FILES)
+            args = {"form1": form1}
 
-            return render(request, self.template_name)
+             #check if author and title has been set, if not fill using information returned by API
+            info_from_api = requests.get('https://www.googleapis.com/books/v1/volumes?q=isbn:'+ item_isbn).json()
+            
+            if item_name == "defaultName":
+                try:
+                    item_name= info_from_api['items'][0]['volumeInfo']['title']
+                except:
+                    messages.error(request, 'ISBN not found! Please submit using Title/Author')
+                    return render(request, self.template_name,args)
+
+            if item_author == "defaultAuthor":
+                item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
+
+            if item_description == "No description entered" and item_isbn != "defaultName":
+                item_description= info_from_api['items'][0]['volumeInfo']['description']
+
+            
+            if form1.is_valid():
+                item = form1.save(commit = "false")
+                item.item_isbn = item_isbn
+                item.item_name = item_name
+                item.item_edition = item_edition
+                item.item_author = item_author
+                item.item_course= item_course
+                item.item_price= item_price
+                item.item_description = item_description
+                item.item_posted_date = item_posted_date
+                item.item_condition = item_condition 
+                item.item_seller_name = item_seller_name
+                item.save()
+                messages.success(request, 'Your form was submitted successfully!')
+            else:
+                messages.success(request, 'ERROR! Your form could not be submitted.')
+
+            return render(request, self.template_name, args)
 
 class ProfileViews(generic.DetailView):
     template_name = "marketplace/profilePage.html"
@@ -58,8 +102,9 @@ class EditProfileViews(generic.DetailView):
     template_name = "marketplace/edit_profile.html"
 
     def get(self, request):
+        form = ImageForm()
         return render(request, self.template_name, {
-            'user': request.user
+            'user': request.user, "form": form
     })
 
     def post(self, request):

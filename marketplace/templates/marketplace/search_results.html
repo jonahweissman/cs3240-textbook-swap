@@ -8,6 +8,11 @@
 		<a href="{% url 'marketplace:item_detail' item.pk %}">
   <div class="card-header bg-success text-white"> <strong> Title: {{item.item_name}} </strong> </div>
   <div class="card-body bg-dark text-white">
+    {% if item.item_image  %}
+    	<img src="{{ item.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+    {% else %}
+    	<img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+    {% endif %}
     <h5 class="card-title text-white">Price: ${{item.item_price}}</h5>
     <p class="card-text text-white">Info: {{item.item_description}}</p>
     Posted by {{item.item_seller_name.user.username}}
