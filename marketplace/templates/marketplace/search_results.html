@@ -2,6 +2,18 @@
 
 {% block content %}
 <h1>Search results for "{{ query }}"</h1>
+<div>
+	sort by:
+	<form action="{% url 'marketplace:search' %}" class="btn-group btn-group-toggle" data-toggle="buttons">
+		<input type="hidden" name="query" value="{{ query }}">
+		{% for option in sort_options %}
+			<label class="btn btn-secondary {% if sort == option %}active{% endif %}">
+				<input type="radio" name="sort" value="{{ option }}" onchange="this.form.submit()" id="{{ option }}" {% if sort == option %}checked{% endif %}>
+					{{ option }}
+			</label>
+		{% endfor %}
+	</form>
+</div>
 <div class="list-group">
 	{% for item in page_obj.object_list %}
 	<div class="card text-center">
@@ -34,6 +46,7 @@
 <div class="col-4">
 	<form action="{% url 'marketplace:search' %}">
 		<input type="hidden" name="query" value="{{ query }}">
+		<input type="hidden" name="sort" value="{{ sort }}">
 		<input type="hidden" name="page" value="{{ previous_page }}">
 		<input type="submit" value="&larr; previous page" class="btn">
 	</form>
@@ -43,6 +56,7 @@
 <div class="col-4">
 	<form action="{% url 'marketplace:search' %}">
 		<input type="hidden" name="query" value="{{ query }}">
+		<input type="hidden" name="sort" value="{{ sort }}">
 		<input type="hidden" name="page" value="{{ next_page }}">
 		<input type="submit" value="next page &rarr;" class="btn">
 	</form>
