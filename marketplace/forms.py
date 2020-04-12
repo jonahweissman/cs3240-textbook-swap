@@ -34,3 +34,5 @@ class SendMessageForm(forms.Form):
     conversation = forms.ModelChoiceField(
         queryset=models.Conversation.objects.all(),
         widget=forms.HiddenInput)
+    in_response_to = forms.ModelChoiceField(queryset=models.Message.objects.all(),
+        widget=forms.HiddenInput)

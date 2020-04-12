@@ -5,6 +5,7 @@ from django.test import Client
 from django.db import models
 from django.utils import timezone
 from django.core import mail
+from django.forms import ValidationError
 import requests
 
 from marketplace.models import Item, User
@@ -324,3 +325,18 @@ class FullConversation(TestCase):
         self.assertEquals(mail.outbox[1].to[0], self.joe.user.email)
         response_message = models.Message.objects.all()[1]
         self.assertEquals(response_message.in_response_to.id, intro_message.id)
+
+        response = self.client.get(f'/item/{self.item.pk}/conversation')
+        form = response.context['conversation_list'][0]['form']
+        with self.assertRaises(ValidationError):
+            form.fields['text'].clean('')
+        form_data = form.initial
+        for k, item in form_data.items():
+            form_data[k] = item.pk
+        form_data['text'] = 'Sorry, running late'
+        response = self.client.post(f'/item/{self.item.pk}/conversation', form_data)
+        self.assertEquals(len(models.Message.objects.all()), len(mail.outbox))
+        self.assertEquals(len(models.Message.objects.all()), 3)
+        running_late = models.Message.objects.all()[2]
+        self.assertEquals(running_late.in_response_to, response_message)
+

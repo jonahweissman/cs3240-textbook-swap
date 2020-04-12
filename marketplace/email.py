@@ -14,12 +14,17 @@ import re
 
 from . import models, forms
 
-def send_message(author, receiver, item, conversation, text):
+def send_message(author, receiver, conversation, text, in_response_to=None):
     message = models.Message.objects.create(
         author=author,
         conversation=conversation,
-        text=text)
-    notify_about_new_message(author.user, receiver.user, item, text, message.id)
+        text=text,
+        in_response_to=in_response_to)
+    notify_about_new_message(author.user,
+                             receiver.user,
+                             conversation.item,
+                             text,
+                             message.id)
 
 @login_required
 def send_intro_message(request):
@@ -31,7 +36,7 @@ def send_intro_message(request):
         item=item,
         buyer=author,
     )
-    send_message(author, to, item, conversation, text)
+    send_message(author, to, conversation, text)
     return redirect(reverse('marketplace:message_list',
                             args=[item.pk]))
 
@@ -118,7 +123,8 @@ class ConversationView(LoginRequiredMixin, generic.ListView):
                 initial={
                     'to': to,
                     'item': conversation_obj.item,
-                    'conversation': conversation_obj
+                    'conversation': conversation_obj,
+                    'in_response_to': conversation_obj.message_set.last()
                 }
             )
             conversation['conversation'] = conversation_obj
@@ -131,7 +137,7 @@ class ConversationView(LoginRequiredMixin, generic.ListView):
         if form.is_valid():
             send_message(author=request.user.profile,
                          receiver=form.cleaned_data['to'],
-                         item=models.Item.objects.get(pk=pk),
                          conversation=form.cleaned_data['conversation'],
+                         in_response_to=form.cleaned_data['in_response_to'],
                          text=form.cleaned_data['text'])
         return self.get(request)
