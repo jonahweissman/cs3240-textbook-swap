@@ -3,6 +3,56 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+
+<!-- Modal for Edit Profile-->
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+  
+	  <!-- Modal content-->
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		</div>
+		<div class="modal-body">
+		  <div class="add-Form">
+			<form enctype="multipart/form-data" method="POST" action="">
+			{% csrf_token %}
+			<div class="fieldWrapper">
+				{{ form.phoneumber.errors }}
+				<label for="{{ form.phonenumber.id_for_label }}">Phone Number:</label>
+				{{ form.phonenumber }}
+			</div>
+			<br>
+			<div class="fieldWrapper">
+				{{ form.major.errors }}
+				<label for="{{ form.major.id_for_label }}">Major:</label>
+				{{ form.major }}
+			</div>
+			<br>
+			<div class="fieldWrapper">
+				{{ form.year.errors }}
+				<label for="{{ form.year.id_for_label }}">Year:</label>
+				{{ form.year }}
+			</div>
+			<br>
+			<div class="fieldWrapper">
+				{{ form.imagefile.errors }}
+				<label for="{{ form.year.id_for_label }}">Upload Image:</label>
+				{{ form.imagefile }}
+			</div>
+			<br>
+			<button type="submit" class="btn btn-primary" id="submitButton" name="submitButton">Submit</button>
+			</form>
+		</div>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	  </div>
+  
+	</div>
+</div>
+
 <div class="row">
 <div class="col-12">
     <div class="card">
@@ -11,13 +61,14 @@
 		<div class="d-flex justify-content-start">
 		    <div class="image-container">
 		       {% if user.profile.imagefile  %}
-			    <img src="{{ user.profile.imagefile.url }}" id="imgProfile" style="width: 150px; height: 150px" class= "img-thubmnail"/>
-			{% else %}
-			    <img src="static/marketplace/images/empty-profile.png" id="imgProfile" style="width: 150px; height: 150px" class= "img-thubmnail"/>
-			{% endif %}
+			    	<img src="{{ user.profile.imagefile.url }}" id="imgProfile" style="width: 150px; height: 150px" class= "img-thubmnail"/>
+				{% else %}
+			    	<img src="static/marketplace/images/empty-profile.png" id="imgProfile" style="width: 150px; height: 150px" class= "img-thubmnail"/>
+				{% endif %}
 			<div class="middle">
 			    </form>
-			   <a href="profile/editprofile" class="btn">Edit</a>
+			   <!--<a href="profile/editprofile" class="btn">Edit</a> -->
+			   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" id="editprofile" name="editprofile" data-target="#myModal" >Edit</button>
 			</div>
 		    </div>
 		    <div class="userData ml-3">

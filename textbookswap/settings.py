@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'marketplace',
+    'phone_field',
 ]
 
 MIDDLEWARE = [

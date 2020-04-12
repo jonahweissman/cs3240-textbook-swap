@@ -93,15 +93,6 @@ class ProfileViews(generic.DetailView):
 
     def get(self, request):
         Profiles = Profile.objects.all()
-        return render(request, self.template_name, {
-            'user': request.user,
-    })
-
-
-class EditProfileViews(generic.DetailView):
-    template_name = "marketplace/edit_profile.html"
-
-    def get(self, request):
         form = ImageForm()
         return render(request, self.template_name, {
             'user': request.user, "form": form
@@ -115,6 +106,7 @@ class EditProfileViews(generic.DetailView):
             form = ImageForm()
         args = {"form": form}
         return render(request, self.template_name, args)
+
 
 class MyListings(generic.ListView):
     template_name = "marketplace/myListings.html"
