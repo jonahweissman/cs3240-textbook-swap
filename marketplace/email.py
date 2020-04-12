@@ -12,23 +12,29 @@ from email.errors import MessageParseError
 from base64 import b64decode
 import re
 
-from . import models
+from . import models, forms
+
+def send_message(author, receiver, item, conversation, text):
+    message = models.Message.objects.create(
+        author=author,
+        conversation=conversation,
+        text=text)
+    notify_about_new_message(author.user, receiver.user, item, text, message.id)
 
 @login_required
 def send_intro_message(request):
+    author = request.user.profile
     item = models.Item.objects.get(pk=request.POST['item'])
-    to = item.item_seller_name.user
+    to = item.item_seller_name
     text = request.POST['message']
-    message = models.Message.objects.create(
-        author=request.user.profile,
-        conversation=models.Conversation.objects.create(
-            item=item,
-            buyer=request.user.profile,
-        ),
-        text=text)
-    notify_about_new_message(request.user, to, item, text, message.id)
+    conversation = models.Conversation.objects.create(
+        item=item,
+        buyer=author,
+    )
+    send_message(author, to, item, conversation, text)
     return redirect(reverse('marketplace:message_list',
                             args=[item.pk]))
+
 
 def notify_about_new_message(sender, receiver, item, message, uuid):
     name = f"{sender.first_name} {sender.last_name}"
@@ -97,3 +103,35 @@ class ConversationView(LoginRequiredMixin, generic.ListView):
             & (Q(buyer=self.request.user.profile) 
               | Q(item__item_seller_name=self.request.user.profile))
            )
+    
+    def get_context_data(self):
+        context = super().get_context_data()
+        conversation_list = []
+        for conversation_obj in context['object_list']:
+            conversation = {}
+            if self.request.user == conversation_obj.item.item_seller_name.user:
+                to = conversation_obj.buyer
+            else:
+                to = conversation_obj.item.item_seller_name
+            conversation['to'] = to
+            conversation['form'] = forms.SendMessageForm(
+                initial={
+                    'to': to,
+                    'item': conversation_obj.item,
+                    'conversation': conversation_obj
+                }
+            )
+            conversation['conversation'] = conversation_obj
+            conversation_list.append(conversation)
+        context['conversation_list'] = conversation_list
+        return context
+    
+    def post(self, request, pk):
+        form = forms.SendMessageForm(request.POST)
+        if form.is_valid():
+            send_message(author=request.user.profile,
+                         receiver=form.cleaned_data['to'],
+                         item=models.Item.objects.get(pk=pk),
+                         conversation=form.cleaned_data['conversation'],
+                         text=form.cleaned_data['text'])
+        return self.get(request)
