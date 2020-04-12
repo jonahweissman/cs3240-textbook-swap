@@ -5,6 +5,7 @@ services:
 - postgresql
 install:
 - pip install -r requirements-travis.txt
+- pip install django-phone-field
 - python manage.py collectstatic
 before_script:
 - psql -c 'create database travis_ci_test;' -U postgres
