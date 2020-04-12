@@ -8,4 +8,4 @@ django-auto-one-to-one==3.3.0
 dj-database-url==0.5.0
 python-dotenv
 whitenoise==5.0.1
-phone_field
+django-phone-field==1.8.0
