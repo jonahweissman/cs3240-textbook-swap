@@ -327,13 +327,6 @@ class FullConversation(TestCase):
 
 class Profile(TestCase):
     def setUp(self):
-        self.client = Client()
-        self.rob = User.objects.create(
-            email='rob@example.com',
-            username='rob',
-            first_name='rob',
-            last_name='blah',
-        ).profile
         self.profile = models.Profile.objects.create(
              user = self.rob.user, 
              phonenumber = 7038960510,
