@@ -15,5 +15,9 @@
       <input type="submit" value="send" class="btn btn-outline-primary">
     </form>
   </p>
+{% empty %}
+	<div class="jumbotron">
+		<div class="display-4">No conversations yet</div>
+	</div>
 {% endfor %}
 {% endblock %}
