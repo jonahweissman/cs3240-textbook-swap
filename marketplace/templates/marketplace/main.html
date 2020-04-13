@@ -27,24 +27,16 @@
 
         {% for items in allItems %}
 		    <a href="{% url 'marketplace:item_detail' items.pk %}">
-<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
-                    <div class="card-body text-white">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header bg-success"><strong>{{items.item_name}}</strong></div>
                     {% if items.item_image  %}
-                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
-                    {% else %}
-                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
-                    {% endif %}
-                        <br>
-
-                        <strong> <font color="#00b300">Author:</font> </strong>{{items.item_author}} <br>
-                        <strong><font color="#00b300">Course: </font></strong> {{items.item_course}}
-                        <br>
-                        <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
-                        <br>
-                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
-                        <br>
-                        <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+			    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% else %}
+			    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% endif %}
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
                     </div>
                     </div>
 		    </a>
@@ -54,44 +46,32 @@
 
 
     <div class="col-sm">
-      <h1 class="display-4 text-white">Seller Reviews</h1>
-       {% for reviews in allReviews %}
+      <h1 class="display-4 text-white">My Reviews</h1>
                     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-success"><strong>{{reviews.reviewee_name}}</strong></div>
+                        <div class="card-header bg-success"><strong>Reviewer Name</strong></div>
                     <div class="card-body text-white">
-                        <strong> <font color="#00b300">Reviewed by:</font> </strong>{{reviews.reviewer_name}} ({{reviews.reviewer_name.user.username}})
-                        <br>
-                        <strong><font color="#00b300">Book Sold:</font></strong> {{ reviews.review_book }}
-                        <br>
-                        <strong><font color="#00b300">Rating: </font></strong> {{reviews.review_score}}
-                        <br>
-                        <strong> <font color="#00b300">Description: </font> </strong> {{reviews.review_description}}
+                    <h5 class="card-title text-white">Rating (Out of 5)</h5>
+                    <p class="card-text">Review Description</p>
                     </div>
                     </div>
-        {% endfor %}
+
     </div>
     <div class="col-sm">
       <h1 class="display-4 text-white">My Listings</h1>
         {% for items in allItems %}
             {% if items.item_seller_name.user.username == user.username %}
                     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
-                    <div class="card-body text-white">
+                        <div class="card-header text-white bg-success"><strong>{{items.item_name}}</strong></div>
                     {% if items.item_image  %}
-                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
-                    {% else %}
-                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
-                    {% endif %}
-                        <br>
-
-                        <strong> <font color="#00b300">Author:</font> </strong>{{items.item_author}} <br>
-                        <strong><font color="#00b300">Course: </font></strong> {{items.item_course}}
-                        <br>
-                        <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
-                        <br>
-                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
-                        <br>
-                        <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+			    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% else %}
+			    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
+		    {% endif %}
+                    <div class="card-body text-white">
+                    <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
+                    </div>
+                    </div>
             {%endif%}
         {% endfor %}
     </div>

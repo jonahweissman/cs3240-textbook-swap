@@ -11,24 +11,18 @@
         {% for items in allItems %}
             {% if items.item_seller_name.user.username == user.username %}
                     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
+                        <div class="card-header text-white bg-success"><strong>{{items.item_name}}</strong></div>
                     <div class="card-body text-white">
                     {% if items.item_image  %}
-                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
+                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
                     {% else %}
-                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
+                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail"/>
                     {% endif %}
-                        <br>
-
-                        <strong> <font color="#00b300">Author:</font> </strong>{{items.item_author}} <br>
-                        <strong><font color="#00b300">Course: </font></strong> {{items.item_course}}
-                        <br>
-                        <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
-                        <br>
-                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
-                        <br>
-                        <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
-
+                    <small>{{items.item_author}}</small>
+                    <h5 class="card-title text-white">Posted by {{items.item_seller_name.user.username}}</h5>
+                    <p class="card-text">Price: ${{items.item_price}} <br> Info: {{items.item_description}}</p>
+                    Edition: {{items.item_edition}} <br/>
+                    Course: {{items.item_course}}
                     </div>
                     </div>
             {%endif%}
