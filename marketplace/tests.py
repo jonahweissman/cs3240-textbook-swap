@@ -334,7 +334,7 @@ class Profile(TestCase):
             first_name='rob',
             last_name='blah',
         ).profile
-        self.profile = Profile.objects.create(
+        self.profile = models.Profile.objects.create(
              phonenumber = 7038960510,
              major = "Computer Engineering",
              year = 3)
