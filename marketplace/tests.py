@@ -100,6 +100,8 @@ class TrigramSearchTest(TestCase):
             item_price=1,
             item_posted_date=datetime.datetime.now(),
             item_condition="Like New",
+            item_author='Stewart',
+            item_isbn=12345,
             item_seller_name=bob,
         )
 
@@ -124,6 +126,18 @@ class TrigramSearchTest(TestCase):
         self.assertEqual(len(results), 2)
         self.assertTrue(results.index(self.calc_name)
                         < results.index(self.calc_descr))
+
+    def test_isbn(self):
+        response = self.client.get('/search?query=12345')
+        results = list(response.context['object_list'])
+        self.assertIn(self.calc_name, results)
+        self.assertEqual(results[0], self.calc_name)
+
+    def test_author(self):
+        response = self.client.get('/search?query=Stewart')
+        results = list(response.context['object_list'])
+        self.assertIn(self.calc_name, results)
+        self.assertEqual(results[0], self.calc_name)
 
 class HTTPResponseTestCase(TestCase):
     def test_home_status_code(self):

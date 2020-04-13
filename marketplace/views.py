@@ -139,10 +139,11 @@ class SearchViews(generic.ListView):
     template_name = "marketplace/search_results.html"
     paginate_by = 10
     sort_mapping = {
-        'relevance': ['name_distance',
-                      'author_distance',
-                      'description_distance',
-                      'isbn_distance'],
+        'relevance': [
+            'name_distance',
+            'author_distance',
+            'description_distance',
+        ],
         'date': ['-item_posted_date'],
         'price': ['item_price'],
     }
@@ -164,12 +165,11 @@ class SearchViews(generic.ListView):
         order_by = self.sort_mapping[sort_by]
         hit_filter = Q(name_distance__lte=0.8) \
             | Q(description_distance__lte=0.7) \
-            | Q(isbn_distance__lte=0.5) \
-            | Q(author_distance__lte=0.7)
+            | Q(author_distance__lte=0.7) \
+            | Q(item_isbn=query)
         return self.model.objects.annotate(
             name_distance=TrigramDistance('item_name', query),
             description_distance=TrigramDistance('item_description', query),
-            isbn_distance=TrigramDistance('item_isbn', query),
             author_distance=TrigramDistance('item_author', query),
         ).filter(hit_filter).order_by(*order_by)
 
