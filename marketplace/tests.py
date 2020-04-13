@@ -335,8 +335,8 @@ class Profile(TestCase):
             last_name='blah',
         ).profile
         self.profile = Profile.objects.create(
-             phonenumber = 7038960510
-             major = "Computer Engineering"
+             phonenumber = 7038960510,
+             major = "Computer Engineering",
              year = 3)
 
     def test_profile(self):
