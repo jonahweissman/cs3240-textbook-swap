@@ -48,7 +48,7 @@ class BasicSearchTest(TestCase):
 
 
     def test_all_items_present(self):
-        response = self.client.get('/search?query=item')
+        response = self.client.get('/search?query=item&sort=date')
         search_results_list = list(response.context['object_list'])
         self.assertListEqual(
             self.item_list,
@@ -79,7 +79,7 @@ class TrigramSearchTest(TestCase):
             item_condition="Like New",
             item_seller_name=bob,
         )
-        onion_spellings = ['the onion', 'the onions', 'the onin']
+        onion_spellings = ['The Onion', 'The Onions', 'The Onin']
         self.onions = [Item.objects.create(
             item_name=o,
             item_price=1,
@@ -120,10 +120,10 @@ class TrigramSearchTest(TestCase):
 
     def test_field_precendence(self):
         response = self.client.get('/search?query=calculus')
-        search_results_list = list(response.context['object_list'])
-        self.assertEqual(len(search_results_list), 2)
-        self.assertTrue(search_results_list.index(self.calc_name)
-                        < search_results_list.index(self.calc_descr))
+        results = list(response.context['object_list'])
+        self.assertEqual(len(results), 2)
+        self.assertTrue(results.index(self.calc_name)
+                        < results.index(self.calc_descr))
 
 class HTTPResponseTestCase(TestCase):
     def test_home_status_code(self):
