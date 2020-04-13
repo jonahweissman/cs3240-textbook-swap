@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
-from .models import Profile, Item, Review
+from .models import Profile, Item
 
 class EditProfileForm(UserChangeForm):
     class Meta:
@@ -21,8 +21,3 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model= Item
         fields= ["item_image"]
-
-class ReviewForm(forms.ModelForm):
-    class Meta:
-        model= Review
-        fields= []

@@ -5,10 +5,10 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
-from .forms import ImageForm, ItemForm, ReviewForm
+from .forms import ImageForm, ItemForm
 from .forms import EditProfileForm
 from django.db.models import Q
-from .models import Item, Profile, Review
+from .models import Item, Profile
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 import requests
@@ -19,18 +19,8 @@ class IndexViews(generic.ListView):
     template_name = "marketplace/main.html"
     context_object_name = "allItems"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['allReviews'] = Review.objects.all()
-
-        return context
-
     def get_queryset(self):
         return Item.objects.all()
-
-
-
-
 
 class ListingViews(generic.DetailView):
     template_name = "marketplace/addListing.html"
@@ -98,48 +88,6 @@ class ListingViews(generic.DetailView):
 
             return render(request, self.template_name, args)
 
-
-class ReviewViews(generic.DetailView):
-    template_name = "marketplace/addReview.html"
-
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return render(request, self.template_name, {
-                'error_message': 'Must be Logged In',
-            })
-        else:
-            form2 = ReviewForm()
-            args = {'form2': form2}
-            return render(request, self.template_name, args)
-
-    def post(self, request):
-        review_book = request.POST.get("review_book", "defaultName")
-        reviewee_name = request.POST.get("reviewee_name", "defaultReviewee")
-        review_description = request.POST.get("review_description", "No description entered")
-        review_score = request.POST.get("review_score", "defaultScore")
-        reviewer_name = Profile.objects.get(user=request.user)
-        reviewee_username = request.POST.get("reviewee_username", "defaultUsername")
-
-        form2 = ReviewForm(request.POST, request.FILES)
-        args = {"form2": form2}
-
-
-        if form2.is_valid():
-            review = form2.save(commit="false")
-            review.review_book = review_book
-            review.reviewer_name = reviewer_name
-            review.reviewee_name = reviewee_name
-            review.review_description = review_description
-            review.review_score = review_score
-            review.reviewee_username = reviewee_username
-
-            review.save()
-            messages.success(request, 'Your form was submitted successfully!')
-        else:
-            messages.success(request, 'ERROR! Your form could not be submitted.')
-
-        return render(request, self.template_name, args)
-
 class ProfileViews(generic.DetailView):
     template_name = "marketplace/profilePage.html"
 
@@ -183,21 +131,6 @@ class MyListings(generic.ListView):
                 'allItems': allItems,
             })
 
-class MyReviews(generic.ListView):
-    template_name = "marketplace/myReviews.html"
-
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return render(request, self.template_name, {
-                'error_message': 'Must be Logged In',
-            })
-        else:
-            user = get_object_or_404(Profile, user=request.user)
-            allReviews = Review.objects.all()
-            return render(request, self.template_name, {
-                'allReviews': allReviews,
-            })
-
 class SearchViews(generic.ListView):
     model = Item
     template_name = "marketplace/search_results.html"
@@ -232,7 +165,6 @@ class ItemDetail(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         if self.request.user.is_authenticated:
             context['user_has_buyer_conversation'] = context['object'].conversation_set.all().filter(buyer=self.request.user.profile).exists()
         return context
