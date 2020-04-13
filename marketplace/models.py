@@ -11,7 +11,7 @@ import os
 
 class Profile(AutoOneToOneModel(User)):
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, default= uuid)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     imagefile = models.ImageField(upload_to='images/', null=True, blank=True)
     phonenumber = PhoneField(null=True, blank=True)
     major = models.CharField(max_length=50, null=True, blank=True)
