@@ -328,13 +328,15 @@ class FullConversation(TestCase):
 class Profile(TestCase):
     def setUp(self):
         self.profile = models.Profile.objects.create(
-             user = self.rob.user, 
+             user = User.objects.create_user( 
+                email='rob@example.com',
+                username='dfsngjlabelq',
+                first_name='rob',
+                last_name='blah'),
              phonenumber = 7038960510,
              major = "Computer Engineering",
              year = 3)
-
     def test_profile(self):
-        self.client.force_login(self.rob.user)
         self.assertEquals(Profile.phonenumber, 7038960510)
         self.assertEquals(Profile.major, "Computer Engineering" )
         self.assertEquals(Profile.year, 3 )
