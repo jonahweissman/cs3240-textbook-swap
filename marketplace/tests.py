@@ -324,3 +324,25 @@ class FullConversation(TestCase):
         self.assertEquals(mail.outbox[1].to[0], self.joe.user.email)
         response_message = models.Message.objects.all()[1]
         self.assertEquals(response_message.in_response_to.id, intro_message.id)
+
+class Profile(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.rob = User.objects.create(
+            email='rob@example.com',
+            username='rob',
+            first_name='rob',
+            last_name='blah',
+        ).profile
+         self.profile = Profile.objects.create(
+             phonenumber = 7038960510
+             major = "Computer Engineering"
+             year = 3)
+
+    def test_profile(self):
+        self.client.force_login(self.rob.user)
+        self.assertEquals(Profile.phonenumber, 7038960510)
+        self.assertEquals(Profile.major, "Computer Engineering" )
+        self.assertEquals(Profile.year, 3 )
+
+
