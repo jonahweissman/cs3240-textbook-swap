@@ -12,5 +12,9 @@
 	<b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
 	</p>
 	{% endfor %}
+{% empty %}
+	<div class="jumbotron">
+		<div class="display-4">No conversations yet</div>
+	</div>
 {% endfor %}
 {% endblock %}
