@@ -1,0 +1,29 @@
+{% extends 'marketplace/base.html' %}
+{% load static %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    {% if error_message %}
+        <p align='center' style="color:red;"><strong>{{ error_message }}</strong></p>
+    {% else %}
+<div class="card-columns">
+        {% for reviews in allReviews %}
+            {% if reviews.reviewee_username == user.username %}
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-white bg-success"><strong>{{reviews.reviewee_name}}</strong></div>
+                    <div class="card-body text-white">
+                        <strong> <font color="#00b300">Reviewed by:</font> </strong>{{reviews.reviewer_name}} ({{reviews.reviewer_name.user.username}})
+                        <br>
+                        <strong><font color="#00b300">Book Sold:</font></strong> {{ reviews.review_book }}
+                        <br>
+                        <strong><font color="#00b300">Rating: </font></strong> {{reviews.review_score}}
+                        <br>
+                        <strong> <font color="#00b300">Description: </font> </strong> {{reviews.review_description}}
+                    </div>
+                    </div>
+            {%endif%}
+        {% endfor %}
+</div>
+    {% endif %}
+{% endblock content %}

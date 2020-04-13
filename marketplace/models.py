@@ -53,8 +53,22 @@ class Item(models.Model):
     item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     item_description = models.TextField(max_length= 1000, null=True)
 
+
     def __str__(self):
         return self.item_name
+
+class Review(models.Model):
+    reviewee_name = models.CharField(max_length=100, null=True)
+    reviewee_username = models.CharField(max_length=100, null=True)
+    review_book = models.CharField(max_length=100, null=True)
+    reviewer_name = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    review_description = models.TextField(max_length= 1000, null=True)
+    score_choices = (("1", "1"),("2", "2"),("3", "3"),("4", "4"),("5", "5"))
+    review_score = models.CharField(max_length=20,choices=score_choices, default="5")
+
+
+    def __str__(self):
+        return self.review_score
 
 
 class Conversation(models.Model):
