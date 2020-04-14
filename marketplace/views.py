@@ -47,8 +47,11 @@ class ListingViews(generic.DetailView):
             item_description= request.POST.get("item_description", "No description entered")
             item_posted_date = timezone.now()
             item_condition = request.POST.get("item_condition", "defaultCondition")
-            item_seller_name =  Profile.objects.get(user=request.user)
-
+            item_seller_name =  Profile.objects.get(
+                user=request.user, 
+                phonenumber= user.profile.phonenumber, 
+                major= user.profile.major,
+                year= user.profile.year)
             form1 = ItemForm(request.POST, request.FILES)
             args = {"form1": form1}
 

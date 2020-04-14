@@ -325,19 +325,12 @@ class FullConversation(TestCase):
         response_message = models.Message.objects.all()[1]
         self.assertEquals(response_message.in_response_to.id, intro_message.id)
 
-# class Profile(TestCase):
-#     def setUp(self):
-#         some_guy = User.objects.create()
-#         self.client = Client()
-#         self.client.force_login(some_guy)
-#         self.profile = models.Profile.objects.create(
-#              user_id = 1,
-#              phonenumber = 7038960510,
-#              major = "Computer Engineering",
-#              year = 3)
-#     def test_profile(self):
-#         self.assertEquals(Profile.phonenumber, 7038960510)
-#         self.assertEquals(Profile.major, "Computer Engineering" )
-#         self.assertEquals(Profile.year, 3 )
+class Profile(TestCase):
+    def setUp(self):
+        User.objects.create().profile
+
+    def test_profile(self):
+        Profile = User.objects.last().profile
+
 
 
