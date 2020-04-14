@@ -20,12 +20,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='item',
-            name='item_price',
-            field=models.IntegerField(default=0),
-            preserve_default=False,
-        ),
-        migrations.AlterField(
-            model_name='item',
             name='item_seller_name',
             field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='marketplace.Profile'),
             preserve_default=False,
