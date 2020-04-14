@@ -25,105 +25,20 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-center">
         <div class="add-Form">
           <form enctype="multipart/form-data" action="" method="post">
           {% csrf_token %}
-          <label for="item_name"><b>Title*</b></label>
-              <div class="form-group">
-                  <input
-                      type="text"
-                      name="item_name"
-                      id="item_name"
-                      placeholder="Theory of Calculus"
-                      class="form-control"
-                      required
-                  />
-              </div>
-
-              <label for="item_author"><b>Author</b></label>
-              <div class="form-group">
-                  <input
-                      type="text"
-                      name="item_author"
-                      id="item_author"
-                      placeholder="John Stewart"
-                      class="form-control"
-                  />
-              </div>
-
-              <label for="item_edition"><b>Edition*</b></label>
-              <div class="form-group">
-                  <input
-                      type="number"
-                      name="item_edition"
-                      id="item_edition"
-                      placeholder="5"
-                      class="form-control"
-                      required
-                  />
-              </div>
-
-
-              <label for="item_course"><b>Course</b></label>
-              <div class="form-group">
-                  <input
-                    type="text"
-                    id="item_course"
-                    name="item_course"
-                    class="form-control"
-                    placeholder="CS 1110"
-                    pattern="[A-Z]{2,4} \d{4}"
-                    title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
-                  />
-
-                </div>
-
-                <label for="item_price"><b>Price*</b></label>
-              <div class="input-group mb-3">
-
-                <div class="input-group-prepend">
-                  <span class="input-group-text">$</span>
-                </div>
-                <input
-                  type="number"
-                  class="form-control"
-                  name ="item_price"
-                  id = "item_price"
-                  aria-label="Amount (to the nearest dollar)"
-                  placeholder="35"
-                  min="0"
-                  required
-                  >
-                <div class="input-group-append">
-                  <span class="input-group-text">.00</span>
-                </div>
-              </div>
-
-              <p><b>Image*</b></p>
                 {{ form1.as_p }}
-                <label for="item_condition"><b>Condition</b></label>
-              <select id="item_condition" name="item_condition">
-                  <option value="Like New">Like New</option>
-                  <option value="Good">Good</option>
-                  <option value="Fair">Fair</option>
-                  <option value="Poor">Poor</option>
-              </select>
-              <br>
-              <br>
-              <label for="item_description"><b>Description</b></label>
-              <div class="form-group">
-                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
-              </div>
-              <br>
-              <label for="item_status"><b>Status</b></label>
+
+              <label for="item_status"><b>Status: </b></label>
               <select id="item_status" name="item_status">
                   <option value="Available">Available</option>
                   <option value="Sold">Sold</option>
               </select>
               <br>
               <br>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-success">Submit</button>
         </form>
 
       </div>
@@ -152,82 +67,11 @@
           <form enctype="multipart/form-data" form action="" method="post">
           {% csrf_token %}
 
-          <label for="item_isbn"><b>ISBN*</b></label>
-              <div class="form-group">
-                  <input
-                      type="text"
-                      name="item_isbn"
-                      id="item_isbn"
-                      placeholder="978-1337627900"
-                      class="form-control"
-                      required
-                  />
-              </div>
 
-              <label for="item_edition"><b>Edition*</b></label>
-              <div class="form-group">
-                  <input
-                      type="number"
-                      name="item_edition"
-                      id="item_edition"
-                      placeholder="5"
-                      class="form-control"
-                      required
-                  />
-              </div>
 
-              <label for="item_course"><b>Course</b></label>
-              <div class="form-group">
-                  <input
-                    type="text"
-                    id="item_course"
-                    name="item_course"
-                    class="form-control"
-                    placeholder="CS 1110"
-                    pattern="[A-Z]{2,4} \d{4}"
-                    title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
 
-                  />
-
-                </div>
-
-              <label for="item_price"><b>Price*</b></label>
-              <div class="input-group mb-3">
-
-                <div class="input-group-prepend">
-                  <span class="input-group-text">$</span>
-                </div>
-                <input
-                  type="number"
-                  class="form-control"
-                  name ="item_price"
-                  id = "item_price"
-                  aria-label="Amount (to the nearest dollar)"
-                  placeholder="35"
-                  min="0"
-
-                  required
-                  >
-                <div class="input-group-append">
-                  <span class="input-group-text">.00</span>
-                </div>
-              </div>
-
-              <p><b>Image*</b></p>
               {{ form1.as_p }}
-              <label for="item_condition"><b>Condition</b></label>
-              <select id="item_condition" name="item_condition">
-                  <option value="Like New">Like New</option>
-                  <option value="Good">Good</option>
-                  <option value="Fair">Fair</option>
-                  <option value="Poor">Poor</option>
-              </select>
-              <br>
-              <br>
-              <label for="item_description"><b>Description</b></label>
-              <div class="form-group">
-                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
-              </div>
+
 
           <button type="submit" class="btn btn-primary" id="submitButton" name="submitButton">Submit</button>
           </form>
@@ -250,14 +94,12 @@ margin-bottom: 10px;">
   margin: 0 auto;
   float: none;
   margin-bottom: 10px;">
-    <h5 class="card-title text-white">How would you like to enter your textbook information?</h5>
-      <div class="container" >
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" id="isbnButton" name="isbnButton" data-target="#myModal" >ISBN</button>
-        <br/>
-           <h5>----OR----</h5>
-
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" id="titleButton" name="titleButton" data-target="#myModal2">Title/Author</button>
-      </div>
+    <h5 class="card-title text-white">Would you like to update the status of this listing?</h5>
+      <div class="container text-center" >
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" id="titleButton" name="titleButton" data-target="#myModal2">Update Status</button>
+      <br>
+          <br>
+<a class="btn btn-success" href="{% url 'marketplace:index' %}" role="button">Return Home</a>      </div>
   </div>
 </div>
 
