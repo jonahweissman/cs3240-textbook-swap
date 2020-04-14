@@ -69,7 +69,7 @@ class Message(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    in_response_to = models.OneToOneField('self', on_delete=models.CASCADE, null=True)
+    in_response_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
 
     def __str__(self):
