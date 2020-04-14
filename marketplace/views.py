@@ -1,17 +1,20 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib.auth import logout
-from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
-from .forms import ImageForm, ItemForm
-from .forms import EditProfileForm
+from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramDistance
 from django.db.models import Q
-from .models import Item, Profile
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 import requests
+
+from .forms import ImageForm, ItemForm
+from .forms import EditProfileForm
+from .models import Item, Profile
 
 
 # Create your views here.
@@ -125,17 +128,22 @@ class MyListings(generic.ListView):
 class SearchViews(generic.ListView):
     model = Item
     template_name = "marketplace/search_results.html"
-    context_object_name = 'search_results'
     paginate_by = 10
     sort_mapping = {
-        'date': '-item_posted_date',
-        'price': 'item_price',
+        'relevance': [
+            'name_distance',
+            'author_distance',
+            'description_distance',
+        ],
+        'date': ['-item_posted_date'],
+        'price': ['item_price'],
     }
+    sort_default = 'relevance'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET['query']
-        context['sort'] = self.request.GET.get('sort', 'date')
+        context['sort'] = self.request.GET.get('sort', self.sort_default)
         page = context['page_obj']
         context['next_page'] = page.next_page_number() if page.has_next() else None
         context['previous_page'] = page.previous_page_number() if page.has_previous() else None
@@ -144,12 +152,18 @@ class SearchViews(generic.ListView):
 
     def get_queryset(self):
         query = self.request.GET['query']
-        sort_by = self.request.GET.get('sort', 'date')
+        sort_by = self.request.GET.get('sort', self.sort_default)
         order_by = self.sort_mapping[sort_by]
-        return self.model.objects.all().filter(
-            Q(item_name__icontains=query)
-            | Q(item_description__icontains=query)
-        ).order_by(order_by)
+        hit_filter = Q(name_distance__lte=0.8) \
+            | Q(description_distance__lte=0.7) \
+            | Q(author_distance__lte=0.7) \
+            | Q(item_isbn=query)
+        return self.model.objects.annotate(
+            name_distance=TrigramDistance('item_name', query),
+            description_distance=TrigramDistance('item_description', query),
+            author_distance=TrigramDistance('item_author', query),
+        ).filter(hit_filter).order_by(*order_by)
+
 
 class ItemDetail(generic.DetailView):
     model=Item
