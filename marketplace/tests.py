@@ -397,3 +397,11 @@ class FullConversation(TestCase):
         self.assertEquals(mail.outbox[1].to[0], self.joe.user.email)
         response_message = models.Message.objects.all()[1]
         self.assertEquals(response_message.in_response_to.id, intro_message.id)
+
+class Profile(TestCase):
+    def setUp(self):
+        User.objects.create().profile
+
+    def test_profile(self):
+        Profile = User.objects.last().profile
+
