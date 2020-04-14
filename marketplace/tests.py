@@ -21,13 +21,13 @@ class DummyTestCase(TestCase):
     def test_dummy_test_case(self):
         self.assertEqual(1, 1)
 
-class BasicSearchTest(TestCase):
+class SearchTestPagination(TestCase):
     def setUp(self):
         client = Client()
         self.item_list = []
         bob = User.objects.create().profile
-        for i in range(5):
-            self.item_list.insert(0, Item.objects.create(
+        for i in range(5)[::-1]:
+            self.item_list.append(Item.objects.create(
                 item_name=f'item {i}',
                 item_author=f'author {i}',
                 item_edition=i,
@@ -49,96 +49,23 @@ class BasicSearchTest(TestCase):
 
 
     def test_all_items_present(self):
-        response = self.client.get('/search?query=item&sort=date')
-        search_results_list = list(response.context['object_list'])
+        response = self.client.get('/search?query=item')
+        search_results_list = list(response.context['search_results'])
         self.assertListEqual(
             self.item_list,
             search_results_list)
     
     def test_no_extra_items(self):
         response = self.client.get('/search?query=item')
-        search_results_list = list(response.context['object_list'])
+        search_results_list = list(response.context['search_results'])
         self.assertTrue(self.extra_item not in search_results_list)
 
     def test_sort_by_price(self):
         response = self.client.get('/search?query=item&sort=price')
-        search_results_list = list(response.context['object_list'])
+        search_results_list = list(response.context['search_results'])
         self.assertListEqual(
             self.item_list,
             search_results_list[::-1])
-
-
-class TrigramSearchTest(TestCase):
-    def setUp(self):
-        client = Client()
-        self.item_list = []
-        bob = User.objects.create().profile
-        self.typo = Item.objects.create(
-            item_name='this contains a tpyo',
-            item_price=1,
-            item_posted_date=datetime.datetime.now(),
-            item_condition="Like New",
-            item_seller_name=bob,
-        )
-        onion_spellings = ['The Onion', 'The Onions', 'The Onin']
-        self.onions = [Item.objects.create(
-            item_name=o,
-            item_price=1,
-            item_posted_date=datetime.datetime.now(),
-            item_condition="Like New",
-            item_seller_name=bob,
-        ) for o in onion_spellings]
-        self.calc_descr = Item.objects.create(
-            item_name='Introduction to Biology',
-            item_price=1,
-            item_posted_date=datetime.datetime.now(),
-            item_condition="Like New",
-            item_description="I sure hate calculus lol",
-            item_seller_name=bob,
-        )
-        self.calc_name = Item.objects.create(
-            item_name='Introduction to Calculus',
-            item_price=1,
-            item_posted_date=datetime.datetime.now(),
-            item_condition="Like New",
-            item_author='Stewart',
-            item_isbn=12345,
-            item_seller_name=bob,
-        )
-
-    def test_typo(self):
-        response = self.client.get('/search?query=this%20contains%20a%20typo')
-        search_results_list = list(response.context['object_list'])
-        self.assertIn(self.typo, search_results_list)
-
-    def test_irrelevant_not_included(self):
-        response = self.client.get('/search?query=toast')
-        search_results_list = list(response.context['object_list'])
-        self.assertNotIn(self.typo, search_results_list)
-
-    def test_mispelling_order(self):
-        response = self.client.get('/search?query=onion')
-        search_results_list = list(response.context['object_list'])
-        self.assertEqual(self.onions, search_results_list)
-
-    def test_field_precendence(self):
-        response = self.client.get('/search?query=calculus')
-        results = list(response.context['object_list'])
-        self.assertEqual(len(results), 2)
-        self.assertTrue(results.index(self.calc_name)
-                        < results.index(self.calc_descr))
-
-    def test_isbn(self):
-        response = self.client.get('/search?query=12345')
-        results = list(response.context['object_list'])
-        self.assertIn(self.calc_name, results)
-        self.assertEqual(results[0], self.calc_name)
-
-    def test_author(self):
-        response = self.client.get('/search?query=Stewart')
-        results = list(response.context['object_list'])
-        self.assertIn(self.calc_name, results)
-        self.assertEqual(results[0], self.calc_name)
 
 class HTTPResponseTestCase(TestCase):
     def test_home_status_code(self):
