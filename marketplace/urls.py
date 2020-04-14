@@ -18,6 +18,7 @@ urlpatterns = [
     path('email/receive', email.receive_message, name='receive_message'),
     path('item/<int:pk>', views.ItemDetail.as_view(), name='item_detail'),
     path('item/<int:pk>/conversation', email.ConversationView.as_view(), name='message_list'),
+    path('updateListing/<int:pk>', views.UpdateListingView.as_view(), name='updateListing'),
     path('accounts/login/', views.login, name='login'),
 ]
 

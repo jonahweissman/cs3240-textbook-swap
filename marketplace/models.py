@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django_auto_one_to_one import AutoOneToOneModel
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.urls import reverse
 import uuid
 import os
 # Create your models here.
@@ -52,9 +53,15 @@ class Item(models.Model):
     item_posted_date = models.DateField(null=True)
     item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     item_description = models.TextField(max_length= 1000, null=True)
+    item_status_choices = (("Available", "Available"),("Sold", "Sold"))
+    item_status = models.CharField(max_length=20, choices=item_status_choices, default= "Available")
+
 
     def __str__(self):
         return self.item_name
+
+    def get_absolute_url(self):
+        return reverse('marketplace:index')
 
 
 class Conversation(models.Model):

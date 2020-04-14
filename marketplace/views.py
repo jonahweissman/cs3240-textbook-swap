@@ -48,6 +48,7 @@ class ListingViews(generic.DetailView):
             item_posted_date = timezone.now()
             item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
+            item_status = request.POST.get("item_status", "defaultStatus")
 
             form1 = ItemForm(request.POST, request.FILES)
             args = {"form1": form1}
@@ -81,6 +82,7 @@ class ListingViews(generic.DetailView):
                 item.item_posted_date = item_posted_date
                 item.item_condition = item_condition 
                 item.item_seller_name = item_seller_name
+                item.item_status = item_status
                 item.save()
                 messages.success(request, 'Your form was submitted successfully!')
             else:
@@ -96,6 +98,11 @@ class ProfileViews(generic.DetailView):
         return render(request, self.template_name, {
             'user': request.user,
     })
+
+class UpdateListingView(generic.UpdateView):
+    model = Item
+    template_name = 'marketplace/update_listing.html'
+    fields = ['item_status']
 
 
 class EditProfileViews(generic.DetailView):
