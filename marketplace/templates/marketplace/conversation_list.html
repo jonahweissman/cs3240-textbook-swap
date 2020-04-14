@@ -4,17 +4,20 @@
 <a href="{% url 'marketplace:item_detail' view.kwargs.pk %}">
   <button type="button" class="btn btn-info btn-lg">&larr; Back to item</button>
 </a>
-{% for conversation in object_list %}
-	{% if request.user == conversation.item.item_seller_name.user %}
-	<h3> {{ conversation.buyer.user.first_name}}</h3>
-	{% else %}
-	<h3> {{ conversation.item.item_seller_name.user.first_name}}</h3>
-	{% endif %}
-	{% for message in conversation.message_set.all %}
-	<p>
-	<b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
-	</p>
-	{% endfor %}
+{% for c in conversation_list %}
+  <h3>{{ c.to.user.first_name }} {{ c.to.user.last_name }}</h3>
+  {% for message in c.conversation.message_set.all %}
+    <p>
+    <b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
+    </p>
+  {% endfor %}
+  <p>
+    <form action="{{ request.path }}" method="POST">
+      {% csrf_token %}
+      {{ c.form }}
+      <input type="submit" value="send" class="btn btn-outline-primary">
+    </form>
+  </p>
 {% empty %}
 	<div class="jumbotron">
 		<div class="display-4">No conversations yet</div>
