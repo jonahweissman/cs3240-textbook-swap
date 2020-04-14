@@ -26,9 +26,10 @@
         <h1 class="display-4 text-white">All Listings</h1>
 
         {% for items in allItems %}
-                        {% if items.item_status == "Available" %}
+
 
 		    <a href="{% url 'marketplace:item_detail' items.pk %}">
+                {% if items.item_status == "Available" %}
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                         <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
                     <div class="card-body text-white">
@@ -99,6 +100,7 @@
         {% endfor %}
 
 </div>
+
 {% endblock content %}
   </div>
 </div>
