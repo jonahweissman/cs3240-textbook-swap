@@ -3,7 +3,6 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-from django.contrib.postgres.operations import TrigramExtension
 
 
 class Migration(migrations.Migration):
@@ -40,5 +39,4 @@ class Migration(migrations.Migration):
                 ('item_seller_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='marketplace.Profile')),
             ],
         ),
-        TrigramExtension(),
     ]
