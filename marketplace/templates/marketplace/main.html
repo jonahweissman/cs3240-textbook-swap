@@ -45,6 +45,11 @@
                         <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
                         <br>
                         <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+                        <br>
+                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
+                        <br>
+                        <a href="{% url 'marketplace:updateListing' items.pk %}">Update</a>
+
                     </div>
                     </div>
 		    </a>
