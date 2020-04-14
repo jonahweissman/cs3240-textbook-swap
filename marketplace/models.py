@@ -53,9 +53,9 @@ class Item(models.Model):
     item_posted_date = models.DateField(null=True)
     item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     item_description = models.TextField(max_length= 1000, null=True)
-    item_status_choices = (("Available", "Available"),("Sold", "Sold"))
+    item_status_choices = (("Available", "Available"),("Sold", "Sold"), ("Unavailable", "Unavailable"))
     item_status = models.CharField(max_length=20, choices=item_status_choices, default= "Available")
-
+    count = User.objects.count()
 
     def __str__(self):
         return self.item_name
@@ -76,7 +76,7 @@ class Message(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    in_response_to = models.OneToOneField('self', on_delete=models.CASCADE, null=True)
+    in_response_to = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
 
     def __str__(self):
