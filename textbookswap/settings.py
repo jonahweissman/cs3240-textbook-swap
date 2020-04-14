@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'social_django',
     'marketplace',
+    'phone_field',
 ]
 
 MIDDLEWARE = [
