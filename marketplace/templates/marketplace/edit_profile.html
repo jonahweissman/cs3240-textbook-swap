@@ -1,0 +1,15 @@
+{% extends 'marketplace/base.html' %}
+
+{% block content %}
+<div class="container">
+  <br>
+  <form enctype="multipart/form-data" method="POST" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Edit Profile</button>
+      <br>
+  </form>
+            <br>
+  <a href="{% url 'marketplace:profile' %}" type="button" class="btn btn-primary">Return to Profile</a>
+</div>
+{% endblock %}

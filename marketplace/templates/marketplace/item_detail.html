@@ -3,16 +3,6 @@
 {% block content %}
 <h1 class="text-white">{{ object.item_name }}</h1>
 <h2 class="text-white">{{ object.item_seller_name.user}}</h2>
-<p class="text-white">About Seller: </p>
-{% if object.item_seller_name.phonenumber  %}
-  <p class="text-white">Phone Number: {{ object.item_seller_name.phonenumber }}</p>
-{% endif %}
-{% if object.item_seller_name.major  %}
-  <p class="text-white">Major: {{ object.item_seller_name.major }}</p>
-{% endif %}
-{% if object.item_seller_name.year  %}
-  <p class="text-white">Year: {{ object.item_seller_name.year }}</p>
-{% endif %}
 
 {% if not user.is_authenticated %}
 <form action="{% url 'marketplace:login' %}" class="form-inline my-2 my-lg-0">
