@@ -16,6 +16,7 @@ class SearchViews(generic.ListView):
         'relevance': [
             'name_distance',
             'author_distance',
+            'course_distance',
             'description_distance',
         ],
         'date': ['-item_posted_date'],
@@ -40,9 +41,11 @@ class SearchViews(generic.ListView):
         hit_filter = Q(name_distance__lte=0.8) \
                      | Q(description_distance__lte=0.7) \
                      | Q(author_distance__lte=0.7) \
+                     | Q(course_distance__lte=0.3) \
                      | Q(item_isbn=query)
         return self.model.objects.annotate(
             name_distance=TrigramWordDistance('item_name', query),
             description_distance=TrigramWordDistance('item_description', query),
+            course_distance=TrigramWordDistance('item_course', query),
             author_distance=TrigramWordDistance('item_author', query),
         ).filter(hit_filter).order_by(*order_by)

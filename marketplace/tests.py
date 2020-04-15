@@ -102,6 +102,7 @@ class TrigramSearchTest(TestCase):
             item_condition="Like New",
             item_author='Stewart',
             item_isbn=12345,
+            item_course='MATH 1234',
             item_seller_name=bob,
         )
         self.java = Item.objects.create(
@@ -150,6 +151,18 @@ class TrigramSearchTest(TestCase):
 
     def test_author(self):
         response = self.client.get('/search?query=Stewart')
+        results = list(response.context['object_list'])
+        self.assertIn(self.calc_name, results)
+        self.assertEqual(results[0], self.calc_name)
+
+    def test_whole_course(self):
+        response = self.client.get('/search?query=math%201234')
+        results = list(response.context['object_list'])
+        self.assertIn(self.calc_name, results)
+        self.assertEqual(results[0], self.calc_name)
+
+    def test_partial_course(self):
+        response = self.client.get('/search?query=math')
         results = list(response.context['object_list'])
         self.assertIn(self.calc_name, results)
         self.assertEqual(results[0], self.calc_name)
