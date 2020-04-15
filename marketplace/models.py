@@ -26,20 +26,20 @@ def ensure_profile_exists(sender, **kwargs):
     if kwargs.get('created', False):
         Profile.objects.get_or_create(user=kwargs.get('instance'))
 
-@receiver(models.signals.pre_save, sender=Profile)
-def auto_delete_file_on_change(sender, instance, **kwargs):
-    if not instance.pk:
-        return False
+# @receiver(models.signals.pre_save, sender=Profile)
+# def auto_delete_file_on_change(sender, instance, **kwargs):
+#     if not instance.pk:
+#         return False
 
-    try:
-        old_file = sender.objects.get(pk=instance.pk).imagefile
-    except sender.DoesNotExist:
-        return False
+#     try:
+#         old_file = sender.objects.get(pk=instance.pk).imagefile
+#     except sender.DoesNotExist:
+#         return False
 
-    new_file = instance.imagefile
-    if not old_file == new_file:
-        if not old_file.name == '' and os.path.isfile(old_file.path):
-            os.remove(old_file.path)
+#     new_file = instance.imagefile
+#     if not old_file == new_file:
+#         if not old_file.name == '' and os.path.isfile(old_file.path):
+#             os.remove(old_file.path)
 
 
 class Item(models.Model):
@@ -51,7 +51,7 @@ class Item(models.Model):
     item_course = models.CharField(max_length=100, null=True)
     item_price = models.IntegerField(null=True)
     item_image = models.ImageField(upload_to='images/', null=True)
-    item_condition = models.CharField(max_length=20, choices=item_condition_choices, default= "Brand New")
+    item_condition = models.CharField(max_length=20, choices=item_condition_choices, default= "Like New")
     item_posted_date = models.DateField(null=True)
     item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     item_description = models.TextField(max_length= 1000, null=True)
