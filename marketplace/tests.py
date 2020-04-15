@@ -253,7 +253,8 @@ class AddListingTests(TestCase):
                 'item_course': 'CS 9999',
                 'item_image': f,
                 'item_price': 10,
-                'item_condition': 'Good'
+                'item_condition': 'Good',
+                'item_description': ''
             })
         self.assertEquals(len(Item.objects.all()), 1)
         item = Item.objects.all()[0]
