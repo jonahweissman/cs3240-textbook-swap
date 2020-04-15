@@ -1,5 +1,6 @@
 import datetime
 import os
+from uuid import UUID
 from django.test import TestCase
 from django.test import Client
 from django.db import models
@@ -8,7 +9,7 @@ from django.core import mail
 import requests
 
 from marketplace.models import Item, User
-from marketplace import models
+from marketplace import models, forms
 
 
 # Create your tests here.
@@ -338,12 +339,38 @@ class BuyerSellerCommunicationTests(TestCase):
         conversation = models.Conversation.objects.create(
             item=self.item,
             buyer=self.bob)
-        root_message = models.Message.objects.create(
+        self.root_message = models.Message.objects.create(
             author=self.bob,
             text='Hey do you want to buy my book?',
-            id=self.uuid,
+            id=UUID(self.uuid),
             conversation=conversation,
             in_response_to=None)
+
+    def test_unauthorized(self):
+        headers = {
+            'HTTP_AUTHORIZATION': 'Basic Y2xvdWRtYWlsaW46UWd2OWh5RFRCdllkUVdZMlluUm5lOXQ1WTg1ZTV5dHFKcFN4amc=',
+        }
+        multipart_formdata = {
+            'headers[To]': '8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net',
+            'headers[From]': 'bob bobson <bob@example.com>',
+            'reply_plain': 'hi this is my reply',
+        }
+        response = self.client.post('/email/receive',
+                                    multipart_formdata,
+                                    **headers)
+
+        self.assertEquals(response.status_code, 403)
+        headers = {
+            'HTTP_AUTHORIZATION': 'BAsic Y2xvdWRtYWlsaW46UWd2OWh5RFRCdllkUVdZMlluUm5lOXQ1WTg1ZTV5dHFKcFN4amc=',
+        }
+        response = self.client.post('/email/receive',
+                                    multipart_formdata,
+                                    **headers)
+
+        self.assertEquals(response.status_code, 403)
+        response = self.client.post('/email/receive',
+                                    multipart_formdata)
+        self.assertEquals(response.status_code, 403)
 
     def test_receive_email(self):
         headers = {
@@ -363,6 +390,41 @@ class BuyerSellerCommunicationTests(TestCase):
         fake_uuid = self.uuid[:-1] + 'a'
         self.assertEqual(len(models.Message.objects.filter(pk=fake_uuid)), 0)
 
+    def test_receive_email_form(self):
+        data = {
+            'in_response_to': '8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net',
+            'author': 'bob bobson <bob@example.com>',
+            'text': 'hi this is my reply',
+        }
+        f = forms.ReceiveMessageForm(data)
+        valid = f.is_valid()
+        if not valid:
+            print(f.errors)
+        self.assertTrue(valid)
+        self.assertEquals(f.cleaned_data['in_response_to'].pk,
+                          self.root_message.pk)
+        self.assertEquals(f.cleaned_data['author'], self.bob)
+        self.assertEquals(f.cleaned_data['text'], data['text'])
+        self.assertEquals(f.cleaned_data['conversation'].pk,
+                          self.root_message.conversation.pk)
+
+    def test_receive_tricky_email(self):
+        headers = {
+            'HTTP_AUTHORIZATION': 'Basic Y2xvdWRtYWlsaW46UWd2OWh5RFRCdllkUVdZMlluUm5lOXQ1WTg1ZTV5dHFKcFN5amc=',
+        }
+        multipart_formdata = {
+            'headers[To]': '"8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net" <8becc54808c611029b55+d3c3cf74-d3c1-4420-8f9a-86d8670bb51d@cloudmailin.net>',
+            'headers[From]': 'bob bobson <bob@example.com>',
+            'reply_plain': 'hi this is my reply',
+        }
+        response = self.client.post('/email/receive',
+                                    multipart_formdata,
+                                    **headers)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertIsNotNone(models.Message.objects.get(pk=self.uuid))
+        fake_uuid = self.uuid[:-1] + 'a'
+        self.assertEqual(len(models.Message.objects.filter(pk=fake_uuid)), 0)
     def test_send_email(self):
         self.client.force_login(self.bob.user)
         response = self.client.post('/email/send', {'item':self.item.pk, 'message':'hi'})
