@@ -89,7 +89,7 @@ class ListingViews(generic.DetailView):
                 item.save()
                 messages.success(request, 'Your form was submitted successfully!')
             else:
-                messages.success(request, 'ERROR! Your form could not be submitted.')
+                messages.error(request, 'ERROR! Your form could not be submitted.')
 
             return render(request, self.template_name, args)
 
