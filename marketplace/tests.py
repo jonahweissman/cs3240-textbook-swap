@@ -104,6 +104,13 @@ class TrigramSearchTest(TestCase):
             item_isbn=12345,
             item_seller_name=bob,
         )
+        self.java = Item.objects.create(
+            item_name='Big Java, Binder Ready Edition (this name is long)',
+            item_price=1,
+            item_posted_date=datetime.datetime.now(),
+            item_condition="Like New",
+            item_seller_name=bob,
+        )
 
     def test_typo(self):
         response = self.client.get('/search?query=this%20contains%20a%20typo')
@@ -118,7 +125,15 @@ class TrigramSearchTest(TestCase):
     def test_mispelling_order(self):
         response = self.client.get('/search?query=onion')
         search_results_list = list(response.context['object_list'])
-        self.assertEqual(self.onions, search_results_list)
+        self.assertEqual(search_results_list[0], self.onions[0])
+        self.assertTrue(search_results_list.index(self.onions[0])
+                        < search_results_list.index(self.onions[1])
+                        < search_results_list.index(self.onions[2]))
+
+    def test_big_length_difference(self):
+        response = self.client.get('/search?query=java')
+        results = list(response.context['object_list'])
+        self.assertIn(self.java, results)
 
     def test_field_precendence(self):
         response = self.client.get('/search?query=calculus')
