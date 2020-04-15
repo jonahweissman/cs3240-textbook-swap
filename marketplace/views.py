@@ -49,7 +49,7 @@ class ListingViews(generic.DetailView):
             item_price= request.POST.get("item_price", -1 )
             item_description= request.POST.get("item_description", "No description entered")
             item_posted_date = timezone.now()
-            item_condition = request.POST.get("item_condition", "defaultCondition")
+            item_condition = request.POST.get("item_condition", "Available")
             item_seller_name =  Profile.objects.get(user=request.user)
             item_status = request.POST.get("item_status", "defaultStatus")
 
@@ -69,7 +69,7 @@ class ListingViews(generic.DetailView):
             if item_author == "defaultAuthor":
                 item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
 
-            if item_description == "No description entered" and item_isbn != "defaultName":
+            if item_description == "" and item_isbn != "defaultName":
                 item_description= info_from_api['items'][0]['volumeInfo']['description']
 
             
