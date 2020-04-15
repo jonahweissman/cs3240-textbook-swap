@@ -405,5 +405,3 @@ class Profile(TestCase):
     def test_profile(self):
         Profile = User.objects.last().profile
 
-
-

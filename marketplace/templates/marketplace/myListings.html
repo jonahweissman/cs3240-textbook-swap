@@ -7,9 +7,14 @@
     {% if error_message %}
         <p align='center' style="color:red;"><strong>{{ error_message }}</strong></p>
     {% else %}
-<div class="card-columns">
-        {% for items in allItems %}
+<div class="row">
+<div class="col">
+          <h1 class="display-4 text-white">Current Listings</h1>
+
+        {% for items in availableItems %}
             {% if items.item_seller_name.user.username == user.username %}
+
+
                     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                         <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
                     <div class="card-body text-white">
@@ -28,10 +33,90 @@
                         <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
                         <br>
                         <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+                        <br>
+                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
+                        <br>
+                        <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' items.pk %}">Update Status</a>
                     </div>
                     </div>
-            {%endif%}
+
+    {%endif%}
         {% endfor %}
+</div>
+    <div class="col">
+              <h1 class="display-4 text-white">Sold Listings</h1>
+        <br>
+        <br>
+        <br>
+
+        {% for items in soldItems %}
+            {% if items.item_seller_name.user.username == user.username %}
+
+
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
+                    <div class="card-body text-white">
+                    {% if items.item_image  %}
+                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
+                    {% else %}
+                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
+                    {% endif %}
+                        <br>
+
+                        <strong> <font color="#00b300">Author:</font> </strong>{{items.item_author}} <br>
+                        <strong><font color="#00b300">Course: </font></strong> {{items.item_course}}
+                        <br>
+                        <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
+                        <br>
+                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
+                        <br>
+                        <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+                        <br>
+                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
+                        <br>
+                        <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' items.pk %}">Update Status</a>
+                    </div>
+                    </div>
+
+        {%endif%}
+        {% endfor %}
+
+</div>
+    <div class="col">
+          <h1 class="display-4 text-white">Unavailable Listings</h1>
+
+        {% for items in unavailableItems %}
+            {% if items.item_seller_name.user.username == user.username %}
+
+
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
+                    <div class="card-body text-white">
+                    {% if items.item_image  %}
+                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
+                    {% else %}
+                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
+                    {% endif %}
+                        <br>
+
+                        <strong> <font color="#00b300">Author:</font> </strong>{{items.item_author}} <br>
+                        <strong><font color="#00b300">Course: </font></strong> {{items.item_course}}
+                        <br>
+                        <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
+                        <br>
+                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
+                        <br>
+                        <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+                        <br>
+                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
+                        <br>
+                        <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' items.pk %}">Update Status</a>
+                    </div>
+                    </div>
+
+    {%endif%}
+        {% endfor %}
+</div>
 </div>
     {% endif %}
 {% endblock content %}

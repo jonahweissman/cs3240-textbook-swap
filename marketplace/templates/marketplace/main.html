@@ -26,7 +26,10 @@
         <h1 class="display-4 text-white">All Listings</h1>
 
         {% for items in allItems %}
+
+
 		    <a href="{% url 'marketplace:item_detail' items.pk %}">
+                {% if items.item_status == "Available" %}
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                         <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
                     <div class="card-body text-white">
@@ -45,29 +48,26 @@
                         <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
                         <br>
                         <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+                        <br>
+                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
+                        {% if items.item_seller_name.user.username == user.username %}
+                        <br>
+                        <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' items.pk %}">Update Status</a>
+                        {%endif%}
+
                     </div>
                     </div>
 		    </a>
+        {%endif%}
         {% endfor %}
 
     </div>
 
-
-    <!--<div class="col-sm">-->
-      <!--<h1 class="display-4 text-white">My Reviews</h1>-->
-                    <!--<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">-->
-                        <!--<div class="card-header bg-success"><strong>Reviewer Name</strong></div>-->
-                    <!--<div class="card-body text-white">-->
-                    <!--<h5 class="card-title text-white">Rating (Out of 5)</h5>-->
-                    <!--<p class="card-text">Review Description</p>-->
-                    <!--</div>-->
-                    <!--</div>-->
-
-    <!--</div>-->
     <div class="col">
       <h1 class="display-4 text-white">My Listings</h1>
         {% for items in allItems %}
             {% if items.item_seller_name.user.username == user.username %}
+                {% if items.item_status == "Available" %}
                     <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                         <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
                     <div class="card-body text-white">
@@ -86,13 +86,21 @@
                         <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
                         <br>
                         <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
+                        <br>
+                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
+
+                        <br>
+                        <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' items.pk %}">Update Status</a>
                         </div>
                     </div>
+        {%endif%}
             {%endif%}
+
 
         {% endfor %}
 
 </div>
+
 {% endblock content %}
   </div>
 </div>

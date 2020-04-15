@@ -1,20 +1,20 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib.auth import logout
+from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
-from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramDistance
-from django.db.models import Q
-from django.shortcuts import get_object_or_404
-from django.contrib import messages
-import requests
-
 from .forms import ImageForm, ItemForm
 from .forms import EditProfileForm
+from django.db.models import Q
 from .models import Item, Profile
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramDistance
+
+import requests
+
 
 
 # Create your views here.
@@ -51,6 +51,8 @@ class ListingViews(generic.DetailView):
             item_posted_date = timezone.now()
             item_condition = request.POST.get("item_condition", "defaultCondition")
             item_seller_name =  Profile.objects.get(user=request.user)
+            item_status = request.POST.get("item_status", "defaultStatus")
+
             form1 = ItemForm(request.POST, request.FILES)
             args = {"form1": form1}
 
@@ -83,6 +85,7 @@ class ListingViews(generic.DetailView):
                 item.item_posted_date = item_posted_date
                 item.item_condition = item_condition 
                 item.item_seller_name = item_seller_name
+                item.item_status = item_status
                 item.save()
                 messages.success(request, 'Your form was submitted successfully!')
             else:
@@ -95,6 +98,22 @@ class ProfileViews(generic.DetailView):
 
     def get(self, request):
         Profiles = Profile.objects.all()
+        return render(request, self.template_name, {
+            'user': request.user,
+    })
+
+class UpdateListingView(generic.UpdateView):
+    model = Item
+    template_name = 'marketplace/update_listing.html'
+    fields = ['item_status']
+
+
+
+
+class EditProfileViews(generic.DetailView):
+    template_name = "marketplace/edit_profile.html"
+
+    def get(self, request):
         form = ImageForm()
         return render(request, self.template_name, {
             'user': request.user, "form": form
@@ -109,7 +128,6 @@ class ProfileViews(generic.DetailView):
         args = {"form": form}
         return render(request, self.template_name, args)
 
-
 class MyListings(generic.ListView):
     template_name = "marketplace/myListings.html"
 
@@ -121,13 +139,20 @@ class MyListings(generic.ListView):
         else:
             user = get_object_or_404(Profile, user=request.user)
             allItems = Item.objects.filter(item_seller_name=user)
+            availableItems = Item.objects.filter(item_status="Available",item_seller_name=user )
+            soldItems = Item.objects.filter(item_status="Sold", item_seller_name=user)
+            unavailableItems = Item.objects.filter(item_status="Unavailable", item_seller_name=user)
             return render(request, self.template_name, {
                 'allItems': allItems,
+                'availableItems': availableItems,
+                'soldItems': soldItems,
+                'unavailableItems': unavailableItems,
             })
 
 class SearchViews(generic.ListView):
     model = Item
     template_name = "marketplace/search_results.html"
+    context_object_name = 'search_results'
     paginate_by = 10
     sort_mapping = {
         'relevance': [
@@ -155,15 +180,14 @@ class SearchViews(generic.ListView):
         sort_by = self.request.GET.get('sort', self.sort_default)
         order_by = self.sort_mapping[sort_by]
         hit_filter = Q(name_distance__lte=0.8) \
-            | Q(description_distance__lte=0.7) \
-            | Q(author_distance__lte=0.7) \
-            | Q(item_isbn=query)
+                     | Q(description_distance__lte=0.7) \
+                     | Q(author_distance__lte=0.7) \
+                     | Q(item_isbn=query)
         return self.model.objects.annotate(
             name_distance=TrigramDistance('item_name', query),
             description_distance=TrigramDistance('item_description', query),
             author_distance=TrigramDistance('item_author', query),
         ).filter(hit_filter).order_by(*order_by)
-
 
 class ItemDetail(generic.DetailView):
     model=Item
