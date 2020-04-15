@@ -49,9 +49,9 @@ class ListingViews(generic.DetailView):
             item_price= request.POST.get("item_price", -1 )
             item_description= request.POST.get("item_description", "No description entered")
             item_posted_date = timezone.now()
-            item_condition = request.POST.get("item_condition", "Available")
+            item_condition = request.POST.get("item_condition", "Like New")
             item_seller_name =  Profile.objects.get(user=request.user)
-            item_status = request.POST.get("item_status", "defaultStatus")
+            item_status = request.POST.get("item_status", "Available")
 
             form1 = ItemForm(request.POST, request.FILES)
             args = {"form1": form1}
