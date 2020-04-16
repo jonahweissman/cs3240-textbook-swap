@@ -68,3 +68,14 @@ class ReceiveMessageForm(forms.ModelForm):
         return cleaned_data
 
 
+class SendMessageForm(forms.Form):
+    text = forms.CharField(strip=True,
+                           error_messages={'required': "Type a message"},
+                           label='')
+    to = forms.ModelChoiceField(queryset=models.Profile.objects.all(),
+        widget=forms.HiddenInput)
+    conversation = forms.ModelChoiceField(
+        queryset=models.Conversation.objects.all(),
+        widget=forms.HiddenInput)
+    in_response_to = forms.ModelChoiceField(queryset=models.Message.objects.all(),
+        widget=forms.HiddenInput)
