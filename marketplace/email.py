@@ -124,7 +124,7 @@ class ConversationView(LoginRequiredMixin, generic.ListView):
                     'to': to,
                     'item': conversation_obj.item,
                     'conversation': conversation_obj,
-                    'in_response_to': conversation_obj.message_set.last()
+                    'in_response_to': conversation_obj.message_set.order_by('date').last()
                 }
             )
             conversation['conversation'] = conversation_obj
