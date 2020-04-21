@@ -1,5 +1,7 @@
 from django.shortcuts import redirect
 from django.core import mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.urls import reverse
@@ -44,18 +46,20 @@ def send_intro_message(request):
 def notify_about_new_message(sender, receiver, item, message, uuid):
     name = f"{sender.first_name} {sender.last_name}"
     subject = f"New message about {item.item_name} from {name}"
-    body = (f"{name} just sent you a message about {item.item_name}. "
-            "Reply directly to this email to respond.\n"
-            f"{'-' * 20}"
-            "\n\n"
-            f"{message}"
-    )
-    message = mail.EmailMessage(
+    html_message = render_to_string('marketplace/notification_email.html',
+                                    {
+                                        'message': message,
+                                        'item': item,
+                                        'name': name,
+                                    })
+    print(html_message)
+    message = mail.EmailMultiAlternatives(
         subject=subject,
-        body=body,
+        body=strip_tags(html_message),
         to=[receiver.email],
         reply_to=[f'{settings.CLOUDMAILIN_ID}+{uuid}@cloudmailin.net'],
     )
+    message.attach_alternative(html_message, "text/html")
     message.send()
 
 @csrf_exempt
