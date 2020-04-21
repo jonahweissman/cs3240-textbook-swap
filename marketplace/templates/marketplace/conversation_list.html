@@ -5,7 +5,7 @@
   <button type="button" class="btn btn-info btn-lg">&larr; Back to item</button>
 </a>
 {% for c in conversation_list %}
-  <h3>{{ c.to.user.first_name }} {{ c.to.user.last_name }}</h3>
+  <h3>Conversation with {{ c.to.user.first_name }} {{ c.to.user.last_name }}</h3>
   {% for message in c.conversation.message_set.all %}
     <p>
     <b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
