@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.core import mail
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse
 from django.urls import reverse
 from django.conf import settings
 from django.views import generic
@@ -59,7 +59,7 @@ def notify_about_new_message(sender, receiver, item, message, uuid):
 
 @csrf_exempt
 def receive_message(request):
-    if is_not_authorized(request):
+    if is_unauthorized(request):
         return HttpResponse(status=403)
     f = forms.ReceiveMessageForm(rename_fields(request.POST))
     if not f.is_valid():
@@ -80,13 +80,13 @@ def other_participant(conversation, person_a):
         return conversation.buyer
 
 def rename_fields(post):
-    post = post.copy()
-    post['in_response_to'] = post['headers[To]']
-    post['author'] = post['headers[From]']
-    post['text'] = post['reply_plain'] or post['plain']
-    return post
+    return {
+        'in_response_to': post['headers[To]'],
+        'author': post['headers[From]'],
+        'text': post['reply_plain'] or post['plain'],
+    }
 
-def is_not_authorized(request):
+def is_unauthorized(request):
     if not 'authorization' in request.headers:
         return True
     authorization_re = re.compile(r'Basic (.+)')
