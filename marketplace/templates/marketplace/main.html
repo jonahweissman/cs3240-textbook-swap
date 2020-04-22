@@ -1,5 +1,5 @@
 {% extends 'marketplace/base.html' %}
-
+{% load concat_string %}
 {% block content %}
 
 <div class="container">
@@ -45,7 +45,12 @@
                         <br>
                         <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
                         <br>
-                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
+                        <style>
+                          {{"#more"|concat_string:items.pk}}{display: none;}
+                          </style>
+                        <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 350 %} {{items.item_description|slice:":350"}}<span id= "{{"dots"|concat_string:items.pk}}">...</span><span id="{{"more"|concat_string:items.pk}}">{{items.item_description|slice:"350:"}}</span>
+                      <br><a> <button onclick="viewMoreOrLess({{items.pk}})" class="btn btn-secondary btn-sm" id= "{{""|concat_string:items.pk}}" >Read more</button> </a>
+                        {%else%} {{items.item_description}} {%endif%}
                         <br>
                         <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
                         <br>
@@ -83,7 +88,12 @@
                         <br>
                         <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
                         <br>
-                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
+                        <style>
+                            {{"#more"|concat_string:items.pk|concat_string:"a"}}{display: none;}
+                            </style>
+                          <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 350 %} {{items.item_description|slice:":350"}}<span id= "{{"dots"|concat_string:items.pk|concat_string:"a"}}">...</span><span id="{{"more"|concat_string:items.pk|concat_string:"a"}}">{{items.item_description|slice:"350:"}}</span>
+                        <br> <button onclick="viewMoreOrLess({{"'"|concat_string:items.pk|concat_string:"a"|concat_string:"'"}})" class="btn btn-secondary btn-sm" id= "{{items.pk|concat_string:"a"}}" >Read more</button> 
+                          {%else%} {{items.item_description}} {%endif%}
                         <br>
                         <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
                         <br>
