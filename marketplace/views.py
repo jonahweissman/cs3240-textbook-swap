@@ -19,9 +19,11 @@ import requests
 class IndexViews(generic.ListView):
     template_name = "marketplace/main.html"
     context_object_name = "allItems"
+    num_listings_display = 30
 
     def get_queryset(self):
-        return Item.objects.all()
+        return Item.objects.all() \
+            .order_by('-item_posted_date')[:self.num_listings_display]
 
 class ListingViews(generic.DetailView):
     template_name = "marketplace/addListing.html"
