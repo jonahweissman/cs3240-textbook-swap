@@ -47,7 +47,7 @@
                         <style>
 				#more{{ items.pk}}{display: none;}
                           </style>
-			  <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 350 %} {{items.item_description|slice:":350"}}<span id= "dots{{ items.pk }}">...</span><span id="more{{ items.pk }}">{{items.item_description|slice:"350:"}}</span>
+			  <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 150 %} {{items.item_description|slice:":150"}}<span id= "dots{{ items.pk }}">...</span><span id="more{{ items.pk }}">{{items.item_description|slice:"150:"}}</span>
                       <br><a> <button onclick="viewMoreOrLess({{items.pk}})" class="btn btn-secondary btn-sm" id= "{{ items.pk }}" >Read more</button> </a>
                         {%else%} {{items.item_description}} {%endif%}
                         <br>
@@ -90,7 +90,7 @@
                         <style>
 				#more{{ items.pk }}a {display: none;}
                             </style>
-			    <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 350 %} {{items.item_description|slice:":350"}}<span id= "dots{{ items.pk }}a">...</span><span id="more{{ items.pk }}a"}}">{{items.item_description|slice:"350:"}}</span>
+			    <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 150 %} {{items.item_description|slice:":150"}}<span id= "dots{{ items.pk }}a">...</span><span id="more{{ items.pk }}a"}}">{{items.item_description|slice:"150:"}}</span>
 			    <br> <button onclick="viewMoreOrLess('{{ items.pk }}a')" class="btn btn-secondary btn-sm" id="{{ items.pk }}a" >Read more</button> 
                           {%else%} {{items.item_description}} {%endif%}
                         <br>
