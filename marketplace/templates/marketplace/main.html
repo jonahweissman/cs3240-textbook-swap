@@ -22,8 +22,9 @@
 </div>
   <div class="row">
     <div class="col">
-        <h1 class="display-4 text-white">All Listings</h1>
+        <h1 class="display-4 text-white">Recent Listings</h1>
 
+        <div class="card-deck">
         {% for items in allItems %}
 		    <a href="{% url 'marketplace:item_detail' items.pk %}">
                 {% if items.item_status == "Available" %}
@@ -31,19 +32,9 @@
 		    </a>
 		{%endif%}
         {% endfor %}
+        </div>
 
     </div>
-
-    <div class="col">
-      <h1 class="display-4 text-white">My Listings</h1>
-        {% for items in allItems %}
-            {% if items.item_seller_name.user.username == user.username %}
-                {% if items.item_status == "Available" %}
-		  {% include 'marketplace/item_card.html' with item=items %}
-		{%endif%}
-            {%endif%}
-        {% endfor %}
-
 </div>
 
 {% endblock content %}
