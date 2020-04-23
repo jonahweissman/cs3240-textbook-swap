@@ -8,7 +8,6 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from email.errors import MessageParseError
 from base64 import b64decode
 import re
 
@@ -60,41 +59,43 @@ def notify_about_new_message(sender, receiver, item, message, uuid):
 
 @csrf_exempt
 def receive_message(request):
-    # parse authorization
+    if is_unauthorized(request):
+        return HttpResponse(status=403)
+    f = forms.ReceiveMessageForm(rename_fields(request.POST))
+    if not f.is_valid():
+        return HttpResponse(status=400, reason="Failed to validate form")
+    message = f.save()
+    receiver = other_participant(message.conversation, message.author)
+    notify_about_new_message(sender=message.author.user,
+                             receiver=receiver.user,
+                             item=message.conversation.item,
+                             message=message.text,
+                             uuid=message.id)
+    return HttpResponse(status=200)
+
+def other_participant(conversation, person_a):
+    if conversation.buyer == person_a:
+        return conversation.item.item_seller_name
+    else:
+        return conversation.buyer
+
+def rename_fields(post):
+    return {
+        'in_response_to': post['headers[To]'],
+        'author': post['headers[From]'],
+        'text': post['reply_plain'] or post['plain'],
+    }
+
+def is_unauthorized(request):
+    if not 'authorization' in request.headers:
+        return True
     authorization_re = re.compile(r'Basic (.+)')
     authorization = authorization_re.search(request.headers['authorization'])
-    if authorization is None or b64decode(authorization.group(1)).decode('ascii') != settings.CLOUDMAILIN_CREDENTIALS:
-        return HttpResponse(status=403)
-    # parse sender email
-    email_re = re.compile(r'<(.+@.+\..+)>')
-    email = email_re.search(request.POST['headers[From]'])
-    if email is None:
-        raise MessageParseError
-    email = email.group(1)
-    from_user = models.User.objects.filter(email=email)[0]
-    # parse tracking uuid
-    uuid_re = re.compile(r'\+(.*)@')
-    uuid = uuid_re.search(request.POST['headers[To]'])
-    if uuid is None:
-        raise MessageParseError
-    uuid = uuid.group(1)
-    # parse content
-    text = request.POST.get('reply_plain') or request.POST.get('plain')
-    # save to DB
-    in_response_to = models.Message.objects.get(pk=uuid)
-    conversation = in_response_to.conversation
-    message = models.Message(
-        author=from_user.profile,
-        in_response_to=in_response_to,
-        conversation=conversation,
-        text=text)
-    message.save()
-    if conversation.buyer == from_user.profile:
-        to = conversation.item.item_seller_name.user
-    else:
-        to = conversation.buyer.user
-    notify_about_new_message(from_user, to, conversation.item, text, message.id)
-    return HttpResponse(status=200)
+    if not authorization:
+        return True
+    authorization = b64decode(authorization.group(1)).decode('ascii')
+    return (authorization is None or
+            authorization != settings.CLOUDMAILIN_CREDENTIALS)
 
 class ConversationView(LoginRequiredMixin, generic.ListView):
     model=models.Conversation
@@ -114,10 +115,7 @@ class ConversationView(LoginRequiredMixin, generic.ListView):
         conversation_list = []
         for conversation_obj in context['object_list']:
             conversation = {}
-            if self.request.user == conversation_obj.item.item_seller_name.user:
-                to = conversation_obj.buyer
-            else:
-                to = conversation_obj.item.item_seller_name
+            to = other_participant(conversation_obj, self.request.user.profile)
             conversation['to'] = to
             conversation['form'] = forms.SendMessageForm(
                 initial={
