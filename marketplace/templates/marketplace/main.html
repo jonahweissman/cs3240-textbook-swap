@@ -1,5 +1,4 @@
 {% extends 'marketplace/base.html' %}
-
 {% block content %}
 
 <div class="container">
@@ -44,7 +43,12 @@
                         <br>
                         <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
                         <br>
-                        <strong> <font color="#00b300">Info: </font> </strong> {{items.item_description}}
+                        <style>
+				#more{{ items.pk}}{display: none;}
+                          </style>
+			  <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 150 %} {{items.item_description|slice:":150"}}<span id= "dots{{ items.pk }}">...</span><span id="more{{ items.pk }}">{{items.item_description|slice:"150:"}}</span>
+                      <br><a> <button onclick="viewMoreOrLess({{items.pk}})" class="btn btn-secondary btn-sm" id= "{{ items.pk }}" >Read more</button> </a>
+                        {%else%} {{items.item_description}} {%endif%}
                         <br>
                         <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
                         <br>
