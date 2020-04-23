@@ -25,44 +25,11 @@
         <h1 class="display-4 text-white">All Listings</h1>
 
         {% for items in allItems %}
-
-
 		    <a href="{% url 'marketplace:item_detail' items.pk %}">
                 {% if items.item_status == "Available" %}
-<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
-                    <div class="card-body text-white">
-                    {% if items.item_image  %}
-                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
-                    {% else %}
-                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
-                    {% endif %}
-                        <br>
-
-                        <strong> <font color="#00b300">Author:</font> </strong>{{items.item_author}} <br>
-                        <strong><font color="#00b300">Course: </font></strong> {{items.item_course}}
-                        <br>
-                        <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
-                        <br>
-                        <style>
-				#more{{ items.pk}}{display: none;}
-                          </style>
-			  <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 150 %} {{items.item_description|slice:":150"}}<span id= "dots{{ items.pk }}">...</span><span id="more{{ items.pk }}">{{items.item_description|slice:"150:"}}</span>
-                      <br><a> <button onclick="viewMoreOrLess({{items.pk}})" class="btn btn-secondary btn-sm" id= "{{ items.pk }}" >Read more</button> </a>
-                        {%else%} {{items.item_description}} {%endif%}
-                        <br>
-                        <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
-                        <br>
-                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
-                        {% if items.item_seller_name.user.username == user.username %}
-                        <br>
-                        <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' items.pk %}">Update Status</a>
-                        {%endif%}
-
-                    </div>
-                    </div>
+		{% include 'marketplace/item_card.html' with item=items %}
 		    </a>
-        {%endif%}
+		{%endif%}
         {% endfor %}
 
     </div>
@@ -72,40 +39,9 @@
         {% for items in allItems %}
             {% if items.item_seller_name.user.username == user.username %}
                 {% if items.item_status == "Available" %}
-                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-white bg-success"><strong>Title: </strong>{{items.item_name}}</div>
-                    <div class="card-body text-white">
-                    {% if items.item_image  %}
-                    <img src="{{ items.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
-                    {% else %}
-                    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
-                    {% endif %}
-                        <br>
-
-                        <strong> <font color="#00b300">Author:</font> </strong>{{items.item_author}} <br>
-                        <strong><font color="#00b300">Course: </font></strong> {{items.item_course}}
-                        <br>
-                        <strong> <font color="#00b300">Edition: </font> </strong> {{items.item_edition}}
-                        <br>
-                        <style>
-				#more{{ items.pk }}a {display: none;}
-                            </style>
-			    <strong> <font color="#00b300">Info: </font> </strong> {%if items.item_description|length > 150 %} {{items.item_description|slice:":150"}}<span id= "dots{{ items.pk }}a">...</span><span id="more{{ items.pk }}a"}}">{{items.item_description|slice:"150:"}}</span>
-			    <br> <button onclick="viewMoreOrLess('{{ items.pk }}a')" class="btn btn-secondary btn-sm" id="{{ items.pk }}a" >Read more</button> 
-                          {%else%} {{items.item_description}} {%endif%}
-                        <br>
-                        <strong><font color="#00b300">Price: </font></strong>${{ items.item_price }}
-                        <br>
-                        <strong><font color="#00b300">Status: </font></strong> {{ items.item_status }}
-
-                        <br>
-                        <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' items.pk %}">Update Status</a>
-                        </div>
-                    </div>
-        {%endif%}
+		  {% include 'marketplace/item_card.html' with item=items %}
+		{%endif%}
             {%endif%}
-
-
         {% endfor %}
 
 </div>
