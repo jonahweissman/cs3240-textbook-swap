@@ -1,11 +1,9 @@
 function viewMoreOrLess(key) {
     let dotskey = "dots" + key;
-    console.log(dotskey);
     let morekey = "more" + key;
     let dots = document.getElementById(dotskey);
     let moreText = document.getElementById(morekey);
     let btnText = document.getElementById(key);
-    console.log(key);
 
     if (dots.style.display === "none") {
         dots.style.display = "inline";
