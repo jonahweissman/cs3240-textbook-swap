@@ -1,0 +1,35 @@
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+<a href="{% url 'marketplace:item_detail' items.pk %}">
+  <div class="card-header text-white bg-success">
+    {{item.item_name}}
+  </div>
+  <div class="card-body text-white">
+    {% if item.item_image  %}
+    <img src="{{ item.item_image.url }}" id="imgProfile" style="width: 100px; height: 100px" class= "img-thubmnail" align="middle"/>
+    {% else %}
+    <img src="static/marketplace/images/emptyTextbook.PNG" id="imgProfile" style="width: 100px; height: 100px" align="middle" class= "img-thubmnail"/>
+    {% endif %}
+    <br>
+    
+    <strong> <font color="#00b300">Author:</font> </strong>{{item.item_author}} <br>
+    <strong><font color="#00b300">Course: </font></strong> {{item.item_course}}
+    <br>
+    <strong> <font color="#00b300">Edition: </font> </strong> {{item.item_edition}}
+    <br>
+    <style>
+      #more{{ item.pk}}{display: none;}
+    </style>
+    <strong> <font color="#00b300">Info: </font> </strong> {% if item.item_description|length > 150 %} {{ item.item_description|slice:":150" }}<span id= "dots{{ item.pk }}">...</span><span id="more{{ item.pk }}">{{item.item_description|slice:"150:"}}</span>
+    <br><a> <button onclick="viewMoreOrLess({{item.pk}})" class="btn btn-secondary btn-sm" id= "{{ item.pk }}" >Read more</button> </a>
+    {%else%} {{item.item_description}} {%endif%}
+    <br>
+    <strong><font color="#00b300">Price: </font></strong>${{ item.item_price }}
+    <br>
+    <strong><font color="#00b300">Status: </font></strong> {{ item.item_status }}
+    {% if item.item_seller_name.user.username == user.username %}
+    <br>
+    <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' item.pk %}">Update Status</a>
+    {% endif %}
+  </div>
+</a>
+</div>
