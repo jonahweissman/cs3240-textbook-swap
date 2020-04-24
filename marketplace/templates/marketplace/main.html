@@ -20,23 +20,15 @@
 
   </div>
 </div>
-  <div class="row">
-    <div class="col">
-        <h1 class="display-4 text-white">Recent Listings</h1>
-
-        <div class="card-deck">
+<h1 class="display-4 text-white">Recent Listings</h1>
+<div class="container">
+        <div class="row row-cols-1 row-cols-md-4">
         {% for items in allItems %}
-		    <a href="{% url 'marketplace:item_detail' items.pk %}">
-                {% if items.item_status == "Available" %}
+		<div class="col mb-4">
 		{% include 'marketplace/item_card.html' with item=items %}
-		    </a>
-		{%endif%}
+		</div>
         {% endfor %}
         </div>
-
-    </div>
 </div>
 
 {% endblock content %}
-  </div>
-</div>

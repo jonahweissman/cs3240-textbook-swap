@@ -1,6 +1,7 @@
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+<a href="{% url 'marketplace:item_detail' items.pk %}">
   <div class="card-header text-white bg-success">
-    <strong>Title: </strong>{{item.item_name}}
+    {{item.item_name}}
   </div>
   <div class="card-body text-white">
     {% if item.item_image  %}
@@ -30,4 +31,5 @@
     <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' item.pk %}">Update Status</a>
     {% endif %}
   </div>
+</a>
 </div>

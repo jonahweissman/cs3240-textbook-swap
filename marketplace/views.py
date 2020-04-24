@@ -22,7 +22,7 @@ class IndexViews(generic.ListView):
     num_listings_display = 30
 
     def get_queryset(self):
-        return Item.objects.all() \
+        return Item.objects.filter(item_status="Available") \
             .order_by('-item_posted_date')[:self.num_listings_display]
 
 class ListingViews(generic.DetailView):
