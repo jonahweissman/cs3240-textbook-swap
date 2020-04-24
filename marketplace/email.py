@@ -52,7 +52,6 @@ def notify_about_new_message(sender, receiver, item, message, uuid):
                                         'item': item,
                                         'name': name,
                                     })
-    print(html_message)
     message = mail.EmailMultiAlternatives(
         subject=subject,
         body=strip_tags(html_message),
