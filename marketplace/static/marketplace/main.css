@@ -97,3 +97,11 @@ ul {
 .add-Form {
     margin: 10vh;
 }
+
+.card {
+    transition: transform .4s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}

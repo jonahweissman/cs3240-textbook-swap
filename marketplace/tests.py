@@ -503,6 +503,50 @@ class FullConversation(TestCase):
         running_late = models.Message.objects.all()[2]
         self.assertEquals(running_late.in_response_to, response_message)
 
+class IndexTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.item_list = []
+        self.bob = User.objects.create().profile
+        for i in range(25):
+            self.item_list.append(Item.objects.create(
+                item_name=f'item {i}',
+                item_author=f'author {i}',
+                item_edition=i,
+                item_course=f'CS {i}{i}{i}{i}',
+                item_price=i,
+                item_posted_date=datetime.datetime.now() - i * datetime.timedelta(i),
+                item_condition="Like New",
+                item_seller_name=self.bob,
+            ))
+
+    def test_contains_all_items(self):
+        response = self.client.get('/')
+        items = list(response.context['allItems'])
+        self.assertEquals(len(items), len(self.item_list))
+        self.assertEquals(items, self.item_list)
+
+    def test_limits_total_items(self):
+        new_items = []
+        for i in range(25):
+            new_items.append(Item.objects.create(
+                item_name=f'item {i} pt 2',
+                item_author=f'author {i}',
+                item_edition=i,
+                item_course=f'CS {i}{i}{i}{i}',
+                item_price=i,
+                item_posted_date=datetime.datetime.now() + (i+1) * datetime.timedelta(i),
+                item_condition="Like New",
+                item_seller_name=self.bob,
+            ))
+        new_all_items = sorted(new_items + self.item_list, key=lambda i: i.item_posted_date, reverse=True)
+        response = self.client.get('/')
+        items = list(response.context['allItems'])
+        self.assertEquals(len(items), 30)
+        self.assertEquals(items, new_all_items[:30])
+
+
+
 class Profile(TestCase):
     def setUp(self):
         User.objects.create().profile
