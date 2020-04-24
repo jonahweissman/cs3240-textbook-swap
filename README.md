@@ -13,11 +13,9 @@ AWS_SECRET_ACCESS_KEY=...
 ```
 with AWS credentials to an S3 bucket.
 
-Make sure to install the the dependencies with
+Make sure to install the the dependencies, apply migrations, and collect static files with 
 ```
 pip install -r requirements.txt
-```
-and to apply migrations with
-```
 python manage.py migrate
+python manage.py collectstatic
 ```
