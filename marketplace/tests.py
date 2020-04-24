@@ -460,9 +460,10 @@ class FullConversation(TestCase):
 
     def test_conversation(self):
         self.client.force_login(self.joe.user)
+        symb = '!@#$%^&*()<>/'
         self.client.post('/email/send', {
             'item': self.item.pk,
-            'message': 'hey bob, I want to buy your booling textbook, but I wanna pay 4 instead of 5.'
+            'message': 'hey bob, I want to buy your booling textbook, but I wanna pay 4 instead of 5. Here are my favorite symbols: %s' % symb
         })
         self.assertEquals(len(models.Conversation.objects.all()), 1)
         conversation = models.Conversation.objects.all()[0]
@@ -471,6 +472,11 @@ class FullConversation(TestCase):
         self.assertEquals(len(mail.outbox), 1)
         self.assertTrue(self.item.item_name in mail.outbox[0].subject)
         self.assertEquals(self.bob.user.email, mail.outbox[0].to[0])
+        self.assertIn(symb, mail.outbox[0].body)
+        self.assertNotIn('<a href', mail.outbox[0].body)
+        self.assertEqual(mail.outbox[0].alternatives[0][1], "text/html")
+        html = mail.outbox[0].alternatives[0][0]
+        self.assertIn('<a href="https://textbookswapuva.herokuapp.com/item/%d/conversation">' % self.item.pk, html)
         self.assertEquals(len(models.Message.objects.all()), 1)
         intro_message = models.Message.objects.all()[0]
         self.assertTrue(str(intro_message.pk) in mail.outbox[0].reply_to[0])
