@@ -133,12 +133,12 @@ class MyListings(generic.ListView):
             allItems = Item.objects.filter(item_seller_name=user)
             availableItems = Item.objects.filter(item_status="Available",item_seller_name=user )
             soldItems = Item.objects.filter(item_status="Sold", item_seller_name=user)
-            unavailableItems = Item.objects.filter(item_status="Unavailable", item_seller_name=user)
+            hiddenItems = Item.objects.filter(item_status="Hidden", item_seller_name=user)
             return render(request, self.template_name, {
                 'allItems': allItems,
                 'availableItems': availableItems,
                 'soldItems': soldItems,
-                'unavailableItems': unavailableItems,
+                'hiddenItems': hiddenItems,
             })
 
 
