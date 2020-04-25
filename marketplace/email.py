@@ -131,6 +131,7 @@ class ConversationView(LoginRequiredMixin, generic.ListView):
             conversation['conversation'] = conversation_obj
             conversation_list.append(conversation)
         context['conversation_list'] = conversation_list
+        context['item'] = models.Item.objects.get(pk=self.kwargs['pk'])
         return context
     
     def post(self, request, pk):
