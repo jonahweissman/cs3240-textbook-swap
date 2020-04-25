@@ -3,6 +3,12 @@
 {% block content %}
 <h1 class="text-white">{{ object.item_name }}</h1>
 <h2 class="text-white">{{ object.item_seller_name.user}}</h2>
+{% if object.item_seller_name.user == request.user %}
+<br>
+<a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' object.pk %}">Update Status</a>
+<br>
+<br>
+{%endif%}
 
 {% if not user.is_authenticated %}
 <form action="{% url 'marketplace:login' %}" class="form-inline my-2 my-lg-0">
