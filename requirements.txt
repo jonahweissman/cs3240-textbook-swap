@@ -4,6 +4,7 @@ django_auto_one_to_one==3.3.0
 Django==3.0.3
 django_heroku==0.3.1
 django-storages==1.9.1
+Pillow==7.0.0
 python-dotenv==0.13.0
 requests==2.22.0
 social-auth-app-django==3.1.0
