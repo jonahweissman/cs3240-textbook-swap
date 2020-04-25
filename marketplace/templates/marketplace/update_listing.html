@@ -1,111 +1,27 @@
 {% extends 'marketplace/base.html' %}
 {% load static %}
 {% block content %}
-{% if error_message %}
-    <p align='center' style="color:red;margin:10vh"><strong>{{ error_message }}</strong></p>
-{% else %}
-
-<!-- https://simpleisbetterthancomplex.com/tips/2016/09/06/django-tip-14-messages-framework.html -->
-<!-- Show alert saying whether the submission was successful or not -->
-{% for message in messages %}
-  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    {{ message }}
-  </div>
-{% endfor %}
-
-<!-- Modal for TITLE/AUTHOR/EDITION-->
-<div id="myModal2" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="add-Form">
-          <form enctype="multipart/form-data" action="" method="post">
-          {% csrf_token %}
-                {{ form1.as_p }}
-
-              <label for="item_status"><b>Status: </b></label>
+<br>
+<br>
+<div class="add-Form">
+    <form enctype="multipart/form-data" action="" method="post">
+    {% csrf_token %}
+    {{ form1.as_p }}
+<div class="card">
+  <div class="card-body text-center bg-secondary">
+    <h1 class="card-title text-white">Update Status:</h1>
+              <label class="text-white" for="item_status"><b>Status: </b></label>
               <select id="item_status" name="item_status">
                   <option value="Available">Available</option>
                   <option value="Sold">Sold</option>
-                <option value="Unavailable">Unavailable</option>
+                  <option value="Hidden">Hidden</option>
               </select>
               <br>
               <br>
-          <button type="submit" class="btn btn-success">Submit</button>
+          <button type="submit" class="btn btn-success btn-lg">Submit</button>
         </form>
-
-      </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
+</div>
   </div>
 </div>
 
-
-
-<!-- Modal for ISBN-->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="add-Form">
-          <form enctype="multipart/form-data" form action="" method="post">
-          {% csrf_token %}
-
-
-
-
-              {{ form1.as_p }}
-
-
-          <button type="submit" class="btn btn-primary" id="submitButton" name="submitButton">Submit</button>
-          </form>
-      </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<br/>
-<br/>
-<div class="card bg-secondary" style="
-margin: 0 auto;
-float: none;
-margin-bottom: 10px;">
-  <div class="card-body bg-secondary"style="
-  margin: 0 auto;
-  float: none;
-  margin-bottom: 10px;">
-    <h5 class="card-title text-white">Would you like to update the status of this listing?</h5>
-      <div class="container text-center" >
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" id="titleButton" name="titleButton" data-target="#myModal2">Update Status</button>
-      <br>
-          <br>
-<a class="btn btn-success" href="{% url 'marketplace:index' %}" role="button">Return Home</a>      </div>
-  </div>
-</div>
-
-
-
-
-{% endif %}
 {% endblock content%}
