@@ -63,7 +63,7 @@ class Item(models.Model):
         return self.item_name
 
     def get_absolute_url(self):
-        return reverse('marketplace:index')
+        return reverse('marketplace:myListings')
 
 
 class Conversation(models.Model):
