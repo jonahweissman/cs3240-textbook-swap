@@ -29,7 +29,7 @@
 	  <p class="card-text text-white"><font color="#00b300">Info: </font>{{item.item_description}}</p>
 	  <font color="#00b300">Posted by: </font> {{item.item_seller_name.user.username}}
 	  <br>
-	  <strong><font color="#00b300">Posted on: </font></strong> {{ item.item_posted_date }}
+	  <font color="#00b300">Posted on: </font> {{ item.item_posted_date }}
   </div>
   <div class="card-footer text-white bg-dark">
 	  <a href="{% url 'marketplace:item_detail' item.pk %}" class="btn btn-outline-success">Go to Listing</a>
