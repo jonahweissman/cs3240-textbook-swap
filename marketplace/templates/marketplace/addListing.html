@@ -37,11 +37,12 @@
                       id="item_name" 
                       placeholder="Theory of Calculus"
                       class="form-control"
+                      pattern=".*\S+.*"
                       required
                   />
               </div>
 
-              <label for="item_author"><b>Author</b></label>
+              <label for="item_author"><b>Author*</b></label>
               <div class="form-group">
                   <input 
                       type="text"
@@ -49,6 +50,8 @@
                       id="item_author" 
                       placeholder="John Stewart"
                       class="form-control"
+                      pattern=".*\S+.*"
+                      required
                   />
               </div>
       
@@ -56,11 +59,13 @@
               <div class="form-group">
                   <input 
                       type="number"
+                      min = "1"
                       name="item_edition" 
                       id="item_edition" 
-                      placeholder="5"
+                      value = "1"
                       class="form-control"
                       required
+                      
                   />
               </div>
     
@@ -73,7 +78,7 @@
                     name="item_course"
                     class="form-control"
                     placeholder="CS 1110"
-                    pattern="[A-Z]{2,4} \d{4}"
+                    pattern="[A-Za-z]{2,4} \d{4}"
                     title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
                   />
       
@@ -111,18 +116,16 @@
               </select>
               <br>
               <br>
-              <label for="item_description"><b>Description</b></label>
+              <label for="item_description"><b>Description*</b></label>
               <div class="form-group">
-                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
+                  <textarea 
+                    name="item_description" 
+                    id="item_description" 
+                    rows="4"
+                    class="form-control"
+                    required
+                    ></textarea>
               </div>
-              <br>
-              <label for="item_status"><b>Status</b></label>
-              <select id="item_status" name="item_status">
-                  <option value="Available">Available</option>
-                  <option value="Hidden">Hidden</option>
-              </select>
-              <br>
-              <br>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
@@ -161,6 +164,7 @@
                       placeholder="978-1337627900"
                       class="form-control"
                       required
+                      pattern=".*\S+.*"
                   />
               </div>
       
@@ -170,8 +174,9 @@
                       type="number"
                       name="item_edition" 
                       id="item_edition" 
-                      placeholder="5"
+                      value = "1"
                       class="form-control"
+                      min = "1"
                       required
                   />
               </div>
@@ -184,7 +189,7 @@
                     name="item_course"
                     class="form-control"
                     placeholder="CS 1110"
-                    pattern="[A-Z]{2,4} \d{4}"
+                    pattern="[A-Za-z]{2,4} \d{4}"
                     title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
                     
                   />
@@ -224,9 +229,15 @@
               </select>
               <br>
               <br>
-              <label for="item_description"><b>Description</b></label>
+              <label for="item_description"><b>Description*</b></label>
               <div class="form-group">
-                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
+                  <textarea 
+                    name="item_description" 
+                    id="item_description" 
+                    rows="4"
+                    class="form-control"
+                    required
+                    ></textarea>
               </div>
               
           <button type="submit" class="btn btn-primary" id="submitButton" name="submitButton">Submit</button>
