@@ -17,6 +17,14 @@
 {% endfor %}
 
 <!-- Modal for TITLE/AUTHOR/EDITION-->
+
+<style>
+  .required:after {
+    content:" *";
+    color: red;
+  }
+</style>
+
 <div id="myModal2" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -29,7 +37,7 @@
         <div class="add-Form">
           <form enctype="multipart/form-data" action="" method="post">
           {% csrf_token %}
-          <label for="item_name"><b>Title*</b></label>
+          <label for="item_name" class="required"><b>Title</b></label>
               <div class="form-group">
                   <input 
                       type="text"
@@ -42,7 +50,7 @@
                   />
               </div>
 
-              <label for="item_author"><b>Author*</b></label>
+              <label for="item_author" class="required"><b>Author</b></label>
               <div class="form-group">
                   <input 
                       type="text"
@@ -55,7 +63,7 @@
                   />
               </div>
       
-              <label for="item_edition"><b>Edition*</b></label>
+              <label for="item_edition" class="required"><b>Edition</b></label>
               <div class="form-group">
                   <input 
                       type="number"
@@ -84,7 +92,7 @@
       
                 </div>
 
-                <label for="item_price"><b>Price*</b></label>
+                <label for="item_price" class="required"><b>Price</b></label>
               <div class="input-group mb-3">
                 
                 <div class="input-group-prepend">
@@ -105,7 +113,7 @@
                 </div>
               </div>
 
-              <p><b>Image*</b></p>
+              <p><b class="required">Image</b></p>
                 {{ form1.as_p }}
                 <label for="item_condition"><b>Condition</b></label>
               <select id="item_condition" name="item_condition">
@@ -116,7 +124,7 @@
               </select>
               <br>
               <br>
-              <label for="item_description"><b>Description*</b></label>
+              <label for="item_description" class="required"><b>Description</b></label>
               <div class="form-group">
                   <textarea 
                     name="item_description" 
@@ -155,7 +163,7 @@
           <form enctype="multipart/form-data" form action="" method="post">
           {% csrf_token %}
       
-          <label for="item_isbn"><b>ISBN*</b></label>
+          <label for="item_isbn" class="required"><b>ISBN</b></label>
               <div class="form-group">
                   <input 
                       type="text"
@@ -168,7 +176,7 @@
                   />
               </div>
       
-              <label for="item_edition"><b>Edition*</b></label>
+              <label for="item_edition" class="required"><b>Edition</b></label>
               <div class="form-group">
                   <input 
                       type="number"
@@ -196,7 +204,7 @@
       
                 </div>
 
-              <label for="item_price"><b>Price*</b></label>
+              <label for="item_price" class="required"><b>Price</b></label>
               <div class="input-group mb-3">
                 
                 <div class="input-group-prepend">
@@ -218,7 +226,7 @@
                 </div>
               </div>
 
-              <p><b>Image*</b></p>
+              <p><b class="required">Image</b></p>
               {{ form1.as_p }}
               <label for="item_condition"><b>Condition</b></label>
               <select id="item_condition" name="item_condition">
@@ -229,7 +237,7 @@
               </select>
               <br>
               <br>
-              <label for="item_description"><b>Description*</b></label>
+              <label for="item_description" class="required"><b>Description</b></label>
               <div class="form-group">
                   <textarea 
                     name="item_description" 
