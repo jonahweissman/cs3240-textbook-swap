@@ -31,8 +31,8 @@
 
   </div>
   <div class="col">
-    <h1 class="display-4 text-white">Unavailable Listings</h1>
-    {% for items in unavailableItems %}
+    <h1 class="display-4 text-white">Hidden Listings</h1>
+    {% for items in hiddenItems %}
       {% if items.item_seller_name.user.username == user.username %}
         {% include 'marketplace/item_card.html' with item=items %}
       {%endif%}
