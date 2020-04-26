@@ -33,7 +33,7 @@ def send_intro_message(request):
     item = models.Item.objects.get(pk=request.POST['item'])
     to = item.item_seller_name
     text = request.POST['message']
-    conversation = models.Conversation.objects.create(
+    conversation, _ = models.Conversation.objects.get_or_create(
         item=item,
         buyer=author,
     )
