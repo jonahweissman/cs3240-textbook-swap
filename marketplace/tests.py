@@ -89,12 +89,12 @@ class TrigramSearchTest(TestCase):
             item_condition="Like New",
             item_seller_name=bob,
         ) for o in onion_spellings]
-        self.calc_descr = Item.objects.create(
+        self.calc_author = Item.objects.create(
             item_name='Introduction to Biology',
+            item_author='Joe Calculus',
             item_price=1,
             item_posted_date=datetime.datetime.now(),
             item_condition="Like New",
-            item_description="I sure hate calculus lol",
             item_seller_name=bob,
         )
         self.calc_name = Item.objects.create(
@@ -143,7 +143,7 @@ class TrigramSearchTest(TestCase):
         results = list(response.context['object_list'])
         self.assertEqual(len(results), 2)
         self.assertTrue(results.index(self.calc_name)
-                        < results.index(self.calc_descr))
+                        < results.index(self.calc_author))
 
     def test_isbn(self):
         response = self.client.get('/search?query=12345')
