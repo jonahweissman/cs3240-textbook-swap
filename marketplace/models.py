@@ -55,7 +55,7 @@ class Item(models.Model):
     item_posted_date = models.DateField(null=True)
     item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     item_description = models.TextField(max_length= 1000, null=True)
-    item_status_choices = (("Available", "Available"),("Sold", "Sold"), ("Unavailable", "Unavailable"))
+    item_status_choices = (("Available", "Available"),("Sold", "Sold"), ("Hidden", "Hidden"))
     item_status = models.CharField(max_length=20, choices=item_status_choices, default= "Available")
 
 
@@ -63,7 +63,7 @@ class Item(models.Model):
         return self.item_name
 
     def get_absolute_url(self):
-        return reverse('marketplace:index')
+        return reverse('marketplace:myListings')
 
 
 class Conversation(models.Model):

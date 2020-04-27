@@ -26,6 +26,9 @@
     <strong><font color="#00b300">Price: </font></strong>${{ item.item_price }}
     <br>
     <strong><font color="#00b300">Status: </font></strong> {{ item.item_status }}
+    <br>
+    <strong><font color="#00b300">Posted: </font></strong> {{ item.item_posted_date }}
+
     {% if item.item_seller_name.user.username == user.username %}
     <br>
     <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' item.pk %}">Update Status</a>
