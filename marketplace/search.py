@@ -37,8 +37,8 @@ class SearchViews(generic.ListView):
         query = self.request.GET['query']
         sort_by = self.request.GET.get('sort', self.sort_default)
         order_by = self.sort_mapping[sort_by]
-        hit_filter = (Q(name_distance__lte=0.8) \
-                     | Q(author_distance__lte=0.7) \
+        hit_filter = (Q(name_distance__lte=0.5) \
+                     | Q(author_distance__lte=0.4) \
                      | Q(course_distance__lte=0.3) \
                      | Q(item_isbn=query)) \
                      & Q(item_status='Available')
