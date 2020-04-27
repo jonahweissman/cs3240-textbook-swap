@@ -21,9 +21,4 @@ class Migration(migrations.Migration):
             name='item_status',
             field=models.CharField(choices=[('Available', 'Available'), ('Sold', 'Sold'), ('Unavailable', 'Unavailable')], default='Available', max_length=20),
         ),
-        migrations.AlterField(
-            model_name='message',
-            name='in_response_to',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='marketplace.Message'),
-        ),
     ]
