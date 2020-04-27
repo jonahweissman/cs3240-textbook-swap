@@ -1,8 +1,8 @@
 {% extends 'marketplace/base.html' %}
 
 {% block content %}
-<h1>Search results for "{{ query }}"</h1>
-<div>
+<h1 class="text-on-dark-background">Search results for "{{ query }}"</h1>
+<div class="text-on-dark-background">
 	sort by:
 	<form action="{% url 'marketplace:search' %}" class="btn-group btn-group-toggle" data-toggle="buttons">
 		<input type="hidden" name="query" value="{{ query }}">

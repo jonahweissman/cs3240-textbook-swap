@@ -4,9 +4,10 @@
 <a href="{% url 'marketplace:item_detail' view.kwargs.pk %}">
   <button type="button" class="btn btn-info btn-lg" style="margin-top: 1em;">&larr; Back to item</button>
 </a>
-<h1>{{ item.item_name }} listed for ${{ item.item_price }}</h1>
+<h1 class="text-on-dark-background">{{ item.item_name }} listed for ${{ item.item_price }}</h1>
 {% for c in conversation_list %}
-  <h3>{{ c.to.user.first_name }} {{ c.to.user.last_name }}</h3>
+  <div class="jumbotron">
+  <h3>Conversation with {{ c.to.user.first_name }} {{ c.to.user.last_name }}</h3>
   {% for message in c.conversation.message_set.all %}
     <p>
     <b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
@@ -19,6 +20,7 @@
       <input type="submit" value="send" class="btn btn-outline-primary">
     </form>
   </p>
+  </div>
 {% empty %}
 	<div class="jumbotron">
 		<div class="display-4">No conversations yet</div>

@@ -1,8 +1,28 @@
 {% extends 'marketplace/base.html' %}
+{% load static %}
 
 {% block content %}
 <h1 class="text-white">{{ object.item_name }}</h1>
-<h2 class="text-white">{{ object.item_seller_name.user}}</h2>
+<div class="text-on-dark-background">
+  <p>edition: {{ object.item_edition }}</p>
+  <p>by {{ object.item_author }}</p>
+  <p>
+  {% if object.item_image  %}
+    <img src="{{ object.item_image.url }}" id="imgProfile"  style="max-width:20%;" class="img-thubmnail"/>
+  {% else %}
+  <img src="{% static 'marketplace/images/emptyTextbook.PNG' %}" style="max-width:20%;" id="imgProfile"  class="img-thubmnail"/>
+  {% endif %}
+  </p>
+  <p>${{ object.item_price }}</p>
+  <p>{{ object.item_condition }} condition</p>
+  <p>Posted {{ object.item_posted_date|date:"SHORT_DATE_FORMAT" }}
+  by {{ object.item_seller_name.user.first_name }}
+  {{ object.item_seller_name.user.last_name }}</p>
+  {% if object.item_course %}
+  <p>Used for {{ object.item_course }}</p>
+  {% endif %}
+  <p>{{ object.item_description }}</p>
+</div>
 {% if object.item_seller_name.user == request.user %}
 <br>
 <a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' object.pk %}">Update Status</a>
