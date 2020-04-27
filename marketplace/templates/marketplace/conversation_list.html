@@ -7,7 +7,7 @@
 <h1 class="text-on-dark-background">{{ item.item_name }} listed for ${{ item.item_price }}</h1>
 {% for c in conversation_list %}
   <div class="jumbotron">
-  <h3>Conversation with {{ c.to.user.first_name }} {{ c.to.user.last_name }}</h3>
+  <h3>Conversation with {{ c.to }}</h3>
   {% for message in c.conversation.message_set.all %}
     <p>
     <b>{{ message.author.user.first_name }}</b>: {{ message.text|escape }}
