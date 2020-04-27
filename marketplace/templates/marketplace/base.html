@@ -28,7 +28,8 @@
         <div class="collapse navbar-collapse" id="navbarToggle">
           <div class="navbar-nav mr-auto">
         <a class="nav-item nav-link" href="{% url 'marketplace:addListing' %}">Add Listing</a>
-        <a class="nav-item nav-link" href="{% url 'marketplace:myListings' %}">My listings</a>
+        <a class="nav-item nav-link" href="{% url 'marketplace:myListings' %}">My Listings</a>
+        <a class="nav-item nav-link" href="{% url 'marketplace:profile' %}">My Profile</a>
           </div>
           <!-- Navbar Right Side -->
 	  {% if hide_search_bar %}
@@ -55,18 +56,6 @@
       <main role="main" class="container">
             {% block content %}{% endblock %}
       </main>
-
-  <!-- Footer -->
-  <footer id = "footer" class="page-footer font-small blue">
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3 bg-steel">
-    TextBookSwapUVA <br>
-    © 2020 Copyright:
-      <a href="http://textbookswapuva.herokuapp.com/"> textbookswapuva.herokuapp.com</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
-  <!-- Footer -->
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
