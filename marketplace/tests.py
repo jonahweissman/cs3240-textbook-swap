@@ -207,6 +207,41 @@ class AddListingTests(TestCase):
         self.client = Client()
         self.client.force_login(some_guy)
 
+    def testBetaBugCase(self):
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0-321-98992-5',
+                'item_edition': '5',
+                'item_course': 'MATH 3351',
+                'item_image': f,
+                'item_price': '100',
+                'item_condition': 'Good',
+                'item_description': 'Loose leaf'
+            })
+        item = Item.objects.all()[0]
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue("Linear Algebra" in item.item_name)
+        self.assertTrue("Loose leaf" in item.item_description)
+        self.assertEquals("MATH 3351", item.item_course)
+
+    def testLowerCaseCourse(self):
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0-321-98992-5',
+                'item_edition': '5',
+                'item_course': 'math 3351',
+                'item_image': f,
+                'item_price': '100',
+                'item_condition': 'Good',
+                'item_description': 'Loose leaf'
+            })
+        item = Item.objects.all()[0]
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue("Linear Algebra" in item.item_name)
+        self.assertTrue("Loose leaf" in item.item_description)
+        self.assertEquals("MATH 3351", item.item_course)
 
     def testAddNoISBN(self):
         with open('marketplace/fixtures/textbook.jpg', 'rb') as f:

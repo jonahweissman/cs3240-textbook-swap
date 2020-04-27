@@ -17,6 +17,14 @@
 {% endfor %}
 
 <!-- Modal for TITLE/AUTHOR/EDITION-->
+
+<style>
+  .required:after {
+    content:" *";
+    color: red;
+  }
+</style>
+
 <div id="myModal2" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -29,7 +37,7 @@
         <div class="add-Form">
           <form enctype="multipart/form-data" action="" method="post">
           {% csrf_token %}
-          <label for="item_name"><b>Title*</b></label>
+          <label for="item_name" class="required"><b>Title</b></label>
               <div class="form-group">
                   <input 
                       type="text"
@@ -37,11 +45,12 @@
                       id="item_name" 
                       placeholder="Theory of Calculus"
                       class="form-control"
+                      pattern=".*\S+.*"
                       required
                   />
               </div>
 
-              <label for="item_author"><b>Author</b></label>
+              <label for="item_author" class="required"><b>Author</b></label>
               <div class="form-group">
                   <input 
                       type="text"
@@ -49,18 +58,22 @@
                       id="item_author" 
                       placeholder="John Stewart"
                       class="form-control"
+                      pattern=".*\S+.*"
+                      required
                   />
               </div>
       
-              <label for="item_edition"><b>Edition*</b></label>
+              <label for="item_edition" class="required"><b>Edition</b></label>
               <div class="form-group">
                   <input 
                       type="number"
+                      min = "1"
                       name="item_edition" 
                       id="item_edition" 
-                      placeholder="5"
+                      value = "1"
                       class="form-control"
                       required
+                      
                   />
               </div>
     
@@ -73,13 +86,13 @@
                     name="item_course"
                     class="form-control"
                     placeholder="CS 1110"
-                    pattern="[A-Z]{2,4} \d{4}"
+                    pattern="[A-Za-z]{2,4} \d{4}"
                     title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
                   />
       
                 </div>
 
-                <label for="item_price"><b>Price*</b></label>
+                <label for="item_price" class="required"><b>Price</b></label>
               <div class="input-group mb-3">
                 
                 <div class="input-group-prepend">
@@ -100,7 +113,7 @@
                 </div>
               </div>
 
-              <p><b>Image*</b></p>
+              <p><b class="required">Image</b></p>
                 {{ form1.as_p }}
                 <label for="item_condition"><b>Condition</b></label>
               <select id="item_condition" name="item_condition">
@@ -111,18 +124,16 @@
               </select>
               <br>
               <br>
-              <label for="item_description"><b>Description</b></label>
+              <label for="item_description" class="required"><b>Description</b></label>
               <div class="form-group">
-                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
+                  <textarea 
+                    name="item_description" 
+                    id="item_description" 
+                    rows="4"
+                    class="form-control"
+                    required
+                    ></textarea>
               </div>
-              <br>
-              <label for="item_status"><b>Status</b></label>
-              <select id="item_status" name="item_status">
-                  <option value="Available">Available</option>
-                  <option value="Hidden">Hidden</option>
-              </select>
-              <br>
-              <br>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
@@ -152,7 +163,7 @@
           <form enctype="multipart/form-data" form action="" method="post">
           {% csrf_token %}
       
-          <label for="item_isbn"><b>ISBN*</b></label>
+          <label for="item_isbn" class="required"><b>ISBN</b></label>
               <div class="form-group">
                   <input 
                       type="text"
@@ -161,17 +172,19 @@
                       placeholder="978-1337627900"
                       class="form-control"
                       required
+                      pattern=".*\S+.*"
                   />
               </div>
       
-              <label for="item_edition"><b>Edition*</b></label>
+              <label for="item_edition" class="required"><b>Edition</b></label>
               <div class="form-group">
                   <input 
                       type="number"
                       name="item_edition" 
                       id="item_edition" 
-                      placeholder="5"
+                      value = "1"
                       class="form-control"
+                      min = "1"
                       required
                   />
               </div>
@@ -184,14 +197,14 @@
                     name="item_course"
                     class="form-control"
                     placeholder="CS 1110"
-                    pattern="[A-Z]{2,4} \d{4}"
+                    pattern="[A-Za-z]{2,4} \d{4}"
                     title="Courses should contain 2-4 letters followed by a space and 4 digit class number. e.g. COMM 1800"
                     
                   />
       
                 </div>
 
-              <label for="item_price"><b>Price*</b></label>
+              <label for="item_price" class="required"><b>Price</b></label>
               <div class="input-group mb-3">
                 
                 <div class="input-group-prepend">
@@ -213,7 +226,7 @@
                 </div>
               </div>
 
-              <p><b>Image*</b></p>
+              <p><b class="required">Image</b></p>
               {{ form1.as_p }}
               <label for="item_condition"><b>Condition</b></label>
               <select id="item_condition" name="item_condition">
@@ -224,9 +237,15 @@
               </select>
               <br>
               <br>
-              <label for="item_description"><b>Description</b></label>
+              <label for="item_description" class="required"><b>Description</b></label>
               <div class="form-group">
-                  <textarea name="item_description" id="item_description" rows="4"class="form-control"></textarea>
+                  <textarea 
+                    name="item_description" 
+                    id="item_description" 
+                    rows="4"
+                    class="form-control"
+                    required
+                    ></textarea>
               </div>
               
           <button type="submit" class="btn btn-primary" id="submitButton" name="submitButton">Submit</button>
