@@ -44,9 +44,10 @@ def ensure_profile_exists(sender, **kwargs):
 
 class Item(models.Model):
     item_condition_choices = (("Like New", "Like New"),("Good", "Good"), ("Fair", "Fair"), ("Poor", "Poor"))
-    item_name = models.CharField(max_length=100, null=True)
+    #Any changes to name, author, or description max_length will need to be refected in views.py's book API string value truncation
+    item_name = models.CharField(max_length=300, null=True)
     item_isbn = models.CharField(max_length=100, null=True)
-    item_edition = models.IntegerField(null=True)
+    item_edition = models.IntegerField(null=True, default = 1)
     item_author = models.CharField(max_length=100, null=True)
     item_course = models.CharField(max_length=100, null=True)
     item_price = models.IntegerField(null=True)
@@ -54,8 +55,8 @@ class Item(models.Model):
     item_condition = models.CharField(max_length=20, choices=item_condition_choices, default= "Like New")
     item_posted_date = models.DateField(null=True)
     item_seller_name = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    item_description = models.TextField(max_length= 1000, null=True)
-    item_status_choices = (("Available", "Available"),("Sold", "Sold"), ("Unavailable", "Unavailable"))
+    item_description = models.TextField(max_length= 2000, null=True)
+    item_status_choices = (("Available", "Available"),("Sold", "Sold"), ("Hidden", "Hidden"))
     item_status = models.CharField(max_length=20, choices=item_status_choices, default= "Available")
 
 
@@ -63,7 +64,7 @@ class Item(models.Model):
         return self.item_name
 
     def get_absolute_url(self):
-        return reverse('marketplace:index')
+        return reverse('marketplace:myListings')
 
 
 class Conversation(models.Model):

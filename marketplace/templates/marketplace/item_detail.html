@@ -18,9 +18,17 @@
   <p>Posted {{ object.item_posted_date|date:"SHORT_DATE_FORMAT" }}
   by {{ object.item_seller_name.user.first_name }}
   {{ object.item_seller_name.user.last_name }}</p>
+  {% if object.item_course %}
   <p>Used for {{ object.item_course }}</p>
+  {% endif %}
   <p>{{ object.item_description }}</p>
 </div>
+{% if object.item_seller_name.user == request.user %}
+<br>
+<a class="btn btn-outline-light btn-small" href="{% url 'marketplace:updateListing' object.pk %}">Update Status</a>
+<br>
+<br>
+{%endif%}
 
 {% if not user.is_authenticated %}
 <form action="{% url 'marketplace:login' %}" class="form-inline my-2 my-lg-0">

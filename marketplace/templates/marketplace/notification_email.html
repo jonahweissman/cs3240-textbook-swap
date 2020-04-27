@@ -1,0 +1,7 @@
+{{ name }} just sent you a message about {{ item.item_name }}. Reply directly to this email to respond or <a href="https://textbookswapuva.herokuapp.com{% url 'marketplace:message_list' item.pk %}">respond online</a>.
+<br/>
+<br/>
+--------------------
+<br/>
+<br/>
+{{ message|safe }}

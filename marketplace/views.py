@@ -40,12 +40,13 @@ class ListingViews(generic.DetailView):
 
     def post(self,request):
             item_name= request.POST.get("item_name", "defaultName")
+            #change title to uppercase
             item_isbn= request.POST.get("item_isbn", "defaultName")
             #remove '-' if it contains
             item_isbn = item_isbn.replace('-', '')
             item_edition= request.POST.get("item_edition", -1)
             item_author= request.POST.get("item_author", "defaultAuthor")
-            item_course= request.POST.get("item_course", "defaultCourse")
+            item_course= request.POST.get("item_course", "defaultCourse").upper()
             item_price= request.POST.get("item_price", -1 )
             item_description= request.POST.get("item_description", "No description entered")
             item_posted_date = timezone.now()
@@ -62,15 +63,21 @@ class ListingViews(generic.DetailView):
             if item_name == "defaultName":
                 try:
                     item_name= info_from_api['items'][0]['volumeInfo']['title']
+                    max_length = 300 #Match this value with models.py
+                    item_name = item_name[:min(len(item_name), max_length)] 
                 except:
                     messages.error(request, 'ISBN not found! Please submit using Title/Author')
                     return render(request, self.template_name,args)
 
             if item_author == "defaultAuthor":
                 item_author = info_from_api['items'][0]['volumeInfo']['authors'][0]
+                max_length = 100 #Match this value with models.py
+                item_author = item_author[:min(len(item_author), max_length)] 
 
             if item_description == "" and item_isbn != "defaultName":
                 item_description= info_from_api['items'][0]['volumeInfo']['description']
+                max_length = 2000 #Match this value with models.py
+                item_description = item_description[:min(len(item_description), max_length)] 
 
             
             if form1.is_valid():
@@ -133,12 +140,12 @@ class MyListings(generic.ListView):
             allItems = Item.objects.filter(item_seller_name=user)
             availableItems = Item.objects.filter(item_status="Available",item_seller_name=user )
             soldItems = Item.objects.filter(item_status="Sold", item_seller_name=user)
-            unavailableItems = Item.objects.filter(item_status="Unavailable", item_seller_name=user)
+            hiddenItems = Item.objects.filter(item_status="Hidden", item_seller_name=user)
             return render(request, self.template_name, {
                 'allItems': allItems,
                 'availableItems': availableItems,
                 'soldItems': soldItems,
-                'unavailableItems': unavailableItems,
+                'hiddenItems': hiddenItems,
             })
 
 

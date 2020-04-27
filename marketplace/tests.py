@@ -207,6 +207,41 @@ class AddListingTests(TestCase):
         self.client = Client()
         self.client.force_login(some_guy)
 
+    def testBetaBugCase(self):
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0-321-98992-5',
+                'item_edition': '5',
+                'item_course': 'MATH 3351',
+                'item_image': f,
+                'item_price': '100',
+                'item_condition': 'Good',
+                'item_description': 'Loose leaf'
+            })
+        item = Item.objects.all()[0]
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue("Linear Algebra" in item.item_name)
+        self.assertTrue("Loose leaf" in item.item_description)
+        self.assertEquals("MATH 3351", item.item_course)
+
+    def testLowerCaseCourse(self):
+        with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
+            response = self.client.post('/addListing', {
+                'item_isbn': '978-0-321-98992-5',
+                'item_edition': '5',
+                'item_course': 'math 3351',
+                'item_image': f,
+                'item_price': '100',
+                'item_condition': 'Good',
+                'item_description': 'Loose leaf'
+            })
+        item = Item.objects.all()[0]
+        self.assertEquals(len(Item.objects.all()), 1)
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue("Linear Algebra" in item.item_name)
+        self.assertTrue("Loose leaf" in item.item_description)
+        self.assertEquals("MATH 3351", item.item_course)
 
     def testAddNoISBN(self):
         with open('marketplace/fixtures/textbook.jpg', 'rb') as f:
@@ -460,9 +495,10 @@ class FullConversation(TestCase):
 
     def test_conversation(self):
         self.client.force_login(self.joe.user)
+        symb = '!@#$%^&*()<>/'
         self.client.post('/email/send', {
             'item': self.item.pk,
-            'message': 'hey bob, I want to buy your booling textbook, but I wanna pay 4 instead of 5.'
+            'message': 'hey bob, I want to buy your booling textbook, but I wanna pay 4 instead of 5. Here are my favorite symbols: %s' % symb
         })
         self.assertEquals(len(models.Conversation.objects.all()), 1)
         conversation = models.Conversation.objects.all()[0]
@@ -471,6 +507,11 @@ class FullConversation(TestCase):
         self.assertEquals(len(mail.outbox), 1)
         self.assertTrue(self.item.item_name in mail.outbox[0].subject)
         self.assertEquals(self.bob.user.email, mail.outbox[0].to[0])
+        self.assertIn(symb, mail.outbox[0].body)
+        self.assertNotIn('<a href', mail.outbox[0].body)
+        self.assertEqual(mail.outbox[0].alternatives[0][1], "text/html")
+        html = mail.outbox[0].alternatives[0][0]
+        self.assertIn('<a href="https://textbookswapuva.herokuapp.com/item/%d/conversation">' % self.item.pk, html)
         self.assertEquals(len(models.Message.objects.all()), 1)
         intro_message = models.Message.objects.all()[0]
         self.assertTrue(str(intro_message.pk) in mail.outbox[0].reply_to[0])
