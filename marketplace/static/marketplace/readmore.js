@@ -1,3 +1,4 @@
+// html/js tutorials about button from w3school https://www.w3schools.com/howto/howto_js_read_more.asp
 function viewMoreOrLess(key) {
     let dotskey = "dots" + key;
     let morekey = "more" + key;
