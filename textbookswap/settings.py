@@ -154,6 +154,8 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'marketplace:index'
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+#AWS Set-up following documentation from django-storages https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'django-textbook'
