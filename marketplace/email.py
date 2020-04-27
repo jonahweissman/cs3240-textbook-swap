@@ -33,7 +33,7 @@ def send_intro_message(request):
     item = models.Item.objects.get(pk=request.POST['item'])
     to = item.item_seller_name
     text = request.POST['message']
-    conversation = models.Conversation.objects.create(
+    conversation, _ = models.Conversation.objects.get_or_create(
         item=item,
         buyer=author,
     )
@@ -131,6 +131,7 @@ class ConversationView(LoginRequiredMixin, generic.ListView):
             conversation['conversation'] = conversation_obj
             conversation_list.append(conversation)
         context['conversation_list'] = conversation_list
+        context['item'] = models.Item.objects.get(pk=self.kwargs['pk'])
         return context
     
     def post(self, request, pk):
