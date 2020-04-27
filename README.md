@@ -1,21 +1,4 @@
 # Textbook Swap
 [![Build Status](https://travis-ci.com/uva-cs3240-s20/project-101-textbook-swap.svg?token=TLmEs1yASFdWYyqTLXkm&branch=master)](https://travis-ci.com/uva-cs3240-s20/project-101-textbook-swap)
 
-Marketplace for textbooks
-
-# Set up
-
-You will need a PostgreSQL database running. Create a file named `.env` with the following contents
-```
-DATABASE_URL=postgres://user:password@localhost:5432/db_name
-AWS_ACCESS_KEY_ID=...
-AWS_SECRET_ACCESS_KEY=...
-```
-with AWS credentials to an S3 bucket.
-
-Make sure to install the the dependencies, apply migrations, and collect static files with 
-```
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py collectstatic
-```
+Textbook Swap is a marketplace for textbooks. Students can sell a textbook by posting a listing in the "Add Listing" tab, specifying information about the book and its condition. Buyers can find the textbook by name, author, or ISBN using the search feature. Once they've found what they're looking for, buyers can ask questions or arrange a pickup with the seller by clicking on a listing and then clicking "Contact seller." Both the buyer and seller are notified of new messages by email. They can respond to messages either by replying to the notification email or by going to the conversations page by clicking "View messages" on a listing. After payment and item exchange have occurred in person, the seller can go to their listing under the "My Listings" tab and update the status to "sold," so it will not be displayed to any more buyers.
