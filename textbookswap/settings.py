@@ -21,24 +21,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Load environment variables from .env file
 dotenv.load_dotenv()
 
-EMAIL_HOST_USER='textbookswapuva@gmail.com'
-EMAIL_HOST_PASSWORD='5v%tUjbn3YU8DMKx2tA$92gUF&USK5YWU$AAdH'
+EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL=EMAIL_HOST_USER
 
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
-CLOUDMAILIN_CREDENTIALS='cloudmailin:Qgv9hyDTBvYdQWY2YnRne9t5Y85e5ytqJpSyjg'
-CLOUDMAILIN_ID='8becc54808c611029b55'
+CLOUDMAILIN_CREDENTIALS=os.getenv('CLOUDMAILIN_CREDENTIALS')
+CLOUDMAILIN_ID=os.getenv('CLOUDMAILIN_ID')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ukj+1i$3j7y!(cxc#6)+=+%7w(+6l_gh8ui2cny13piko((obl'
+SECRET_KEY=os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG=os.getenv('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -146,8 +146,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Google OAuth2 credentials
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '899292966914-776flca5qc1ctenipa1881dn0nfne9hd.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1-SkA8UHchnfoJp-_UAu1lqq'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'marketplace:index'
 
 

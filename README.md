@@ -10,3 +10,31 @@ Textbook Swap is a marketplace for textbooks. Students can sell a textbook by po
 - [CloudMailIn](https://www.cloudmailin.com/terms)
 - [Google Books API](https://developers.google.com/terms/)
 - [AWS S3](https://aws.amazon.com/service-terms/)
+
+### Set up
+
+Note: set up will require creating accounts with many different services and probably is more trouble than it's worth.
+
+You will need a PostgreSQL database running. Create a file named `.env` with the following contents
+```
+DATABASE_URL=postgres://user:password@localhost:5432/db_name
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+CLOUDMAILIN_CREDENTIALS='user:password'
+CLOUDMAILIN_ID=...
+EMAIL_HOST_USER=...@gmail.com
+EMAIL_HOST_PASSWORD=...
+SECRET_KEY=...
+DEBUG=True
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=....apps.googleusercontent.com
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=...
+```
+with AWS credentials to a publicly accessible S3 bucket named `django-textbook`.
+
+Make sure to install the the dependencies, apply migrations, and collect
+static files with
+```
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py collectstatic
+```
